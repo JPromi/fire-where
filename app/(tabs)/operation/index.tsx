@@ -1,5 +1,5 @@
 import { Stack, useRouter } from 'expo-router';
-import { Platform, Pressable, StyleSheet, useColorScheme, View } from 'react-native';
+import { Platform, Pressable, ScrollView, StyleSheet, useColorScheme, View } from 'react-native';
 
 import IconAtMap from '@/assets/icons/map-at.svg';
 import { ThemedText } from '@/components/ThemedText';
@@ -71,26 +71,28 @@ export default function OperationSelectFederalStateScreen() {
             <SvgAtMap activeFs={getActiveFederalStates()} onSelect={(fsId) => selectFederalState(fsId)}/>
           </View>
         ) : (
-          <View style={styles.contentList}>
-            {federalStates.map((fs) => (
-              <Pressable
-                key={fs.id}
-                onPress={() => selectFederalState(fs.id)}
-                disabled={fs.disabled}
-                style={({ pressed }) => ({
-                  padding: 12,
-                  borderBottomWidth: 1,
-                  borderColor: Colors[colorScheme ?? 'light'].border,
-                  opacity: fs.disabled ? 0.25 : pressed ? 0.7 : 1,
-                  // cursor: fs.disabled ? 'not-allowed' : 'pointer',
-                })}
-              >
-                <ThemedText style={{ color: Colors[colorScheme ?? 'light'].text }}>
-                  {fs.name}
-                </ThemedText>
-              </Pressable>
-            ))}
-          </View>
+          <ScrollView>
+            <View style={styles.contentList}>
+              {federalStates.map((fs) => (
+                <Pressable
+                  key={fs.id}
+                  onPress={() => selectFederalState(fs.id)}
+                  disabled={fs.disabled}
+                  style={({ pressed }) => ({
+                    padding: 12,
+                    borderBottomWidth: 1,
+                    borderColor: Colors[colorScheme ?? 'light'].border,
+                    opacity: fs.disabled ? 0.25 : pressed ? 0.7 : 1,
+                    // cursor: fs.disabled ? 'not-allowed' : 'pointer',
+                  })}
+                >
+                  <ThemedText style={{ color: Colors[colorScheme ?? 'light'].text }}>
+                    {fs.name}
+                  </ThemedText>
+                </Pressable>
+              ))}
+            </View>
+          </ScrollView>
         )}
 
         <View
