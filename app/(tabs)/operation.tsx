@@ -1,4 +1,4 @@
-import { Stack } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import { Pressable, StyleSheet, useColorScheme, View } from 'react-native';
 
 import { ThemedText } from '@/components/ThemedText';
@@ -9,35 +9,56 @@ import { FederalState } from '@/models/FederalState';
 import { useState } from 'react';
 import IconAtMap from '../../assets/icons/map-at.svg';
 
+import federStatesData from '@/assets/data/federal-states.json';
+import { useTranslation } from 'react-i18next';
+
 export default function OperationSelectFederalStateScreen() {
   const colorScheme = useColorScheme();
+  const { t } = useTranslation();
+  const router = useRouter();
 
   const [isMapView, setIsMapView] = useState(true);
 
-  const federStates: FederalState[] = [
-    { id: 'la', name: 'Niederösterreich', disabled: false },
-    { id: 'ua', name: 'Oberösterreich', disabled: false },
-    { id: 'bl', name: 'Burgenland', disabled: false },
-    { id: 'st', name: 'Steiermark', disabled: false },
-    { id: 'ty', name: 'Tirol', disabled: false },
-    { id: 'vb', name: 'Vorarlberg', disabled: true },
-    { id: 'vi', name: 'Wien', disabled: true },
-    { id: 'ca', name: 'Kärnten', disabled: true },
-    { id: 'sb', name: 'Salzburg', disabled: true },
-  ]
+  const federalStates: FederalState[] = [];
+
+  setFederalStatesFromData();
+
+  function setFederalStatesFromData() {
+    const data: FederalState[] = federStatesData.map((fs) => ({
+      id: fs.id,
+      idLong: fs.idLong,
+      name: t(`assets.federalStates.${fs.id}`),
+      disabled: fs.disabled || false,
+    }));
+
+    data.sort((a, b) => {
+      if (a.disabled && !b.disabled) return 1;
+      if (!a.disabled && b.disabled) return -1;
+      return a.name.localeCompare(b.name);
+    });
+
+    federalStates.push(...data);
+  }
 
   function setView(isMap: boolean) {
     setIsMapView(isMap);
   }
 
   function getActiveFederalStates(): string[] {
-    return federStates
+    return federalStates
       .filter(fs => !fs.disabled)
       .map(fs => fs.id);
   }
 
   function selectFederalState(fdId: string) {
-    console.log('Selected Federal State:', fdId);
+    const found = federalStates.find(fs => fs.id === fdId);
+    const longId = found ? found.idLong : null;
+    if (longId && !found?.disabled) {
+      router.push({
+        pathname: "/operation/[federalStateId]",
+        params: { federalStateId: longId }
+      });
+    }
   }
 
   return (
@@ -50,7 +71,7 @@ export default function OperationSelectFederalStateScreen() {
           </View>
         ) : (
           <View style={styles.contentList}>
-            {federStates.map((fs) => (
+            {federalStates.map((fs) => (
               <Pressable
                 key={fs.id}
                 onPress={() => selectFederalState(fs.id)}

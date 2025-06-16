@@ -1,0 +1,47 @@
+[
+    {
+        "id": "la",
+        "idLong": "lower-austria",
+        "disabled": false
+    },
+    {
+        "id": "ua",
+        "idLong": "upper-austria",
+        "disabled": false
+    },
+    {
+        "id": "st",
+        "idLong": "styria",
+        "disabled": false
+    },
+    {
+        "id": "bl",
+        "idLong": "burgenland",
+        "disabled": false
+    },
+    {
+        "id": "vi",
+        "idLong": "vienna",
+        "disabled": true
+    },
+    {
+        "id": "ca",
+        "idLong": "carinthia",
+        "disabled": true
+    },
+    {
+        "id": "sb",
+        "idLong": "salzburg",
+        "disabled": true
+    },
+    {
+        "id": "ty",
+        "idLong": "tyrol",
+        "disabled": false
+    },
+    {
+        "id": "vb",
+        "idLong": "vorarlberg",
+        "disabled": true
+    }
+]

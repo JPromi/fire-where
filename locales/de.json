@@ -1,0 +1,15 @@
+{
+    "assets": {
+        "federalStates": {
+            "la": "Niederösterreich",
+            "ua": "Oberösterreich",
+            "st": "Steiermark",
+            "bl": "Burgenland",
+            "vi": "Wien",
+            "ca": "Kärnten",
+            "sb": "Salzburg",
+            "ty": "Tirol",
+            "vb": "Vorarlberg"
+        }
+    }
+}
