@@ -30,7 +30,8 @@ export default function TabLayout() {
         name="operation"
         options={{
           title: 'Einseatze',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          headerShown: false,
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="map.fill" color={color} />,
         }}
       />
       <Tabs.Screen
@@ -39,6 +40,10 @@ export default function TabLayout() {
           title: 'Einstellungen',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
         }}
+      />
+      <Tabs.Screen
+        name="operation/[federalStateId]"
+        options={{ href: null }}
       />
     </Tabs>
   );

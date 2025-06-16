@@ -36,7 +36,10 @@ export default function OperationSelectDistrict() {
 
   return (
     <>
-      <Stack.Screen options={{ title: federalState?.name }} />
+      <Stack.Screen options={{
+        title: federalState?.name,
+        headerBackTitle: t('common.back'),
+        }} />
       <ThemedView style={styles.container}>
         <ThemedText>{federalState?.name}</ThemedText>
       </ThemedView>

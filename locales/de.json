@@ -11,5 +11,8 @@
             "ty": "Tirol",
             "vb": "Vorarlberg"
         }
+    },
+    "common": {
+        "back": "Zurück"
     }
 }

@@ -1,16 +1,17 @@
 import { Stack, useRouter } from 'expo-router';
-import { Pressable, StyleSheet, useColorScheme, View } from 'react-native';
+import { Platform, Pressable, StyleSheet, useColorScheme, View } from 'react-native';
 
+import IconAtMap from '@/assets/icons/map-at.svg';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { SvgAtMap } from '@/components/assets/SvgAtMap';
 import { Colors } from '@/constants/Colors';
 import { FederalState } from '@/models/FederalState';
 import { useState } from 'react';
-import IconAtMap from '../../assets/icons/map-at.svg';
 
 import federStatesData from '@/assets/data/federal-states.json';
 import { useTranslation } from 'react-i18next';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function OperationSelectFederalStateScreen() {
   const colorScheme = useColorScheme();
@@ -77,11 +78,11 @@ export default function OperationSelectFederalStateScreen() {
                 onPress={() => selectFederalState(fs.id)}
                 disabled={fs.disabled}
                 style={({ pressed }) => ({
-                  padding: 10,
+                  padding: 12,
                   borderBottomWidth: 1,
                   borderColor: Colors[colorScheme ?? 'light'].border,
                   opacity: fs.disabled ? 0.25 : pressed ? 0.7 : 1,
-                  cursor: fs.disabled ? 'not-allowed' : 'pointer',
+                  // cursor: fs.disabled ? 'not-allowed' : 'pointer',
                 })}
               >
                 <ThemedText style={{ color: Colors[colorScheme ?? 'light'].text }}>
@@ -99,6 +100,7 @@ export default function OperationSelectFederalStateScreen() {
               {
                 backgroundColor: colorScheme === 'dark' ? '#ffffff10' : '#00000010',
                 borderColor: colorScheme === 'dark' ? '#ffffff20' : '#00000020',
+                marginBottom: Platform.OS === 'ios' ? useSafeAreaInsets().bottom + 20 + 30 : 20,
               }
             ]
           }
@@ -123,7 +125,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 20,
   },
   contentList: {
     width: '100%',
