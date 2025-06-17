@@ -108,6 +108,9 @@ export default function OperationDetailScreen() {
               flexDirection: 'column',
               gap: 24,
               marginBottom: 20,
+              width: '100%',
+              maxWidth: 1000,
+              alignSelf: 'center',
             }}>
             {/* Header */}
             <View
@@ -221,8 +224,12 @@ export default function OperationDetailScreen() {
           <View
             style={{
               display: 'flex',
-              flexDirection: 'column',
+              flexDirection: 'row',
               gap: 12,
+              flexWrap: 'wrap',
+              maxWidth: 1000,
+              width: '100%',
+              alignSelf: 'center',
             }}>
             {operation.firedepartments?.map((fd, index) => {
               const animatedHeight = animationValues.current[index]
@@ -239,6 +246,8 @@ export default function OperationDetailScreen() {
                       display: 'flex',
                       flexDirection: 'column',
                       backgroundColor: Colors[colorScheme ?? 'light'].backgroundForground,
+                      width: '100%',
+                      maxWidth: 494,
                     }}>
                   <Pressable
                     style={{
@@ -308,6 +317,8 @@ export default function OperationDetailScreen() {
                       display: 'flex',
                       flexDirection: 'column',
                       backgroundColor: Colors[colorScheme ?? 'light'].backgroundForground,
+                      width: '100%',
+                      maxWidth: 494,
                     }}>
                   <Pressable
                     style={{
