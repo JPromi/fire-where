@@ -8,10 +8,12 @@ import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useDynamicBottom } from '@/hooks/useDynamicBottom';
+import { useTranslation } from 'react-i18next';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const marginBottom = useDynamicBottom();
+  const { t } = useTranslation();
 
   return (
     <Tabs
@@ -41,7 +43,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="operation"
         options={{
-          title: 'Einsätze',
+          title: t('operation.title'),
           headerShown: false,
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="map.fill" color={color} />,
           href: '/operation',
@@ -50,7 +52,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="settings"
         options={{
-          title: 'Einstellungen',
+          title: t('settings.title'),
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
         }}
       />

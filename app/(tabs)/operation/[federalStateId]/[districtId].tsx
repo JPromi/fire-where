@@ -124,6 +124,17 @@ export default function OperationSelectDistrict() {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
           }>
           <View style={[styles.contentList, { marginBottom: marginBottom + 50 }]}>
+            {true ? (
+              <ThemedText
+                style={{
+                  textAlign: 'center',
+                  color: Colors[colorScheme ?? 'light'].text,
+                  fontSize: 16,
+                  marginTop: 20,
+                }}>
+                {t('operation.noData')}
+              </ThemedText>
+            ) : (null) }
             {operations.map((op) => (
               <Pressable
                 key={op.uuid}

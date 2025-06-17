@@ -28,5 +28,15 @@
     "common": {
         "back": "Zurück",
         "unknown": "Unbekannt"
+    },
+    "operation": {
+        "title": "Einsätze",
+        "noData": "Keine Einsätze gefunden.",
+        "details": {
+
+        }
+    },
+    "settings": {
+        "title": "Einstellungen"
     }
 }

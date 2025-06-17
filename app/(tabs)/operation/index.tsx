@@ -67,7 +67,7 @@ export default function OperationSelectFederalStateScreen() {
 
   return (
     <>
-      <Stack.Screen options={{ title: 'Einsätze' }} />
+      <Stack.Screen options={{ title: t('operation.title') }} />
       <ThemedView style={styles.container}>
         { isMapView ? ( 
           <View style={[styles.contentMap, {marginBottom: marginBottom + 50}]}>
