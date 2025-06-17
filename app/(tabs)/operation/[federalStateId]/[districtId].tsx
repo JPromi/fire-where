@@ -1,3 +1,4 @@
+import districtData from '@/assets/data/districts.json';
 import federStatesData from '@/assets/data/federal-states.json';
 import { ThemedView } from "@/components/ThemedView";
 import { useDynamicBottom } from "@/hooks/useDynamicBottom";
@@ -13,6 +14,8 @@ export default function OperationSelectDistrict() {
   const marginBottom = useDynamicBottom();
 
   var federalState: FederalState | null = null;
+  const districts: { id: string, name: string }[] = [];
+  var district: { id: string, name: string } = { id: districtId, name: "" };
 
   loadFederalState();
 
@@ -31,12 +34,32 @@ export default function OperationSelectDistrict() {
     });
 
     federalState = data.find(fs => fs.idLong === federalStateId) || null;
+
+    loadDistrictFromData();
+  }
+
+  function loadDistrictFromData() {
+    if (federalState) {
+      const data = districtData.find(d => d.fdId === federalState?.id);
+      if(data) {
+        data.districts.forEach(d => {
+          districts.push({
+            id: d.id,
+            name: t(`assets.districts.${federalState?.id}.${d.id}`),
+          });
+        });
+
+        districts.sort((a, b) => a.name.localeCompare(b.name));
+
+        district = districts.find(d => d.id === districtId) || { id: districtId, name: "" };
+      }
+    }
   }
 
   return (
     <>
       <Stack.Screen options={{
-          title: districtId,
+          title: district.name,
           }} />
         <ThemedView style={[styles.container, { paddingBottom: marginBottom + 50 }]}>
           <ScrollView></ScrollView>
