@@ -7,9 +7,11 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { useDynamicBottom } from '@/hooks/useDynamicBottom';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const marginBottom = useDynamicBottom();
 
   return (
     <Tabs
@@ -22,16 +24,27 @@ export default function TabLayout() {
           ios: {
             // Use a transparent background on iOS to show the blur effect
             position: 'absolute',
+            height: 50 + marginBottom,
           },
-          default: {},
+          web: {
+            backdropFilter: 'blur(1000px) brightness(0.2)',
+            position: 'absolute',
+            height: 50 + marginBottom,
+            backgroundColor: Colors[colorScheme ?? 'light'].backgroundForground,
+          },
+          default: {
+            position: 'absolute',
+            height: 50 + marginBottom
+          },
         }),
       }}>
       <Tabs.Screen
         name="operation"
         options={{
-          title: 'Einseatze',
+          title: 'Einsätze',
           headerShown: false,
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="map.fill" color={color} />,
+          href: '/operation',
         }}
       />
       <Tabs.Screen

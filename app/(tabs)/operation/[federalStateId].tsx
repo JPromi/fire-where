@@ -1,14 +1,21 @@
 import federStatesData from "@/assets/data/federal-states.json";
-import { ThemedText } from "@/components/ThemedText";
+import IconAtMap from "@/assets/icons/map-at.svg";
+import { SvgAtFederalStateMap } from "@/components/assets/SvgAtFederalStateMap";
 import { ThemedView } from "@/components/ThemedView";
 import { FederalState } from "@/models/FederalState";
 import { Stack, useLocalSearchParams } from "expo-router";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { StyleSheet } from "react-native";
+import { Pressable, StyleSheet, useColorScheme, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function OperationSelectDistrict() {
   const { t } = useTranslation();
   const { federalStateId } = useLocalSearchParams<{ federalStateId: string }>();
+  const colorScheme = useColorScheme();
+
+
+  const [isMapView, setIsMapView] = useState(true);
 
   const federalStates: FederalState[] = [];
   var federalState: FederalState | null = federalStates.find(fs => fs.idLong === federalStateId) || null;
@@ -34,6 +41,10 @@ export default function OperationSelectDistrict() {
     federalStates.push(...data);
   }
 
+  function setView(isMap: boolean) {
+    setIsMapView(isMap);
+  }
+
   return (
     <>
       <Stack.Screen options={{
@@ -41,7 +52,28 @@ export default function OperationSelectDistrict() {
         headerBackTitle: t('common.back'),
         }} />
       <ThemedView style={styles.container}>
-        <ThemedText>{federalState?.name}</ThemedText>
+        {isMapView ? (
+          <SvgAtFederalStateMap federalState={federalState?.id}/>
+        ) : (null)}
+
+        <View
+          style={
+            [
+              styles.buttonContainer,
+              {
+                backgroundColor: colorScheme === 'dark' ? '#ffffff10' : '#00000010',
+                borderColor: colorScheme === 'dark' ? '#ffffff20' : '#00000020',
+                marginBottom: useSafeAreaInsets().bottom + 20 + 30,
+              }
+            ]
+          }
+          >
+          <Pressable style={styles.button} onPress={() => {setView(true)}}>
+            <IconAtMap style={[styles.buttonIcon, { filter: colorScheme === 'dark' ? '' : 'invert(1)' }]}/>
+          </Pressable>
+          <Pressable style={styles.button} onPress={() => {setView(false)}}>
+          </Pressable>
+        </View>
       </ThemedView>
     </>
   )
@@ -52,4 +84,42 @@ const styles = StyleSheet.create({
     flex: 1,
     fontFamily: 'Montserrat',
   },
+  contentMap: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  contentList: {
+    width: '100%',
+    maxWidth: 1000,
+    marginHorizontal: 'auto',
+  },
+  buttonContainer: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    display: 'flex',
+    flexDirection: 'row',
+    zIndex: 2,
+    borderRadius: 10,
+    overflow: 'hidden',
+    borderWidth: 1,
+  },
+  button: {
+    width: 50,
+    height: 50,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 8,
+    fontSize: 12,
+    opacity: .32,
+  },
+  buttonIcon: {
+    width: "100%",
+    height: "100%",
+    maxHeight: 24,
+    maxWidth: 36,
+    marginBottom: 2,
+  }
 });

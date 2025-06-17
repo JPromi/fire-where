@@ -10,13 +10,16 @@ import { FederalState } from '@/models/FederalState';
 import { useState } from 'react';
 
 import federStatesData from '@/assets/data/federal-states.json';
+import { useDynamicBottom } from '@/hooks/useDynamicBottom';
+import { BlurView } from 'expo-blur';
 import { useTranslation } from 'react-i18next';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function OperationSelectFederalStateScreen() {
   const colorScheme = useColorScheme();
   const { t } = useTranslation();
   const router = useRouter();
+  const marginBottom = useDynamicBottom();
+  const blurSupported = Platform.OS === 'ios' || (Platform.OS === 'android' && Platform.Version >= 31);
 
   const [isMapView, setIsMapView] = useState(true);
 
@@ -67,12 +70,12 @@ export default function OperationSelectFederalStateScreen() {
       <Stack.Screen options={{ title: 'Einsätze' }} />
       <ThemedView style={styles.container}>
         { isMapView ? ( 
-          <View style={styles.contentMap}>
+          <View style={[styles.contentMap, {marginBottom: marginBottom + 50}]}>
             <SvgAtMap activeFs={getActiveFederalStates()} onSelect={(fsId) => selectFederalState(fsId)}/>
           </View>
         ) : (
           <ScrollView>
-            <View style={styles.contentList}>
+            <View style={[styles.contentList, { marginBottom: marginBottom + 50 }]}>
               {federalStates.map((fs) => (
                 <Pressable
                   key={fs.id}
@@ -98,20 +101,38 @@ export default function OperationSelectFederalStateScreen() {
         <View
           style={
             [
-              styles.buttonContainer,
+              // styles.buttonContainer,
               {
-                backgroundColor: colorScheme === 'dark' ? '#ffffff10' : '#00000010',
-                borderColor: colorScheme === 'dark' ? '#ffffff20' : '#00000020',
-                marginBottom: Platform.OS === 'ios' ? useSafeAreaInsets().bottom + 20 + 30 : 20,
+                marginBottom: marginBottom + 50,
+                position: 'absolute',
+                bottom: 20,
+                right: 20,
+                zIndex: 2,
+                borderRadius: 10,
+                overflow: 'hidden',
+                backgroundColor: blurSupported ? '' : Colors[colorScheme ?? 'light'].backgroundForground,
+                backdropFilter: blurSupported ? 'blur(10px) brightness(0.2)' : '',
               }
             ]
           }
-          >
-          <Pressable style={styles.button} onPress={() => {setView(true)}}>
-            <IconAtMap style={[styles.buttonIcon, { filter: colorScheme === 'dark' ? '' : 'invert(1)' }]}/>
-          </Pressable>
-          <Pressable style={styles.button} onPress={() => {setView(false)}}>
-          </Pressable>
+        >
+          <BlurView
+            style={
+              [
+                styles.buttonContainer,
+                {
+                  backgroundColor: Colors[colorScheme ?? 'light'].tint + '15',
+                }
+              ]
+              }
+              tint={colorScheme === 'dark' ? 'dark' : 'light'}
+            >
+            <Pressable style={styles.button} onPress={() => {setView(true)}}>
+              <IconAtMap style={[styles.buttonIcon, { filter: colorScheme === 'dark' ? '' : 'invert(1)' }]}/>
+            </Pressable>
+            <Pressable style={styles.button} onPress={() => {setView(false)}}>
+            </Pressable>
+          </BlurView>
         </View>
       </ThemedView>
     </>
@@ -134,15 +155,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 'auto',
   },
   buttonContainer: {
-    position: 'absolute',
-    bottom: 20,
-    right: 20,
     display: 'flex',
     flexDirection: 'row',
-    zIndex: 2,
-    borderRadius: 10,
-    overflow: 'hidden',
-    borderWidth: 1,
   },
   button: {
     width: 50,
