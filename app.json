@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "fireSpot",
-    "slug": "fireSpot",
+    "name": "FirePoint",
+    "slug": "FirePoint",
     "version": "1.0.0",
-    "orientation": "portrait",
+    "orientation": "ALL",
     "icon": "./assets/images/icon.png",
-    "scheme": "firespot",
+    "scheme": "FirePoint",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
