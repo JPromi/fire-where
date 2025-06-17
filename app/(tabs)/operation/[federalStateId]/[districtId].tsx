@@ -189,6 +189,7 @@ export default function OperationSelectDistrict() {
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'flex-end',
+                    flex: 1,
                   }}>
                   <ThemedText
                     numberOfLines={1}
