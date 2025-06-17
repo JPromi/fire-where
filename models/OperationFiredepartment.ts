@@ -1,4 +1,4 @@
-export type OperationUnit = {
+export type OperationFiredepartment = {
   firedepartment?: {
     uuid?: string;
     name?: string;
