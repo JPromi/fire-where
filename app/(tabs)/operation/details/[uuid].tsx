@@ -140,7 +140,30 @@ export default function OperationDetailScreen() {
                 </View>
               ) : (
                 // FW-A-BRANDG
-                <View>NOT IMPLEMENTED</View>
+                <View
+                  style= {{
+                    padding: 2,
+                    minWidth: 82,
+                    height: 52,
+                    borderRadius: 8,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: Colors[colorScheme ?? 'light'].opTechnical,
+                  }}>
+                  <Text
+                    style={{
+                      color: Colors[colorScheme ?? 'light'].text,
+                      fontWeight: 'semibold',
+                      fontSize: 14,
+                    }}>{`${operation.alarm?.tyrolOutOrder}`}</Text>
+                  <Text
+                    style={{
+                      color: Colors[colorScheme ?? 'light'].text,
+                      fontWeight: 'bold',
+                      fontSize: (operation.alarm?.tyrolCategory?.length ?? 0) >= 8 ? 16 : 20,
+                    }}>{`${operation.alarm?.tyrolCategory}`}</Text>
+                </View>
               )}
 
               <View

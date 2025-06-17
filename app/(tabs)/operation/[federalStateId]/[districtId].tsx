@@ -162,7 +162,25 @@ export default function OperationSelectDistrict() {
                   </View>
                 ) : (
                   // FW-A-BRANDG
-                  <View>{op.alarm.type}{op.alarm.level}{op.alarm.levelAddition}</View>
+                  <View
+                    style={{
+                      backgroundColor: Colors[colorScheme ?? 'light'].opTechnical,
+                      width: 80,
+                      height: 45,
+                      borderRadius: 3,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      padding: 4,
+                    }}>
+                      <Text
+                        style={{
+                          color: Colors[colorScheme ?? 'light'].text,
+                          fontWeight: 'bold',
+                          textAlign: 'center',
+                          fontSize: (op.alarm?.tyrolCategory?.length ?? 0) >= 8 ? 12 : 18,
+                        }}>{`${op.alarm.tyrolCategory}`}</Text>
+                  </View>
                 )}
 
                 {/* Alarm Message */}
