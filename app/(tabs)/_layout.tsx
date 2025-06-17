@@ -8,6 +8,7 @@ import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useDynamicBottom } from '@/hooks/useDynamicBottom';
+import { CommonActions } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 
 export default function TabLayout() {
@@ -46,8 +47,18 @@ export default function TabLayout() {
           title: t('operation.title'),
           headerShown: false,
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="map.fill" color={color} />,
-          href: '/operation',
+          // href: '/operation',
         }}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 0,
+                routes: [{ name: 'operation' }],
+              })
+            );
+          },
+        })}
       />
       <Tabs.Screen
         name="settings"
