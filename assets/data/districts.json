@@ -1,7 +1,6 @@
 [
   {
     "fdId": "bl",
-    "fdIdLong": "burgenland",
     "districts": [
       {
         "id": "eisenstadt"
@@ -31,5 +30,21 @@
         "id": "oberwart"
       }
     ]
-}
+  },
+  {
+    "fdId": "ty",
+    "districts": [
+      {
+        "id": "innsbruck"
+      }
+    ]
+  },
+  {
+    "fdId": "la",
+    "districts": [
+      {
+        "id": "moedling"
+      }
+    ]
+  }
 ]

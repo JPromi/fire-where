@@ -1,0 +1,8 @@
+export enum ServiceOriginEnum {
+  UNKNOWN = 'UNKNOWN',
+  BL_LSZ_PUB = 'BL_LSZ_PUB',
+  LA_WASTL_PUB = 'LA_WASTL_PUB',
+  UA_LFV_PUB = 'UA_LFV_PUB',
+  ST_LFV_PUB = 'ST_LFV_PUB',
+  TYROL_LFS_APP = 'TYROL_LFS_APP',
+}

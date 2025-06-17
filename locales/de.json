@@ -26,6 +26,7 @@
         }
     },
     "common": {
-        "back": "Zurück"
+        "back": "Zurück",
+        "unknown": "Unbekannt"
     }
 }

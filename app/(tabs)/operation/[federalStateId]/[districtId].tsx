@@ -1,71 +1,208 @@
 import districtData from '@/assets/data/districts.json';
 import federStatesData from '@/assets/data/federal-states.json';
+import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from "@/components/ThemedView";
+import { Colors } from '@/constants/Colors';
 import { useDynamicBottom } from "@/hooks/useDynamicBottom";
 import { FederalState } from '@/models/FederalState';
+import { Operation } from '@/models/Operation';
+import { OperationService } from '@/services/OperationService';
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ScrollView, StyleSheet } from "react-native";
+import { Pressable, RefreshControl, ScrollView, StyleSheet, Text, useColorScheme, View } from "react-native";
 
 export default function OperationSelectDistrict() {
+  const colorScheme = useColorScheme();
   const { t } = useTranslation();
   const { federalStateId, districtId } = useLocalSearchParams<{ federalStateId: string, districtId: string }>();
-  const router = useRouter();
   const marginBottom = useDynamicBottom();
+  const router = useRouter();
 
-  var federalState: FederalState | null = null;
-  const districts: { id: string, name: string }[] = [];
-  var district: { id: string, name: string } = { id: districtId, name: "" };
+  const [federalState, setFederalState] = useState<FederalState | null>(null);
+  const [districts, setDistricts] = useState<{ id: string, name: string }[]>([]);
+  const [district, setDistrict] = useState<{ id: string, name: string }>({ id: districtId, name: "" });
+  const [operations, setOperations] = useState<Operation[]>([]);
+  const [refreshing, setRefreshing] = useState(false);
 
-  loadFederalState();
 
-  function loadFederalState() {
-    const data: FederalState[] = federStatesData.map((fs) => ({
+  useEffect(() => {
+    // federal states data processing
+    const fsData = federStatesData.map(fs => ({
       id: fs.id,
       idLong: fs.idLong,
       name: t(`assets.federalStates.${fs.id}`),
       disabled: fs.disabled || false,
-    }));
-
-    data.sort((a, b) => {
+    })).sort((a, b) => {
       if (a.disabled && !b.disabled) return 1;
       if (!a.disabled && b.disabled) return -1;
       return a.name.localeCompare(b.name);
     });
 
-    federalState = data.find(fs => fs.idLong === federalStateId) || null;
+    const fs = fsData.find(fs => fs.idLong === federalStateId) || null;
+    setFederalState(fs);
 
-    loadDistrictFromData();
+    if (fs) {
+      // districts data processing
+      const rawDistrictData = districtData.find(d => d.fdId === fs.id);
+      if (rawDistrictData) {
+        const distList = rawDistrictData.districts.map(d => ({
+          id: d.id,
+          name: t(`assets.districts.${fs.id}.${d.id}`),
+        })).sort((a, b) => a.name.localeCompare(b.name));
+
+        setDistricts(distList);
+
+        const dist = distList.find(d => d.id === districtId) || { id: districtId, name: '' };
+        setDistrict(dist);
+
+        // fetch operations
+        OperationService.getOperationsByFsDistrict(fs.idLong, dist.id)
+          .then(setOperations)
+          .catch(console.error);
+      }
+    }
+  }, [federalStateId, districtId, t]);
+
+  function onRefresh() {
+    setRefreshing(true);
+    if (!federalState) return;
+
+    OperationService.getOperationsByFsDistrict(federalState.idLong || '', district.id)
+      .then(setOperations)
+      .catch(console.error)
+      .finally(() => setRefreshing(false));
   }
 
-  function loadDistrictFromData() {
-    if (federalState) {
-      const data = districtData.find(d => d.fdId === federalState?.id);
-      if(data) {
-        data.districts.forEach(d => {
-          districts.push({
-            id: d.id,
-            name: t(`assets.districts.${federalState?.id}.${d.id}`),
-          });
-        });
+  function getOperationColor(type: string): string {
+    switch (type) {
+      case 'B':
+        return Colors[colorScheme ?? 'light'].opFire;
+      case 'T':
+      case 'V':
+        return Colors[colorScheme ?? 'light'].opTechnical;
+      case 'G':
+      case 'S':
+        return Colors[colorScheme ?? 'light'].opChimical;
+      case 'SOF':
+        return Colors[colorScheme ?? 'light'].opSupport;
+      default:
+        return Colors[colorScheme ?? 'light'].opOther;
+    }
+  }
 
-        districts.sort((a, b) => a.name.localeCompare(b.name));
-
-        district = districts.find(d => d.id === districtId) || { id: districtId, name: "" };
-      }
+  function getDate(dateString: string | undefined): string {
+    if(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('de-DE', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+    } else {
+      return t('common.unknown');
     }
   }
 
   return (
     <>
-      <Stack.Screen options={{
-          title: district.name,
-          }} />
-        <ThemedView style={[styles.container, { paddingBottom: marginBottom + 50 }]}>
-          <ScrollView></ScrollView>
-        </ThemedView>
+      <Stack.Screen options={{ title: district.name }} />
+      <ThemedView style={[styles.container, { paddingBottom: marginBottom + 50 }]}>
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+          }>
+          <View style={[styles.contentList, { marginBottom: marginBottom + 50 }]}>
+            {operations.map((op) => (
+              <Pressable
+                key={op.uuid}
+                style={({ pressed }) => ({
+                  padding: 12,
+                  borderBottomWidth: 1,
+                  borderColor: Colors[colorScheme ?? 'light'].border,
+                  opacity: pressed ? 0.7 : 1,
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                })}
+              >
+                {/* Alarm Type */}
+                { op.alarm.level || op.alarm.type || op.alarm.levelAddition ? (
+                  // B2T
+                  <View
+                    style={{
+                      backgroundColor: getOperationColor(op.alarm.type || ''),
+                      width: 45,
+                      height: 45,
+                      borderRadius: 3,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}>
+                    <Text
+                      style={{
+                        color: Colors[colorScheme ?? 'light'].text,
+                        fontWeight: 'bold',
+                        fontSize: `${op.alarm.type || ''}${op.alarm.level?.toString() || ''}${op.alarm.levelAddition || ''}`.length <= 2 ? 18 : 13,
+                      }}>{op.alarm.type}{op.alarm.level}{op.alarm.levelAddition}</Text>
+                  </View>
+                ) : (
+                  // FW-A-BRANDG
+                  <View>{op.alarm.type}{op.alarm.level}{op.alarm.levelAddition}</View>
+                )}
+
+                {/* Alarm Message */}
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'flex-end',
+                  }}>
+                  <ThemedText
+                    style={{
+                      color: Colors[colorScheme ?? 'light'].text,
+                      fontWeight: 'bold',
+                      fontSize: 18,
+                      }}>{op.alarm.message}</ThemedText>
+
+                  {/* additional informations */}
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'flex-end',
+                      gap: 12,
+                    }}>
+                    <ThemedText
+                      style={{
+                        color: Colors[colorScheme ?? 'light'].text,
+                        fontSize: 14,
+                        opacity: 0.5,
+                        lineHeight: 15,
+                        marginTop: 4,
+                        }}>{getDate(op.startTime)}</ThemedText>
+
+                    { op.address.location ? (                      
+                      <ThemedText
+                        style={{
+                          color: Colors[colorScheme ?? 'light'].text,
+                          fontSize: 14,
+                          opacity: 0.5,
+                          lineHeight: 15
+                        }}>{op.address.location}</ThemedText>
+                    ) : (null) }
+                  </View>
+                </View>
+              </Pressable>
+            ))}
+          </View>
+        </ScrollView>
+      </ThemedView>
     </>
-  )
+  );
 }
 
 const styles = StyleSheet.create({

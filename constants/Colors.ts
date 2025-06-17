@@ -5,6 +5,8 @@
 
 const tintColorLight = '#0a7ea4';
 const tintColorDark = '#ffffff';
+const opTextDark = '#ECE';
+const opTextLight = '#11181C';
 
 export const Colors = {
   light: {
@@ -18,6 +20,17 @@ export const Colors = {
 
     mapColor: '#0a7ea4',
     border: '#F0F1F3',
+
+    opFire: '#ff0c0c',
+    opFireText: opTextDark,
+    opTechnical: '#0077ff',
+    opTechnicalText: opTextDark,
+    opChimical: '#65d82d',
+    opChimicalText: opTextDark,
+    opSupport: '#fc9e23',
+    opSupportText: opTextDark,
+    opOther: '#f5f5f5',
+    opOtherText: opTextLight,
   },
   dark: {
     text: '#ECEDEE',
@@ -30,5 +43,16 @@ export const Colors = {
 
     mapColor: '#0a7ea4',
     border: '#202325',
+
+    opFire: '#ff0c0c',
+    opFireText: opTextDark,
+    opTechnical: '#0077ff',
+    opTechnicalText: opTextDark,
+    opChimical: '#65d82d',
+    opChimicalText: opTextDark,
+    opSupport: '#fc9e23',
+    opSupportText: opTextDark,
+    opOther: '#f5f5f5',
+    opOtherText: opTextLight,
   },
 };
