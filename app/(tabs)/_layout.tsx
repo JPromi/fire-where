@@ -58,6 +58,18 @@ export default function TabLayout() {
         name="operation/[federalStateId]"
         options={{ href: null }}
       />
+      <Tabs.Screen
+        name="operation/[federalStateId]/[districtId]"
+        options={{ href: null }}
+      />
+      <Tabs.Screen
+        name="operation/details/[uuid]"
+        options={{ href: null }}
+      />
+      <Tabs.Screen
+        name="index"
+        options={{ href: null }}
+      />
     </Tabs>
   );
 }
