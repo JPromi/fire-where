@@ -124,7 +124,7 @@ export default function OperationSelectDistrict() {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
           }>
           <View style={[styles.contentList, { marginBottom: marginBottom + 50 }]}>
-            {true ? (
+            {operations.length === 0 ? (
               <ThemedText
                 style={{
                   textAlign: 'center',
