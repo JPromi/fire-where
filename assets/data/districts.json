@@ -46,5 +46,29 @@
         "id": "moedling"
       }
     ]
+  },
+  {
+    "fdId": "ua",
+    "districts": [
+      {
+        "id": "linz"
+      }
+    ]
+  },
+  {
+    "fdId": "st",
+    "districts": [
+      {
+        "id": "graz"
+      }
+    ]
+  },
+  {
+    "fdId": "ty",
+    "districts": [
+      {
+        "id": "innsbruck"
+      }
+    ]
   }
 ]

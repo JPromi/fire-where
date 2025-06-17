@@ -102,6 +102,7 @@ export default function OperationSelectDistrict() {
                     opacity: pressed ? 0.7 : 1,
                     // cursor: fs.disabled ? 'not-allowed' : 'pointer',
                   })}
+                  onPress={() => handlePress(fs.id)}
                 >
                   <ThemedText style={{ color: Colors[colorScheme ?? 'light'].text }}>
                     {fs.name}

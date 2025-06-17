@@ -91,6 +91,15 @@ export default function OperationSelectDistrict() {
     }
   }
 
+  function handlePress(operationUuid: string) {
+    if (operationUuid) {
+      router.push({
+        pathname: "/operation/details/[uuid]",
+        params: { uuid: operationUuid },
+      });
+    }
+  }
+
   function getDate(dateString: string | undefined): string {
     if(dateString) {
       const date = new Date(dateString);
@@ -109,7 +118,7 @@ export default function OperationSelectDistrict() {
   return (
     <>
       <Stack.Screen options={{ title: district.name }} />
-      <ThemedView style={[styles.container, { paddingBottom: marginBottom + 50 }]}>
+      <ThemedView style={[styles.container]}>
         <ScrollView
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
@@ -128,6 +137,7 @@ export default function OperationSelectDistrict() {
                   alignItems: 'center',
                   justifyContent: 'space-between',
                 })}
+                onPress={() => handlePress(op.uuid)}
               >
                 {/* Alarm Type */}
                 { op.alarm.level || op.alarm.type || op.alarm.levelAddition ? (
@@ -146,6 +156,7 @@ export default function OperationSelectDistrict() {
                       style={{
                         color: Colors[colorScheme ?? 'light'].text,
                         fontWeight: 'bold',
+                        textAlign: 'center',
                         fontSize: `${op.alarm.type || ''}${op.alarm.level?.toString() || ''}${op.alarm.levelAddition || ''}`.length <= 2 ? 18 : 13,
                       }}>{op.alarm.type}{op.alarm.level}{op.alarm.levelAddition}</Text>
                   </View>
@@ -162,10 +173,14 @@ export default function OperationSelectDistrict() {
                     alignItems: 'flex-end',
                   }}>
                   <ThemedText
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
                     style={{
                       color: Colors[colorScheme ?? 'light'].text,
                       fontWeight: 'bold',
                       fontSize: 18,
+                      maxWidth: '80%',
+                      textAlign: 'right',
                       }}>{op.alarm.message}</ThemedText>
 
                   {/* additional informations */}
