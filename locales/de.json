@@ -10,6 +10,19 @@
             "sb": "Salzburg",
             "ty": "Tirol",
             "vb": "Vorarlberg"
+        },
+        "districts": {
+            "bl": {
+                "eisenstadt": "Eisenstadt",
+                "rust": "Rust",
+                "eisenstadt-umgebung": "Eisenstadt-Umgebung",
+                "guessing": "Güssing",
+                "jennersdorf": "Jennersdorf",
+                "mattersburg": "Mattersburg",
+                "neusiedl-am-see": "Neusiedl am See",
+                "oberpullendorf": "Oberpullendorf",
+                "oberwart": "Oberwart"
+            }
         }
     },
     "common": {

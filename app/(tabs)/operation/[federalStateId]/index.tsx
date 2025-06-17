@@ -1,33 +1,36 @@
-import { Stack, useRouter } from 'expo-router';
-import { Platform, Pressable, ScrollView, StyleSheet, useColorScheme, View } from 'react-native';
+import districtData from "@/assets/data/districts.json";
+import federStatesData from "@/assets/data/federal-states.json";
+import IconAtMap from "@/assets/icons/map-at.svg";
+import { SvgAtFederalStateMap } from "@/components/assets/SvgAtFederalStateMap";
+import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/ThemedView";
+import { Colors } from "@/constants/Colors";
+import { useDynamicBottom } from "@/hooks/useDynamicBottom";
+import { FederalState } from "@/models/FederalState";
+import { BlurView } from "expo-blur";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Platform, Pressable, ScrollView, StyleSheet, useColorScheme, View } from "react-native";
 
-import IconAtMap from '@/assets/icons/map-at.svg';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { SvgAtMap } from '@/components/assets/SvgAtMap';
-import { Colors } from '@/constants/Colors';
-import { FederalState } from '@/models/FederalState';
-import { useState } from 'react';
-
-import federStatesData from '@/assets/data/federal-states.json';
-import { useDynamicBottom } from '@/hooks/useDynamicBottom';
-import { BlurView } from 'expo-blur';
-import { useTranslation } from 'react-i18next';
-
-export default function OperationSelectFederalStateScreen() {
-  const colorScheme = useColorScheme();
+export default function OperationSelectDistrict() {
   const { t } = useTranslation();
-  const router = useRouter();
+  const { federalStateId } = useLocalSearchParams<{ federalStateId: string }>();
+  const colorScheme = useColorScheme();
   const marginBottom = useDynamicBottom();
+  const router = useRouter();
   const blurSupported = Platform.OS === 'ios' || (Platform.OS === 'android' && Platform.Version >= 31);
+
 
   const [isMapView, setIsMapView] = useState(true);
 
   const federalStates: FederalState[] = [];
+  var federalState: FederalState | null = federalStates.find(fs => fs.idLong === federalStateId) || null;
+  const districts: { id: string, name: string }[] = [];
 
-  setFederalStatesFromData();
+  loadFederalStatesFromData();
 
-  function setFederalStatesFromData() {
+  function loadFederalStatesFromData() {
     const data: FederalState[] = federStatesData.map((fs) => ({
       id: fs.id,
       idLong: fs.idLong,
@@ -41,51 +44,62 @@ export default function OperationSelectFederalStateScreen() {
       return a.name.localeCompare(b.name);
     });
 
+    federalState = data.find(fs => fs.idLong === federalStateId) || null;
+
     federalStates.push(...data);
+
+    loadDistrictsFromData();
+  }
+
+  function loadDistrictsFromData() {
+    if (federalState) {
+      const data = districtData.find(d => d.fdId === federalState?.id);
+      if(data) {
+        data.districts.forEach(d => {
+          districts.push({
+            id: d.id,
+            name: t(`assets.districts.${federalState?.id}.${d.id}`),
+          });
+        });
+
+        districts.sort((a, b) => a.name.localeCompare(b.name));
+      }
+    }
   }
 
   function setView(isMap: boolean) {
     setIsMapView(isMap);
   }
 
-  function getActiveFederalStates(): string[] {
-    return federalStates
-      .filter(fs => !fs.disabled)
-      .map(fs => fs.id);
-  }
-
-  function selectFederalState(fdId: string) {
-    const found = federalStates.find(fs => fs.id === fdId);
-    const longId = found ? found.idLong : null;
-    if (longId && !found?.disabled) {
+  function handlePress(disctrictId: string) {
+    if (disctrictId) {
       router.push({
-        pathname: "/operation/[federalStateId]",
-        params: { federalStateId: longId }
+        pathname: "/operation/[federalStateId]/[districtId]",
+        params: { federalStateId: federalStateId, districtId: disctrictId },
       });
     }
   }
 
   return (
     <>
-      <Stack.Screen options={{ title: 'Einsätze' }} />
-      <ThemedView style={styles.container}>
-        { isMapView ? ( 
-          <View style={[styles.contentMap, {marginBottom: marginBottom + 50}]}>
-            <SvgAtMap activeFs={getActiveFederalStates()} onSelect={(fsId) => selectFederalState(fsId)}/>
-          </View>
+      <Stack.Screen options={{
+        title: federalState?.name,
+        }} />
+      <ThemedView style={[styles.container, { paddingBottom: marginBottom + 50 }]}>
+        {isMapView ? (
+          <SvgAtFederalStateMap federalState={federalState?.id} onSelect={(district) => handlePress(district)}/>
         ) : (
           <ScrollView>
             <View style={[styles.contentList, { marginBottom: marginBottom + 50 }]}>
-              {federalStates.map((fs) => (
+              {districts.map((fs) => (
                 <Pressable
                   key={fs.id}
-                  onPress={() => selectFederalState(fs.id)}
-                  disabled={fs.disabled}
+                  // onPress={() => selectFederalState(fs.id)}
                   style={({ pressed }) => ({
                     padding: 12,
                     borderBottomWidth: 1,
                     borderColor: Colors[colorScheme ?? 'light'].border,
-                    opacity: fs.disabled ? 0.25 : pressed ? 0.7 : 1,
+                    opacity: pressed ? 0.7 : 1,
                     // cursor: fs.disabled ? 'not-allowed' : 'pointer',
                   })}
                 >
@@ -135,7 +149,7 @@ export default function OperationSelectFederalStateScreen() {
         </View>
       </ThemedView>
     </>
-  );
+  )
 }
 
 const styles = StyleSheet.create({

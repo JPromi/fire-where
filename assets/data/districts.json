@@ -1,0 +1,35 @@
+[
+  {
+    "fdId": "bl",
+    "fdIdLong": "burgenland",
+    "districts": [
+      {
+        "id": "eisenstadt"
+      },
+      {
+        "id": "rust"
+      },
+      {
+        "id": "eisenstadt-umgebung"
+      },
+      {
+        "id": "guessing"
+      },
+      {
+        "id": "jennersdorf"
+      },
+      {
+        "id": "mattersburg"
+      },
+      {
+        "id": "neusiedl-am-see"
+      },
+      {
+        "id": "oberpullendorf"
+      },
+      {
+        "id": "oberwart"
+      }
+    ]
+}
+]
