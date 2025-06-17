@@ -90,7 +90,7 @@ export default function OperationDetailScreen() {
   return (
     <>
       <Stack.Screen options={{
-        title: 'Title',
+        title: operation.alarm?.message || t('common.unknown'),
         }} />
       <ThemedView style={[styles.container, { paddingBottom: marginBottom + 50 }]}>
         <ScrollView
