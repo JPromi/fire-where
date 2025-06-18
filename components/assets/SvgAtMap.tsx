@@ -26,9 +26,11 @@ export function SvgAtMap({activeFs = [], onSelect}: SvgAtMapProps) {
   return (
     <Svg id="at_map" viewBox="0 0 1000 513" width="100%" height="100%">
       <Defs>
-        <Pattern id="diagonalHatch" patternUnits="userSpaceOnUse" width="15" height="15" patternTransform={"rotate(-45)"}>
+        <Pattern id="diagonalHatch" patternUnits="userSpaceOnUse" width="15" height="15" patternTransform={"rotate(0)"}>
           <Rect x="0" y="0" width="15" height="15" fill="#343a4050"/>
-          <Line x2="0" y2="15" stroke="#f5f5f510" strokeWidth={5}/>
+          <Line x1="0" y1="0" x2="15" y2="15" stroke="#f5f5f510" strokeWidth={5}/>
+          <Line x1="-15" y1="0" x2="15" y2="30" stroke="#f5f5f510" strokeWidth={5}/>
+          <Line x1="0" y1="-15" x2="30" y2="15" stroke="#f5f5f510" strokeWidth={5}/>
         </Pattern>
       </Defs>
       <G id="features">
