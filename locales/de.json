@@ -47,6 +47,26 @@
                 "waidhofen-an-der-thaya": "Waidhofen an der Thaya",
                 "wr-neustadt": "Wr. Neustadt",
                 "zwettl": "Zwettl"
+            },
+            "ua": {       
+                "braunau": "Braunau",
+                "eferding": "Eferding",
+                "freistadt": "Freistadt",
+                "gmunden": "Gmunden",
+                "grieskirchen": "Grieskirchen",
+                "kirchdorf": "Kirchdorf",
+                "linz": "Linz",
+                "linz-land": "LinzLand",
+                "perg": "Perg",
+                "ried": "Ried",
+                "rohrbach": "Rohrbach",
+                "schaerding": "Schärding",
+                "steyr": "Steyr",
+                "steyr-land": "Steyr Land",
+                "urfahr-umgebung": "Urfahr Umgebung",
+                "voecklabruck": "Vöcklabruck",
+                "wels": "Wels",
+                "wels-land": "Wels Land"
             }
         }
     },

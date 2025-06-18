@@ -50,7 +50,24 @@
   {
     "fdId": "ua",
     "districts": [
-      "linz"
+      "braunau",
+      "eferding",
+      "freistadt",
+      "gmunden",
+      "grieskirchen",
+      "kirchdorf",
+      "linz",
+      "linz-land",
+      "perg",
+      "ried",
+      "rohrbach",
+      "schaerding",
+      "steyr",
+      "steyr-land",
+      "urfahr-umgebung",
+      "voecklabruck",
+      "wels",
+      "wels-land"
     ]
   },
   {
