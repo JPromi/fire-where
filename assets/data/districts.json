@@ -2,73 +2,67 @@
   {
     "fdId": "bl",
     "districts": [
-      {
-        "id": "eisenstadt"
-      },
-      {
-        "id": "rust"
-      },
-      {
-        "id": "eisenstadt-umgebung"
-      },
-      {
-        "id": "guessing"
-      },
-      {
-        "id": "jennersdorf"
-      },
-      {
-        "id": "mattersburg"
-      },
-      {
-        "id": "neusiedl-am-see"
-      },
-      {
-        "id": "oberpullendorf"
-      },
-      {
-        "id": "oberwart"
-      }
+      "eisenstadt",
+      "rust",
+      "eisenstadt-umgebung",
+      "guessing",
+      "jennersdorf",
+      "mattersburg",
+      "neusiedl-am-see",
+      "oberpullendorf",
+      "oberwart"
     ]
   },
   {
     "fdId": "ty",
     "districts": [
-      {
-        "id": "innsbruck"
-      }
+      "innsbruck"
     ]
   },
   {
     "fdId": "la",
     "districts": [
-      {
-        "id": "moedling"
-      }
+      "amstetten",
+      "baden",
+      "bruck-an-der-leitha",
+      "gaenserndorf",
+      "gmuend",
+      "hollabrunn",
+      "horn",
+      "krems-an-der-donau",
+      "kloserneuburg",
+      "lilienfeld",
+      "melk",
+      "mistelbach",
+      "moedling",
+      "neunkirchen",
+      "purkersdorf",
+      "scheibbs",
+      "schwechat",
+      "st-poelten",
+      "stockerau",
+      "tulln",
+      "waidhofen-an-der-thaya",
+      "wr-neustadt",
+      "zwettl"
     ]
   },
   {
     "fdId": "ua",
     "districts": [
-      {
-        "id": "linz"
-      }
+      "linz"
     ]
   },
   {
     "fdId": "st",
     "districts": [
-      {
-        "id": "graz"
-      }
+      "graz"
     ]
   },
   {
     "fdId": "ty",
     "districts": [
-      {
-        "id": "innsbruck"
-      }
+      "innsbruck"
     ]
   }
 ]
