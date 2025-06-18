@@ -47,8 +47,8 @@ export default function OperationSelectDistrict() {
       const rawDistrictData = districtData.find(d => d.fdId === fs.id);
       if (rawDistrictData) {
         const distList = rawDistrictData.districts.map(d => ({
-          id: d.id,
-          name: t(`assets.districts.${fs.id}.${d.id}`),
+          id: d,
+          name: t(`assets.districts.${fs.id}.${d}`),
         })).sort((a, b) => a.name.localeCompare(b.name));
 
         setDistricts(distList);

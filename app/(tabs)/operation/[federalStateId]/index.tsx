@@ -57,8 +57,8 @@ export default function OperationSelectDistrict() {
       if(data) {
         data.districts.forEach(d => {
           districts.push({
-            id: d.id,
-            name: t(`assets.districts.${federalState?.id}.${d.id}`),
+            id: d,
+            name: t(`assets.districts.${federalState?.id}.${d}`),
           });
         });
 
