@@ -150,6 +150,54 @@ export default function OperationSelectDistrict() {
                 })}
                 onPress={() => handlePress(op.uuid)}
               >
+                {/* Alarm Message */}
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'flex-start',
+                    flex: 1,
+                  }}>
+                  <ThemedText
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                    style={{
+                      color: Colors[colorScheme ?? 'light'].text,
+                      fontWeight: 'bold',
+                      fontSize: 18,
+                      maxWidth: '80%',
+                      textAlign: 'left',
+                      }}>{op.alarm.message}</ThemedText>
+
+                  {/* additional informations */}
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'flex-end',
+                      gap: 12,
+                    }}>
+                    <ThemedText
+                      style={{
+                        color: Colors[colorScheme ?? 'light'].text,
+                        fontSize: 14,
+                        opacity: 0.5,
+                        lineHeight: 15,
+                        marginTop: 4,
+                        }}>{getDate(op.startTime)}</ThemedText>
+
+                    { op.address.location ? (                      
+                      <ThemedText
+                        style={{
+                          color: Colors[colorScheme ?? 'light'].text,
+                          fontSize: 14,
+                          opacity: 0.5,
+                          lineHeight: 15
+                        }}>{op.address.location}</ThemedText>
+                    ) : (null) }
+                  </View>
+                </View>
+
                 {/* Alarm Type */}
                 { op.alarm.level || op.alarm.type || op.alarm.levelAddition ? (
                   // B2T
@@ -193,54 +241,6 @@ export default function OperationSelectDistrict() {
                         }}>{`${op.alarm.tyrolCategory}`}</Text>
                   </View>
                 )}
-
-                {/* Alarm Message */}
-                <View
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'flex-end',
-                    flex: 1,
-                  }}>
-                  <ThemedText
-                    numberOfLines={1}
-                    ellipsizeMode="tail"
-                    style={{
-                      color: Colors[colorScheme ?? 'light'].text,
-                      fontWeight: 'bold',
-                      fontSize: 18,
-                      maxWidth: '80%',
-                      textAlign: 'right',
-                      }}>{op.alarm.message}</ThemedText>
-
-                  {/* additional informations */}
-                  <View
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      alignItems: 'flex-end',
-                      gap: 12,
-                    }}>
-                    <ThemedText
-                      style={{
-                        color: Colors[colorScheme ?? 'light'].text,
-                        fontSize: 14,
-                        opacity: 0.5,
-                        lineHeight: 15,
-                        marginTop: 4,
-                        }}>{getDate(op.startTime)}</ThemedText>
-
-                    { op.address.location ? (                      
-                      <ThemedText
-                        style={{
-                          color: Colors[colorScheme ?? 'light'].text,
-                          fontSize: 14,
-                          opacity: 0.5,
-                          lineHeight: 15
-                        }}>{op.address.location}</ThemedText>
-                    ) : (null) }
-                  </View>
-                </View>
               </Pressable>
             ))}
           </View>
