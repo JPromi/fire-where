@@ -214,7 +214,7 @@ export default function OperationDetailScreen() {
                       opacity: 0.5,
                       fontSize: 14,
                       lineHeight: 15,
-                    }}>Alarmierung</ThemedText>
+                    }}>{t('operation.details.alarmed')}</ThemedText>
                   <ThemedText>{getDate(operation.startTime)}</ThemedText>
                 </View>
             </View>
@@ -268,7 +268,7 @@ export default function OperationDetailScreen() {
                         fontSize: 16,
                         maxWidth: '90%',
                       }}>
-                      {fd.firedepartment?.name}
+                      {fd.firedepartment?.name ?? t('operation.details.unit.placeholderFiredepartment')}
                     </ThemedText>
                   </Pressable>
 
@@ -281,19 +281,19 @@ export default function OperationDetailScreen() {
                         marginTop: 8,
                       }}>
                         <View style={styles.extendedInformationLine}>
-                          <ThemedText style={styles.extendedInformationLineDescription}>Alarmiert</ThemedText>
+                          <ThemedText style={styles.extendedInformationLineDescription}>{t('operation.details.unit.alarmed')}</ThemedText>
                           <ThemedText>{ fd.alarmTime ? getDate(fd.alarmTime) : '---' }</ThemedText>
                         </View>
                         <View style={styles.extendedInformationLine}>
-                          <ThemedText style={styles.extendedInformationLineDescription}>Disposition</ThemedText>
+                          <ThemedText style={styles.extendedInformationLineDescription}>{t('operation.details.unit.disposition')}</ThemedText>
                           <ThemedText>{ fd.dispoTime ? getDate(fd.dispoTime) : '---' }</ThemedText>
                         </View>
                         <View style={styles.extendedInformationLine}>
-                          <ThemedText style={styles.extendedInformationLineDescription}>Ausgefahren</ThemedText>
+                          <ThemedText style={styles.extendedInformationLineDescription}>{t('operation.details.unit.out')}</ThemedText>
                           <ThemedText>{ fd.outTime ? getDate(fd.outTime) : '---' }</ThemedText>
                         </View>
                         <View style={styles.extendedInformationLine}>
-                          <ThemedText style={styles.extendedInformationLineDescription}>Eingefahren</ThemedText>
+                          <ThemedText style={styles.extendedInformationLineDescription}>{t('operation.details.unit.in')}</ThemedText>
                           <ThemedText>{ fd.inTime ? getDate(fd.inTime) : '---' }</ThemedText>
                         </View>
                     </View>
@@ -339,7 +339,7 @@ export default function OperationDetailScreen() {
                         fontSize: 16,
                         maxWidth: '90%',
                       }}>
-                      {fd.unit?.name}
+                      {fd.unit?.name ?? t('operation.details.unit.placeholderUnit')}
                     </ThemedText>
                   </Pressable>
 
@@ -352,19 +352,19 @@ export default function OperationDetailScreen() {
                         marginTop: 8,
                       }}>
                         <View style={styles.extendedInformationLine}>
-                          <ThemedText style={styles.extendedInformationLineDescription}>Alarmiert</ThemedText>
+                          <ThemedText style={styles.extendedInformationLineDescription}>{t('operation.details.unit.alarmed')}</ThemedText>
                           <ThemedText>{ fd.alarmTime ? getDate(fd.alarmTime) : '---' }</ThemedText>
                         </View>
                         <View style={styles.extendedInformationLine}>
-                          <ThemedText style={styles.extendedInformationLineDescription}>Disposition</ThemedText>
+                          <ThemedText style={styles.extendedInformationLineDescription}>{t('operation.details.unit.disposition')}</ThemedText>
                           <ThemedText>{ fd.dispoTime ? getDate(fd.dispoTime) : '---' }</ThemedText>
                         </View>
                         <View style={styles.extendedInformationLine}>
-                          <ThemedText style={styles.extendedInformationLineDescription}>Ausgefahren</ThemedText>
+                          <ThemedText style={styles.extendedInformationLineDescription}>{t('operation.details.unit.out')}</ThemedText>
                           <ThemedText>{ fd.outTime ? getDate(fd.outTime) : '---' }</ThemedText>
                         </View>
                         <View style={styles.extendedInformationLine}>
-                          <ThemedText style={styles.extendedInformationLineDescription}>Eingefahren</ThemedText>
+                          <ThemedText style={styles.extendedInformationLineDescription}>{t('operation.details.unit.in')}</ThemedText>
                           <ThemedText>{ fd.inTime ? getDate(fd.inTime) : '---' }</ThemedText>
                         </View>
                     </View>

@@ -33,7 +33,15 @@
         "title": "Einsätze",
         "noData": "Keine Einsätze gefunden.",
         "details": {
-
+            "alarmed": "Alarmierung",
+            "unit": {
+                "alarmed": "Alarmiert",
+                "disposition": "Disposition",
+                "out": "Ausgerückt",
+                "in": "Eingerückt",
+                "placeHolderUnit": "Fahrzeug",
+                "placeholderFiredepartment": "Feuerwehr"
+            }
         }
     },
     "settings": {
