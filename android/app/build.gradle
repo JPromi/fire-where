@@ -87,9 +87,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.firepoint.firePoint'
+    namespace 'com.jpromi.firePoint'
     defaultConfig {
-        applicationId 'com.firepoint.firePoint'
+        applicationId 'com.jpromi.firePoint'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

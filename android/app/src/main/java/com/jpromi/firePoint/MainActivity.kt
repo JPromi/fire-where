@@ -1,4 +1,4 @@
-package com.firepoint.firePoint
+package com.jpromi.firePoint
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build

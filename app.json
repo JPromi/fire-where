@@ -17,7 +17,7 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.firepoint.firePoint"
+      "package": "com.jpromi.firePoint"
     },
     "web": {
       "bundler": "metro",

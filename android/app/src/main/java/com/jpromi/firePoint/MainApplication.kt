@@ -1,4 +1,4 @@
-package com.firepoint.firePoint
+package com.jpromi.firePoint
 
 import android.app.Application
 import android.content.res.Configuration
