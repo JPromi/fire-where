@@ -4,6 +4,7 @@ import { IconSymbol } from "@/components/ui/IconSymbol";
 import { Colors } from "@/constants/Colors";
 import { useDynamicBottom } from "@/hooks/useDynamicBottom";
 import { Operation } from "@/models/Operation";
+import { OperationVariablesService } from "@/services/local/OperationVariablesService";
 import { OperationService } from "@/services/OperationService";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { useEffect, useRef, useState } from "react";
@@ -44,23 +45,6 @@ export default function OperationDetailScreen() {
       .then(setOperation)
       .catch(console.error)
       .finally(() => setRefreshing(false));
-  }
-
-  function getOperationColor(type: string): string {
-      switch (type) {
-        case 'B':
-          return Colors[colorScheme ?? 'light'].opFire;
-        case 'T':
-        case 'V':
-          return Colors[colorScheme ?? 'light'].opTechnical;
-        case 'G':
-        case 'S':
-          return Colors[colorScheme ?? 'light'].opChimical;
-        case 'SOF':
-          return Colors[colorScheme ?? 'light'].opSupport;
-        default:
-          return Colors[colorScheme ?? 'light'].opOther;
-      }
   }
 
   function getDate(dateString: string | undefined): string {
@@ -133,7 +117,7 @@ export default function OperationDetailScreen() {
                   // B2T
                   <View
                     style={{
-                      backgroundColor: getOperationColor(operation.alarm?.type || ''),
+                      backgroundColor: OperationVariablesService.getOperationTypeColor(operation?.alarm.type || '', colorScheme),
                       width: 64,
                       height: 64,
                       borderRadius: 8,
@@ -143,7 +127,7 @@ export default function OperationDetailScreen() {
                     }}>
                     <Text
                       style={{
-                        color: Colors[colorScheme ?? 'light'].text,
+                        color: OperationVariablesService.getOperationTypeTextColor(operation?.alarm.type || '', colorScheme),
                         fontWeight: 'bold',
                         fontSize: `${operation.alarm.type || ''}${operation.alarm.level?.toString() || ''}${operation.alarm.levelAddition || ''}`.length <= 2 ? 28 : 20,
                       }}>{operation.alarm?.type}{operation.alarm?.level}{operation.alarm?.levelAddition}</Text>

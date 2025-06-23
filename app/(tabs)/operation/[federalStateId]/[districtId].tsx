@@ -6,6 +6,7 @@ import { Colors } from '@/constants/Colors';
 import { useDynamicBottom } from "@/hooks/useDynamicBottom";
 import { FederalState } from '@/models/FederalState';
 import { Operation } from '@/models/Operation';
+import { OperationVariablesService } from '@/services/local/OperationVariablesService';
 import { OperationService } from '@/services/OperationService';
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
@@ -84,23 +85,6 @@ export default function OperationSelectDistrict() {
       .then(setOperations)
       .catch(console.error)
       .finally(() => setRefreshing(false));
-  }
-
-  function getOperationColor(type: string): string {
-    switch (type) {
-      case 'B':
-        return Colors[colorScheme ?? 'light'].opFire;
-      case 'T':
-      case 'V':
-        return Colors[colorScheme ?? 'light'].opTechnical;
-      case 'G':
-      case 'S':
-        return Colors[colorScheme ?? 'light'].opChimical;
-      case 'SOF':
-        return Colors[colorScheme ?? 'light'].opSupport;
-      default:
-        return Colors[colorScheme ?? 'light'].opOther;
-    }
   }
 
   function handlePress(operationUuid: string) {
@@ -220,7 +204,7 @@ export default function OperationSelectDistrict() {
                     // B2T
                     <View
                       style={{
-                        backgroundColor: getOperationColor(op.alarm.type || ''),
+                        backgroundColor: OperationVariablesService.getOperationTypeColor(op.alarm.type || '', colorScheme),
                         width: 45,
                         height: 45,
                         borderRadius: 3,
@@ -230,7 +214,7 @@ export default function OperationSelectDistrict() {
                       }}>
                       <Text
                         style={{
-                          color: Colors[colorScheme ?? 'light'].text,
+                          color: OperationVariablesService.getOperationTypeTextColor(op.alarm.type || '', colorScheme),
                           fontWeight: 'bold',
                           textAlign: 'center',
                           fontSize: `${op.alarm.type || ''}${op.alarm.level?.toString() || ''}${op.alarm.levelAddition || ''}`.length <= 2 ? 18 : 13,
