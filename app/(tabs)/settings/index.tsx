@@ -78,22 +78,20 @@ export default function SettingsScreen() {
 
     const unsubscribe = settingsLocalService.subscribe(() => {
       const updatedSettings = [...settings];
-      var updated = false;
       for (const group of updatedSettings) {
         for (const item of group.items) {
           const value = settingsLocalService.get(item.key);
           if (value !== undefined) {
-            if (item.type === 'extra') {
+            if (item.type === 'switch') {
+              item.valueSwitch = value as boolean;
+            } else if (item.type === 'extra') {
               item.valueExtra = value as string;
-              updated = true;
             }
           }
         }
       }
-      if (updated) {
-        setRuntimeSettings();
-        setSettings(updatedSettings);
-      }
+      setRuntimeSettings();
+      setSettings(updatedSettings);
     });
 
     return () => {
@@ -146,7 +144,9 @@ export default function SettingsScreen() {
         item.key === settingKey ? { ...item, valueSwitch: selectedData as boolean, valueExtra: selectedData as string } : item
       ),
     }));
-    setSettings(updatedSettings);
+    setTimeout(() => {
+      settingsLocalService.set(settingKey, selectedData);
+    }, 0);
   }
 
   function isItemDisabled(item: SettingsItem): boolean {
