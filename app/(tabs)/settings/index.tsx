@@ -17,6 +17,7 @@ type SettingsItem = {
   valueSwitch?: boolean;
   valueExtra?: string;
   showIfKeyIsset?: string;
+  valueTranslationKey?: string;
 }
 
 type SettingsGroup = {
@@ -57,6 +58,7 @@ export default function SettingsScreen() {
           name: 'In Bundesland springen',
           type: 'extra',
           valueExtra: '',
+          valueTranslationKey: 'assets.federalStates',
         },
         {
           key: 'jumpToDistrict',
@@ -64,6 +66,7 @@ export default function SettingsScreen() {
           type: 'extra',
           valueExtra: '',
           showIfKeyIsset: 'jumpToFederalState',
+          valueTranslationKey: '',
         }
       ]
     }
@@ -86,6 +89,7 @@ export default function SettingsScreen() {
           }
         }
       }
+      setRuntimeSettings();
       setSettings(updatedSettings);
     });
 
@@ -111,10 +115,25 @@ export default function SettingsScreen() {
       }
     }
 
+    setRuntimeSettings();
     setLoading(false);
 
     setSettings(updatedSettings);
   };
+
+  function setRuntimeSettings() {
+    // set valueTranslationkey for jumpToDistrict
+    const jumpToDistrictItem = settings.flatMap(group => group.items).find(item => item.key === 'jumpToDistrict');
+    if (jumpToDistrictItem) {
+      const jumpToFederalStateItem = settings.flatMap(group => group.items).find(item => item.key === 'jumpToFederalState');
+      if (jumpToFederalStateItem && jumpToFederalStateItem.valueExtra) {
+        jumpToDistrictItem.valueTranslationKey = `assets.districts.${jumpToFederalStateItem.valueExtra}`;
+      } else {
+        jumpToDistrictItem.valueTranslationKey = '';
+      }
+    }
+
+  }
 
   function updateSetting(settingKey: string, selectedData: string | boolean | null) {
     SettingService.setByKey(settingKey, selectedData);
@@ -219,7 +238,7 @@ export default function SettingsScreen() {
                                 <ThemedText style={{
                                   fontSize: 16,
                                   color: Colors[colorScheme ?? 'light'].textSub,
-                                }}>{item.valueExtra || item.valueExtra != '' ? item.valueExtra : t('common.none')}</ThemedText>
+                                }}>{item.valueExtra || item.valueExtra != '' ? (item.valueTranslationKey ? t(`${item.valueTranslationKey}.${item.valueExtra}`) : item.valueExtra) : t('common.none')}</ThemedText>
                               </Pressable>
                             )}
                           </View>

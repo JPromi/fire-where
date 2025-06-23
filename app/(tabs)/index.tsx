@@ -17,13 +17,13 @@ export default function Index() {
               // jump to district
               router.push({
                 pathname: '/operation/[federalStateId]/[districtId]',
-                params: { federalStateId: federalState as string, districtId: district as string },
+                params: { federalStateId: federalStateMapping(federalState as string) as string, districtId: district as string },
               });
             } else {
               // jump to federal state
               router.push({
                 pathname: '/operation/[federalStateId]',
-                params: { federalStateId: federalState as string },
+                params: { federalStateId: federalStateMapping(federalState as string) as string },
               });
             }
           });
@@ -34,6 +34,21 @@ export default function Index() {
       }
     });
   }, []);
+
+  function federalStateMapping(districtLong: string): string {
+    const districtMap: Record<string, string> = {
+      'la': 'lower-austria',
+      'ua': 'upper-austria',
+      'bl': 'burgenland',
+      'ty': 'tyrol',
+      'st': 'styria',
+      'ca': 'carinthia',
+      'sb': 'salzburg',
+      'vb': 'vorarlberg',
+      'vi': 'vienna',
+    };
+    return districtMap[districtLong] || '';
+  }
 
   return <Redirect href="/operation" />;
 }
