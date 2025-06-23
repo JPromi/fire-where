@@ -7,7 +7,7 @@ import { SettingService } from "@/services/local/SettingService";
 import { Stack, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, ScrollView, StyleSheet, Switch, useColorScheme, View } from "react-native";
+import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Switch, useColorScheme, View } from "react-native";
 
 
 type SettingsItem = {
@@ -29,6 +29,7 @@ export default function SettingsScreen() {
   const { t } = useTranslation();
   const router = useRouter();
   const marginBottom = useDynamicBottom();
+  const [loading, setLoading] = useState(true);
 
   const [settings, setSettings] = useState<SettingsGroup[]>([
     {
@@ -94,6 +95,7 @@ export default function SettingsScreen() {
   }, []);
 
   const loadSettings = async () => {
+    setLoading(true);
     const updatedSettings = [...settings];
 
     for (const group of updatedSettings) {
@@ -108,6 +110,8 @@ export default function SettingsScreen() {
         }
       }
     }
+
+    setLoading(false);
 
     setSettings(updatedSettings);
   };
@@ -126,99 +130,107 @@ export default function SettingsScreen() {
   function isItemDisabled(item: SettingsItem): boolean {
     if (item.showIfKeyIsset) {
       const relatedItem = settings.flatMap(group => group.items).find(i => i.key === item.showIfKeyIsset);
-      if (relatedItem) {
-        const relatedValue = settingsLocalService.get(relatedItem.key);
-        return relatedValue === undefined || relatedValue === null || relatedValue === '';
+      if (relatedItem && (relatedItem.valueExtra || relatedItem.valueSwitch)) {
+        return false;
+      } else {
+        return true;
       }
+    } else {
+      return false;
     }
-    return false;
   }
 
   return (
     <>
       <Stack.Screen options={{ title: t('settings.title') }} />
       <ThemedView style={styles.container}>
-        <ScrollView>
-          <View style={[styles.contentList, { marginBottom: marginBottom + 50 }]}>
-            {settings.map((group, index) => (
-              <View
-                key={index}
-                style={{
-                  marginBottom: 20,
-                  padding: 10
-                }}>
-
-                  <ThemedText style={{
-                    fontSize: 15,
-                    fontWeight: 'light',
-                    marginBottom: 5,
-                    marginLeft: 15,
-                    color: Colors[colorScheme ?? 'light'].text,
-                    opacity: 0.5
-                  }}>{group.groupName}</ThemedText>
-
-                  <View
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      backgroundColor: Colors[colorScheme ?? 'light'].backgroundForground,
-                      paddingHorizontal: 15,
-                      borderRadius: 10,
-                    }}>
-                      {group.items.map((item, itemIndex) => (
-                        <View
-                          key={itemIndex}
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            height: 48,
-                            borderBottomWidth: index === 0 && itemIndex === 0 ? 1 : 0,
-                            borderBottomColor: Colors[colorScheme ?? 'light'].textSub,
-                          }}>
-                          <ThemedText style={{
-                            fontSize: 16,
-                            color: Colors[colorScheme ?? 'light'].text,
-                            opacity: isItemDisabled(item) ? 0.5 : 1,
-                          }}>{item.name}</ThemedText>
-                          {item.type === 'switch' && (
-                            <Switch
-                              value={item.valueSwitch}
-                              onValueChange={(value) => {
-                                updateSetting(item.key, value);
-                              }}
-                            />
-                          )}
-                          {item.type === 'extra' && (
-                            <Pressable onPress={() => {
-                              if(isItemDisabled(item)) {
-                                return;
-                              }
-
-                              router.push(
-                                {
-                                  pathname: `/settings/[settingKey]`,
-                                  params: {
-                                    settingKey: item.key,
-                                  },
-                                }
-                              );
-                            }}>
-                              <ThemedText style={{
-                                fontSize: 16,
-                                color: Colors[colorScheme ?? 'light'].textSub,
-                              }}>{item.valueExtra || item.valueExtra != '' ? item.valueExtra : t('common.none')}</ThemedText>
-                            </Pressable>
-                          )}
-                        </View>
-                      ))}
-                  </View>
-
-              </View>
-            ))}
+        {loading ? (
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: marginBottom + 50 }}>
+            <ActivityIndicator size="large" color={Colors[colorScheme ?? 'light'].tint} />
           </View>
-        </ScrollView>
+        ) : (
+          <ScrollView>
+            <View style={[styles.contentList, { marginBottom: marginBottom + 50 }]}>
+              {settings.map((group, index) => (
+                <View
+                  key={index}
+                  style={{
+                    marginBottom: 20,
+                    padding: 10
+                  }}>
+
+                    <ThemedText style={{
+                      fontSize: 15,
+                      fontWeight: 'light',
+                      marginBottom: 5,
+                      marginLeft: 15,
+                      color: Colors[colorScheme ?? 'light'].text,
+                      opacity: 0.5
+                    }}>{group.groupName}</ThemedText>
+
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        backgroundColor: Colors[colorScheme ?? 'light'].backgroundForground,
+                        paddingHorizontal: 15,
+                        borderRadius: 10,
+                      }}>
+                        {group.items.map((item, itemIndex) => (
+                          <View
+                            key={itemIndex}
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                              height: 48,
+                              borderBottomWidth: index === 0 && itemIndex === 0 ? 1 : 0,
+                              borderBottomColor: Colors[colorScheme ?? 'light'].textSub,
+                            }}>
+                            <ThemedText style={{
+                              fontSize: 16,
+                              color: Colors[colorScheme ?? 'light'].text,
+                              opacity: isItemDisabled(item) ? 0.5 : 1,
+                            }}>{item.name}</ThemedText>
+                            {item.type === 'switch' && (
+                              <Switch
+                                value={item.valueSwitch}
+                                onValueChange={(value) => {
+                                  updateSetting(item.key, value);
+                                }}
+                              />
+                            )}
+                            {item.type === 'extra' && (
+                              <Pressable onPress={() => {
+                                if(isItemDisabled(item)) {
+                                  return;
+                                }
+
+                                router.push(
+                                  {
+                                    pathname: `/settings/[settingKey]`,
+                                    params: {
+                                      settingKey: item.key,
+                                    },
+                                  }
+                                );
+                              }}>
+                                <ThemedText style={{
+                                  fontSize: 16,
+                                  color: Colors[colorScheme ?? 'light'].textSub,
+                                }}>{item.valueExtra || item.valueExtra != '' ? item.valueExtra : t('common.none')}</ThemedText>
+                              </Pressable>
+                            )}
+                          </View>
+                        ))}
+                    </View>
+
+                </View>
+              ))}
+            </View>
+          </ScrollView>
+        )}
       </ThemedView>
     </>
   )
