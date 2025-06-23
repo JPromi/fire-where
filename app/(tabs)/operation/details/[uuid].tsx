@@ -2,9 +2,11 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import { Colors } from "@/constants/Colors";
+import { ServiceOriginEnum } from "@/enums/ServiceOriginEnum";
 import { useDynamicBottom } from "@/hooks/useDynamicBottom";
 import { Operation } from "@/models/Operation";
 import { OperationVariablesService } from "@/services/local/OperationVariablesService";
+import { SettingService } from "@/services/local/SettingService";
 import { OperationService } from "@/services/OperationService";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { useEffect, useRef, useState } from "react";
@@ -19,6 +21,8 @@ export default function OperationDetailScreen() {
   const animationValues = useRef<Animated.Value[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const [nerdMode, setNerdMode] = useState(false);
+
 
   const [refreshing, setRefreshing] = useState(false);
   const [expandedItems, setExpandedItems] = useState<{ [key: number]: boolean }>({});
@@ -30,6 +34,16 @@ export default function OperationDetailScreen() {
               .then(setOperation)
               .catch(console.error)
               .finally(() => setLoading(false));
+
+    // Load nerd mode setting
+    SettingService.getByKey('nerdMode')
+      .then((value) => {
+        if (value) {
+          setNerdMode(value as boolean);
+        } else {
+          setNerdMode(false);
+        }
+      });
   }, [uuid, t]);
 
   useEffect(() => {
@@ -78,7 +92,7 @@ export default function OperationDetailScreen() {
       <Stack.Screen options={{
         title: operation.alarm?.message || t('common.unknown'),
         }} />
-      <ThemedView style={[styles.container, { paddingBottom: marginBottom + 50 }]}>
+      <ThemedView style={[styles.container]}>
         { loading ? (
           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: marginBottom + 50 }}>
             <ActivityIndicator size="large" color={Colors[colorScheme ?? 'light'].tint} />
@@ -92,280 +106,399 @@ export default function OperationDetailScreen() {
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
             }>
-            {/* Top Informations */}
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 24,
-                marginBottom: 20,
-                width: '100%',
-                maxWidth: 1000,
-                alignSelf: 'center',
-              }}>
-              {/* Header */}
               <View
                 style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
+                  paddingBottom: marginBottom + 20 + 50,
                 }}>
-
-                {/* Alarm Type */}
-                { operation.alarm?.level?.toString() || operation.alarm?.type || operation.alarm?.levelAddition ? (
-                  // B2T
-                  <View
-                    style={{
-                      backgroundColor: OperationVariablesService.getOperationTypeColor(operation?.alarm.type || '', colorScheme),
-                      width: 64,
-                      height: 64,
-                      borderRadius: 8,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}>
-                    <Text
-                      style={{
-                        color: OperationVariablesService.getOperationTypeTextColor(operation?.alarm.type || '', colorScheme),
-                        fontWeight: 'bold',
-                        fontSize: `${operation.alarm.type || ''}${operation.alarm.level?.toString() || ''}${operation.alarm.levelAddition || ''}`.length <= 2 ? 28 : 20,
-                      }}>{operation.alarm?.type}{operation.alarm?.level}{operation.alarm?.levelAddition}</Text>
-                  </View>
-                ) : (
-                  operation.alarm?.tyrolCategory ? (
-                    // FW-A-BRANDG
-                    <View
-                      style= {{
-                        padding: 2,
-                        minWidth: 82,
-                        height: 52,
-                        borderRadius: 8,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        backgroundColor: OperationVariablesService.getOperationCategoryColorTyrol(operation?.alarm.tyrolCategory || '', colorScheme),
-                      }}>
-                      <Text
-                        style={{
-                          color: OperationVariablesService.getOperationTypeTextColor(operation?.alarm.tyrolCategory || '', colorScheme),
-                          fontWeight: 'semibold',
-                          fontSize: 14,
-                        }}>{`${operation.alarm?.tyrolOutOrder}`}</Text>
-                      <Text
-                        style={{
-                          color: OperationVariablesService.getOperationTypeTextColor(operation?.alarm.tyrolCategory || '', colorScheme),
-                          fontWeight: 'bold',
-                          fontSize: (operation.alarm?.tyrolCategory?.length ?? 0) >= 8 ? 16 : 20,
-                        }}>{`${operation.alarm?.tyrolCategory}`}</Text>
-                    </View>
-                  ) : (null)
-                )}
-
+                {/* Top Informations */}
                 <View
                   style={{
                     display: 'flex',
                     flexDirection: 'column',
-                    alignItems: 'flex-end',
-                    flex: 1,
+                    gap: 24,
+                    marginBottom: 20,
+                    width: '100%',
+                    maxWidth: 1000,
+                    alignSelf: 'center',
                   }}>
-                  <ThemedText
-                    // numberOfLines={1}
-                    // ellipsizeMode="tail"
+                  {/* Header */}
+                  <View
                     style={{
-                      fontWeight: 'bold',
-                      fontSize: 18,
-                      maxWidth: '90%',
-                      textAlign: 'right',
-                    }}>{operation.alarm?.message}</ThemedText>
-                  <ThemedText
-                    numberOfLines={1}
-                    ellipsizeMode="tail"
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}>
+
+                    {/* Alarm Type */}
+                    { operation.alarm?.level?.toString() || operation.alarm?.type || operation.alarm?.levelAddition ? (
+                      // B2T
+                      <View
+                        style={{
+                          backgroundColor: OperationVariablesService.getOperationTypeColor(operation?.alarm.type || '', colorScheme),
+                          width: 64,
+                          height: 64,
+                          borderRadius: 8,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}>
+                        <Text
+                          style={{
+                            color: OperationVariablesService.getOperationTypeTextColor(operation?.alarm.type || '', colorScheme),
+                            fontWeight: 'bold',
+                            fontSize: `${operation.alarm.type || ''}${operation.alarm.level?.toString() || ''}${operation.alarm.levelAddition || ''}`.length <= 2 ? 28 : 20,
+                          }}>{operation.alarm?.type}{operation.alarm?.level}{operation.alarm?.levelAddition}</Text>
+                      </View>
+                    ) : (
+                      operation.alarm?.tyrolCategory ? (
+                        // FW-A-BRANDG
+                        <View
+                          style= {{
+                            padding: 2,
+                            minWidth: 82,
+                            height: 52,
+                            borderRadius: 8,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            backgroundColor: OperationVariablesService.getOperationCategoryColorTyrol(operation?.alarm.tyrolCategory || '', colorScheme),
+                          }}>
+                          <Text
+                            style={{
+                              color: OperationVariablesService.getOperationTypeTextColor(operation?.alarm.tyrolCategory || '', colorScheme),
+                              fontWeight: 'semibold',
+                              fontSize: 14,
+                            }}>{`${operation.alarm?.tyrolOutOrder}`}</Text>
+                          <Text
+                            style={{
+                              color: OperationVariablesService.getOperationTypeTextColor(operation?.alarm.tyrolCategory || '', colorScheme),
+                              fontWeight: 'bold',
+                              fontSize: (operation.alarm?.tyrolCategory?.length ?? 0) >= 8 ? 16 : 20,
+                            }}>{`${operation.alarm?.tyrolCategory}`}</Text>
+                        </View>
+                      ) : (null)
+                    )}
+
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'flex-end',
+                        flex: 1,
+                      }}>
+                      <ThemedText
+                        // numberOfLines={1}
+                        // ellipsizeMode="tail"
+                        style={{
+                          fontWeight: 'bold',
+                          fontSize: 18,
+                          maxWidth: '90%',
+                          textAlign: 'right',
+                        }}>{operation.alarm?.message}</ThemedText>
+                      <ThemedText
+                        numberOfLines={1}
+                        ellipsizeMode="tail"
+                        style={{
+                          fontWeight: 'regular',
+                          fontSize: 14,
+                          maxWidth: '90%',
+                          textAlign: 'right',
+                          opacity: 0.5,
+                        }}>{operation.address?.location}</ThemedText>
+                    </View>
+
+                  </View>
+
+                  {/* Informations */}
+                  <View
                     style={{
-                      fontWeight: 'regular',
-                      fontSize: 14,
-                      maxWidth: '90%',
-                      textAlign: 'right',
-                      opacity: 0.5,
-                    }}>{operation.address?.location}</ThemedText>
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'flex-start',
+                      gap: 12,
+                      justifyContent: 'space-between',
+                    }}>
+                      <View>
+                        <ThemedText
+                          style={{
+                            opacity: 0.5,
+                            fontSize: 14,
+                            lineHeight: 15,
+                          }}>{t('operation.details.alarmed')}</ThemedText>
+                        <ThemedText>{getDate(operation.startTime)}</ThemedText>
+                      </View>
+                  </View>
                 </View>
 
-              </View>
-
-              {/* Informations */}
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'flex-start',
-                  gap: 12,
-                  justifyContent: 'space-between',
-                }}>
-                  <View>
-                    <ThemedText
-                      style={{
-                        opacity: 0.5,
-                        fontSize: 14,
-                        lineHeight: 15,
-                      }}>{t('operation.details.alarmed')}</ThemedText>
-                    <ThemedText>{getDate(operation.startTime)}</ThemedText>
-                  </View>
-              </View>
-            </View>
-
-            {/* Units and Firedepartments */}
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                gap: 12,
-                flexWrap: 'wrap',
-                maxWidth: 1000,
-                width: '100%',
-                alignSelf: 'center',
-              }}>
-              {operation.firedepartments?.map((fd, index) => {
-                const animatedHeight = animationValues.current[index]
-                  ? animationValues.current[index].interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [0, 125],
-                    }) : 0;
-                return (
-                  <View
-                      key={index}
-                      style={{
-                        padding: 12,
-                        borderRadius: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        backgroundColor: Colors[colorScheme ?? 'light'].backgroundForground,
-                        width: '100%',
-                        maxWidth: 494,
-                      }}>
-                    <Pressable
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        gap: 12,
-                        width: '100%',
-                      }}
-                      onPress={() => expand(index)}>
-                      <IconSymbol size={28} name="house.fill" color={Colors[colorScheme ?? 'light'].text} />
-                      <ThemedText
-                        numberOfLines={1}
-                        ellipsizeMode="tail"
-                        style={{
-                          color: Colors[colorScheme ?? 'light'].text,
-                          fontWeight: 'bold',
-                          fontSize: 16,
-                          maxWidth: '90%',
-                        }}>
-                        {fd.firedepartment?.name ?? t('operation.details.unit.placeholderFiredepartment')}
-                      </ThemedText>
-                    </Pressable>
-
-                    <Animated.View style={{ height: animatedHeight, overflow: 'hidden' }}>
+                {/* Units and Firedepartments */}
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    gap: 12,
+                    flexWrap: 'wrap',
+                    maxWidth: 1000,
+                    width: '100%',
+                    alignSelf: 'center',
+                  }}>
+                  {operation.firedepartments?.map((fd, index) => {
+                    const animatedHeight = animationValues.current[index]
+                      ? animationValues.current[index].interpolate({
+                          inputRange: [0, 1],
+                          outputRange: [0, 125],
+                        }) : 0;
+                    return (
                       <View
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'column',
-                          gap: 8,
-                          marginTop: 8,
-                        }}>
-                          <View style={styles.extendedInformationLine}>
-                            <ThemedText style={styles.extendedInformationLineDescription}>{t('operation.details.unit.alarmed')}</ThemedText>
-                            <ThemedText>{ fd.alarmTime ? getDate(fd.alarmTime) : '---' }</ThemedText>
-                          </View>
-                          <View style={styles.extendedInformationLine}>
-                            <ThemedText style={styles.extendedInformationLineDescription}>{t('operation.details.unit.disposition')}</ThemedText>
-                            <ThemedText>{ fd.dispoTime ? getDate(fd.dispoTime) : '---' }</ThemedText>
-                          </View>
-                          <View style={styles.extendedInformationLine}>
-                            <ThemedText style={styles.extendedInformationLineDescription}>{t('operation.details.unit.out')}</ThemedText>
-                            <ThemedText>{ fd.outTime ? getDate(fd.outTime) : '---' }</ThemedText>
-                          </View>
-                          <View style={styles.extendedInformationLine}>
-                            <ThemedText style={styles.extendedInformationLineDescription}>{t('operation.details.unit.in')}</ThemedText>
-                            <ThemedText>{ fd.inTime ? getDate(fd.inTime) : '---' }</ThemedText>
-                          </View>
-                      </View>
-                    </Animated.View>
-                  </View>
-                )
-              })}
-              {operation.units?.map((fd, index) => {
-                index += operation.firedepartments?.length || 0;
-                const animatedHeight = animationValues.current[index]
-                  ? animationValues.current[index].interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [0, 125],
-                    }) : 0;
-                return (
-                  <View
-                      key={index}
-                      style={{
-                        padding: 12,
-                        borderRadius: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        backgroundColor: Colors[colorScheme ?? 'light'].backgroundForground,
-                        width: '100%',
-                        maxWidth: 494,
-                      }}>
-                    <Pressable
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        gap: 12,
-                        width: '100%',
-                      }}
-                      onPress={() => expand(index)}>
-                      <IconSymbol size={28} name="car.fill" color={Colors[colorScheme ?? 'light'].text} />
-                      <ThemedText
-                        numberOfLines={1}
-                        ellipsizeMode="tail"
-                        style={{
-                          color: Colors[colorScheme ?? 'light'].text,
-                          fontWeight: 'bold',
-                          fontSize: 16,
-                          maxWidth: '90%',
-                        }}>
-                        {fd.unit?.name ?? t('operation.details.unit.placeholderUnit')}
-                      </ThemedText>
-                    </Pressable>
+                          key={index}
+                          style={{
+                            padding: 12,
+                            borderRadius: 8,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            backgroundColor: Colors[colorScheme ?? 'light'].backgroundForground,
+                            width: '100%',
+                            maxWidth: 494,
+                          }}>
+                        <Pressable
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            gap: 12,
+                            width: '100%',
+                          }}
+                          onPress={() => expand(index)}>
+                          <IconSymbol size={28} name="house.fill" color={Colors[colorScheme ?? 'light'].text} />
+                          <ThemedText
+                            numberOfLines={1}
+                            ellipsizeMode="tail"
+                            style={{
+                              color: Colors[colorScheme ?? 'light'].text,
+                              fontWeight: 'bold',
+                              fontSize: 16,
+                              maxWidth: '90%',
+                            }}>
+                            {fd.firedepartment?.name ?? t('operation.details.unit.placeholderFiredepartment')}
+                          </ThemedText>
+                        </Pressable>
 
-                    <Animated.View style={{ height: animatedHeight, overflow: 'hidden' }}>
-                      <View
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'column',
-                          gap: 8,
-                          marginTop: 8,
-                        }}>
-                          <View style={styles.extendedInformationLine}>
-                            <ThemedText style={styles.extendedInformationLineDescription}>{t('operation.details.unit.alarmed')}</ThemedText>
-                            <ThemedText>{ fd.alarmTime ? getDate(fd.alarmTime) : '---' }</ThemedText>
+                        <Animated.View style={{ height: animatedHeight, overflow: 'hidden' }}>
+                          <View
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              gap: 8,
+                              marginTop: 8,
+                            }}>
+                              <View style={styles.extendedInformationLine}>
+                                <ThemedText style={styles.extendedInformationLineDescription}>{t('operation.details.unit.alarmed')}</ThemedText>
+                                <ThemedText>{ fd.alarmTime ? getDate(fd.alarmTime) : '---' }</ThemedText>
+                              </View>
+                              <View style={styles.extendedInformationLine}>
+                                <ThemedText style={styles.extendedInformationLineDescription}>{t('operation.details.unit.disposition')}</ThemedText>
+                                <ThemedText>{ fd.dispoTime ? getDate(fd.dispoTime) : '---' }</ThemedText>
+                              </View>
+                              <View style={styles.extendedInformationLine}>
+                                <ThemedText style={styles.extendedInformationLineDescription}>{t('operation.details.unit.out')}</ThemedText>
+                                <ThemedText>{ fd.outTime ? getDate(fd.outTime) : '---' }</ThemedText>
+                              </View>
+                              <View style={styles.extendedInformationLine}>
+                                <ThemedText style={styles.extendedInformationLineDescription}>{t('operation.details.unit.in')}</ThemedText>
+                                <ThemedText>{ fd.inTime ? getDate(fd.inTime) : '---' }</ThemedText>
+                              </View>
                           </View>
-                          <View style={styles.extendedInformationLine}>
-                            <ThemedText style={styles.extendedInformationLineDescription}>{t('operation.details.unit.disposition')}</ThemedText>
-                            <ThemedText>{ fd.dispoTime ? getDate(fd.dispoTime) : '---' }</ThemedText>
-                          </View>
-                          <View style={styles.extendedInformationLine}>
-                            <ThemedText style={styles.extendedInformationLineDescription}>{t('operation.details.unit.out')}</ThemedText>
-                            <ThemedText>{ fd.outTime ? getDate(fd.outTime) : '---' }</ThemedText>
-                          </View>
-                          <View style={styles.extendedInformationLine}>
-                            <ThemedText style={styles.extendedInformationLineDescription}>{t('operation.details.unit.in')}</ThemedText>
-                            <ThemedText>{ fd.inTime ? getDate(fd.inTime) : '---' }</ThemedText>
-                          </View>
+                        </Animated.View>
                       </View>
-                    </Animated.View>
-                  </View>
-                )
-              })}
-            </View>
+                    )
+                  })}
+                  {operation.units?.map((fd, index) => {
+                    index += operation.firedepartments?.length || 0;
+                    const animatedHeight = animationValues.current[index]
+                      ? animationValues.current[index].interpolate({
+                          inputRange: [0, 1],
+                          outputRange: [0, 125],
+                        }) : 0;
+                    return (
+                      <View
+                          key={index}
+                          style={{
+                            padding: 12,
+                            borderRadius: 8,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            backgroundColor: Colors[colorScheme ?? 'light'].backgroundForground,
+                            width: '100%',
+                            maxWidth: 494,
+                          }}>
+                        <Pressable
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            gap: 12,
+                            width: '100%',
+                          }}
+                          onPress={() => expand(index)}>
+                          <IconSymbol size={28} name="car.fill" color={Colors[colorScheme ?? 'light'].text} />
+                          <ThemedText
+                            numberOfLines={1}
+                            ellipsizeMode="tail"
+                            style={{
+                              color: Colors[colorScheme ?? 'light'].text,
+                              fontWeight: 'bold',
+                              fontSize: 16,
+                              maxWidth: '90%',
+                            }}>
+                            {fd.unit?.name ?? t('operation.details.unit.placeholderUnit')}
+                          </ThemedText>
+                        </Pressable>
+
+                        <Animated.View style={{ height: animatedHeight, overflow: 'hidden' }}>
+                          <View
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              gap: 8,
+                              marginTop: 8,
+                            }}>
+                              <View style={styles.extendedInformationLine}>
+                                <ThemedText style={styles.extendedInformationLineDescription}>{t('operation.details.unit.alarmed')}</ThemedText>
+                                <ThemedText>{ fd.alarmTime ? getDate(fd.alarmTime) : '---' }</ThemedText>
+                              </View>
+                              <View style={styles.extendedInformationLine}>
+                                <ThemedText style={styles.extendedInformationLineDescription}>{t('operation.details.unit.disposition')}</ThemedText>
+                                <ThemedText>{ fd.dispoTime ? getDate(fd.dispoTime) : '---' }</ThemedText>
+                              </View>
+                              <View style={styles.extendedInformationLine}>
+                                <ThemedText style={styles.extendedInformationLineDescription}>{t('operation.details.unit.out')}</ThemedText>
+                                <ThemedText>{ fd.outTime ? getDate(fd.outTime) : '---' }</ThemedText>
+                              </View>
+                              <View style={styles.extendedInformationLine}>
+                                <ThemedText style={styles.extendedInformationLineDescription}>{t('operation.details.unit.in')}</ThemedText>
+                                <ThemedText>{ fd.inTime ? getDate(fd.inTime) : '---' }</ThemedText>
+                              </View>
+                          </View>
+                        </Animated.View>
+                      </View>
+                    )
+                  })}
+                </View>
+                {/* NerdInformations Information */}
+                { nerdMode && (
+                  <>
+                    <View style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: 12,
+                      flexWrap: 'wrap',
+                      maxWidth: 1000,
+                      width: '100%',
+                      alignSelf: 'center',
+                      marginTop: 24,
+                    }}>
+                      <ThemedText style={{
+                        borderBottomColor: Colors[colorScheme ?? 'light'].textSub,
+                        borderBottomWidth: 1,
+                        color: Colors[colorScheme ?? 'light'].textSub,
+                        padding: 4,
+                        width: '100%',
+                      }}>{t('operation.details.nerdInformation.system.title')}</ThemedText>
+
+                      <View style={styles.extendedInformationLine}>
+                        <ThemedText>{t('operation.details.nerdInformation.system.dataOrigin')}</ThemedText>
+                        <ThemedText style={{ opacity: 0.5 }}>{t('assets.serviceOrigin.' + operation.system.serviceOrigin)}</ThemedText>
+                      </View>
+                      <View style={styles.extendedInformationLine}>
+                        <ThemedText>{t('operation.details.nerdInformation.system.firstSeen')}</ThemedText>
+                        <ThemedText style={{ opacity: 0.5 }}>{operation.system.firstSeen ? getDate(operation.system.firstSeen) : '---'}</ThemedText>
+                      </View>
+                      <View style={styles.extendedInformationLine}>
+                        <ThemedText>{t('operation.details.nerdInformation.system.lastUpdate')}</ThemedText>
+                        <ThemedText style={{ opacity: 0.5 }}>{operation.system.lastUpdate ? getDate(operation.system.lastUpdate) : '---'}</ThemedText>
+                      </View>
+                      <View style={styles.extendedInformationLine}>
+                        <ThemedText>{t('operation.details.nerdInformation.system.lastSeen')}</ThemedText>
+                        <ThemedText style={{ opacity: 0.5 }}>{operation.system.lastSeen ? getDate(operation.system.lastSeen) : '---'}</ThemedText>
+                      </View>
+
+                    </View>
+
+                    <View style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: 12,
+                      flexWrap: 'wrap',
+                      maxWidth: 1000,
+                      width: '100%',
+                      alignSelf: 'center',
+                      marginTop: 24,
+                    }}>
+                      <ThemedText style={{
+                        borderBottomColor: Colors[colorScheme ?? 'light'].textSub,
+                        borderBottomWidth: 1,
+                        color: Colors[colorScheme ?? 'light'].textSub,
+                        padding: 4,
+                        width: '100%',
+                      }}>{t('operation.details.nerdInformation.id.title')}</ThemedText>
+
+                      <View>
+                        <ThemedText>{t('operation.details.nerdInformation.id.uuid')}</ThemedText>
+                        <ThemedText style={{ opacity: 0.5 }}>{operation.uuid}</ThemedText>
+                      </View>
+                      { operation.system.serviceOrigin === ServiceOriginEnum.LA_WASTL_PUB && (
+                        <>
+                          <View>
+                            <ThemedText>{t('operation.details.nerdInformation.id.lowerAustriaWastlPubId')}</ThemedText>
+                            <ThemedText style={{ opacity: 0.5 }}>{operation.externalIds.lowerAustriaWastlPubId}</ThemedText>
+                          </View>
+                          <View>
+                            <ThemedText>{t('operation.details.nerdInformation.id.lowerAustriaSysId')}</ThemedText>
+                            <ThemedText style={{ opacity: 0.5 }}>{operation.externalIds.lowerAustriaSysId}</ThemedText>
+                          </View>
+                          <View>
+                            <ThemedText>{t('operation.details.nerdInformation.id.lowerAustriaId')}</ThemedText>
+                            <ThemedText style={{ opacity: 0.5 }}>{operation.externalIds.lowerAustriaId}</ThemedText>
+                          </View>
+                        </>
+                      )}
+                      { operation.system.serviceOrigin === ServiceOriginEnum.BL_LSZ_PUB && (
+                        <>
+                          <View>
+                            <ThemedText>{t('operation.details.nerdInformation.id.burgenlandId')}</ThemedText>
+                            <ThemedText style={{ opacity: 0.5 }}>{operation.externalIds.burgenlandId}</ThemedText>
+                          </View>
+                        </>
+                      )}
+                      { operation.system.serviceOrigin === ServiceOriginEnum.TYROL_LFS_APP && (
+                        <>
+                          <View>
+                            <ThemedText>{t('operation.details.nerdInformation.id.tyrolEventId')}</ThemedText>
+                            <ThemedText style={{ opacity: 0.5 }}>{operation.externalIds.tyrolEventId}</ThemedText>
+                          </View>
+                        </>
+                      )}
+                      { operation.system.serviceOrigin === ServiceOriginEnum.ST_LFV_PUB && (
+                        <>
+                          <View>
+                            <ThemedText>{t('operation.details.nerdInformation.id.styriaId')}</ThemedText>
+                            <ThemedText style={{ opacity: 0.5 }}>{operation.externalIds.styriaId}</ThemedText>
+                          </View>
+                        </>
+                      )}
+                      { operation.system.serviceOrigin === ServiceOriginEnum.UA_LFV_PUB && (
+                        <>
+                          <View>
+                            <ThemedText>{t('operation.details.nerdInformation.id.upperAustriaId')}</ThemedText>
+                            <ThemedText style={{ opacity: 0.5 }}>{operation.externalIds.upperAustriaId}</ThemedText>
+                          </View>
+                        </>
+                      )}
+
+                    </View>
+                  </>
+                )}
+              </View>
           </ScrollView>
         )}
       </ThemedView>

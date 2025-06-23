@@ -68,8 +68,15 @@
         "wels": "Wels",
         "wels-land": "Wels Land"
       }
-    }
-  },
+    },
+      "serviceOrigin": {
+        "BL_LSZ_PUB ": "LSZ Burgenland",
+        "LA_WASTL_PUBLIC": "WASTL Lower Austria",
+        "UA_LFV_PUB": "LFV Upper Austria",
+        "ST_LFV_PUB": "LFV Styria",
+        "TYROL_LFS_APP": "Einsätze Tirol App"
+      }
+},
   "common": {
     "back": "Back",
     "unknown": "Unknown"
@@ -86,7 +93,27 @@
         "in": "Returned",
         "placeholderUnit": "Vehicle",
         "placeholderFiredepartment": "Fire Department"
-      }
+      },
+        "nerdInformation": {
+          "system": {
+            "title": "System Information",
+            "dataOrigin": "Data Origin",
+            "firstSeen": "First Seen",
+            "lastUpdate": "Last Update",
+            "lastSeen": "Last Seen"
+          },
+          "id": {
+            "title": "IDs",
+            "uuid": "UUID",
+            "upperAustriaId": "Upper Austria ID",
+            "tyrolEventId": "Tyrol Event ID",
+            "burgenlandId": "Burgenland ID",
+            "styriaId": "Styria ID",
+            "lowerAustriaWastlPubId": "Lower Austria WASTL Pub ID",
+            "lowerAustriaSysId": "Lower Austria System ID",
+            "lowerAustriaId": "Lower Austria ID"
+          }
+        }
     }
   },
   "settings": {
