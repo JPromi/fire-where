@@ -1,107 +1,134 @@
 {
-    "assets": {
-        "federalStates": {
-            "la": "Niederösterreich",
-            "ua": "Oberösterreich",
-            "st": "Steiermark",
-            "bl": "Burgenland",
-            "vi": "Wien",
-            "ca": "Kärnten",
-            "sb": "Salzburg",
-            "ty": "Tirol",
-            "vb": "Vorarlberg"
-        },
-        "districts": {
-            "bl": {
-                "eisenstadt": "Eisenstadt",
-                "rust": "Rust",
-                "eisenstadt-umgebung": "Eisenstadt-Umgebung",
-                "guessing": "Güssing",
-                "jennersdorf": "Jennersdorf",
-                "mattersburg": "Mattersburg",
-                "neusiedl-am-see": "Neusiedl am See",
-                "oberpullendorf": "Oberpullendorf",
-                "oberwart": "Oberwart"
-            },
-            "la": {
-                "amstetten": "Amstetten",
-                "baden": "Baden",
-                "bruck-an-der-leitha": "Bruck an der Leitha",
-                "gaenserndorf": "Gänserndorf",
-                "gmuend": "Gmünd",
-                "hollabrunn": "Hollabrunn",
-                "horn": "Horn",
-                "krems-an-der-donau": "Krems an der Donau",
-                "kloserneuburg": "kloserneuburg",
-                "lilienfeld": "Lilienfeld",
-                "melk": "Melk",
-                "mistelbach": "Mistelbach",
-                "moedling": "Mödling",
-                "neunkirchen": "Neunkirchen",
-                "purkersdorf": "Purkersdorf",
-                "scheibbs": "Scheibbs",
-                "schwechat": "Schwechat",
-                "st-poelten": "St. Pölten",
-                "stockerau": "Stockerau",
-                "tulln": "Tulln",
-                "waidhofen-an-der-thaya": "Waidhofen an der Thaya",
-                "wr-neustadt": "Wr. Neustadt",
-                "zwettl": "Zwettl"
-            },
-            "ua": {       
-                "braunau": "Braunau",
-                "eferding": "Eferding",
-                "freistadt": "Freistadt",
-                "gmunden": "Gmunden",
-                "grieskirchen": "Grieskirchen",
-                "kirchdorf": "Kirchdorf",
-                "linz": "Linz",
-                "linz-land": "LinzLand",
-                "perg": "Perg",
-                "ried": "Ried",
-                "rohrbach": "Rohrbach",
-                "schaerding": "Schärding",
-                "steyr": "Steyr",
-                "steyr-land": "Steyr Land",
-                "urfahr-umgebung": "Urfahr Umgebung",
-                "voecklabruck": "Vöcklabruck",
-                "wels": "Wels",
-                "wels-land": "Wels Land"
-            }
-        }
+  "assets": {
+    "federalStates": {
+      "la": "Niederösterreich",
+      "ua": "Oberösterreich",
+      "st": "Steiermark",
+      "bl": "Burgenland",
+      "vi": "Wien",
+      "ca": "Kärnten",
+      "sb": "Salzburg",
+      "ty": "Tirol",
+      "vb": "Vorarlberg"
     },
-    "common": {
-        "back": "Zurück",
-        "unknown": "Unbekannt"
+    "districts": {
+      "bl": {
+        "eisenstadt": "Eisenstadt",
+        "rust": "Rust",
+        "eisenstadt-umgebung": "Eisenstadt-Umgebung",
+        "guessing": "Güssing",
+        "jennersdorf": "Jennersdorf",
+        "mattersburg": "Mattersburg",
+        "neusiedl-am-see": "Neusiedl am See",
+        "oberpullendorf": "Oberpullendorf",
+        "oberwart": "Oberwart"
+      },
+      "la": {
+        "amstetten": "Amstetten",
+        "baden": "Baden",
+        "bruck-an-der-leitha": "Bruck an der Leitha",
+        "gaenserndorf": "Gänserndorf",
+        "gmuend": "Gmünd",
+        "hollabrunn": "Hollabrunn",
+        "horn": "Horn",
+        "krems-an-der-donau": "Krems an der Donau",
+        "kloserneuburg": "kloserneuburg",
+        "lilienfeld": "Lilienfeld",
+        "melk": "Melk",
+        "mistelbach": "Mistelbach",
+        "moedling": "Mödling",
+        "neunkirchen": "Neunkirchen",
+        "purkersdorf": "Purkersdorf",
+        "scheibbs": "Scheibbs",
+        "schwechat": "Schwechat",
+        "st-poelten": "St. Pölten",
+        "stockerau": "Stockerau",
+        "tulln": "Tulln",
+        "waidhofen-an-der-thaya": "Waidhofen an der Thaya",
+        "wr-neustadt": "Wr. Neustadt",
+        "zwettl": "Zwettl"
+      },
+      "ua": {
+        "braunau": "Braunau",
+        "eferding": "Eferding",
+        "freistadt": "Freistadt",
+        "gmunden": "Gmunden",
+        "grieskirchen": "Grieskirchen",
+        "kirchdorf": "Kirchdorf",
+        "linz": "Linz",
+        "linz-land": "LinzLand",
+        "perg": "Perg",
+        "ried": "Ried",
+        "rohrbach": "Rohrbach",
+        "schaerding": "Schärding",
+        "steyr": "Steyr",
+        "steyr-land": "Steyr Land",
+        "urfahr-umgebung": "Urfahr Umgebung",
+        "voecklabruck": "Vöcklabruck",
+        "wels": "Wels",
+        "wels-land": "Wels Land"
+      }
     },
-    "operation": {
-        "title": "Einsätze",
-        "noData": "Keine Einsätze gefunden.",
-        "details": {
-            "alarmed": "Alarmierung",
-            "unit": {
-                "alarmed": "Alarmiert",
-                "disposition": "Disposition",
-                "out": "Ausgerückt",
-                "in": "Eingerückt",
-                "placeholderUnit": "Fahrzeug",
-                "placeholderFiredepartment": "Feuerwehr"
-            }
-        }
-    },
-    "settings": {
-        "title": "Einstellungen",
-        "group": {
-            "general": {
-                "title": "Allgemein",
-                "language": "Sprache",
-                "nerdMode": "Nerd-Modus"
-            }
-        },
-        "extended": {
-            "language": {
-                "title": "Sprache"
-            }
-        }
+    "serviceOrigin": {
+      "BL_LSZ_PUB": "LSZ Burgenland",
+      "LA_WASTL_PUB": "WASTL Niederösterreich",
+      "UA_LFV_PUB": "LFV Oberösterreich",
+      "ST_LFV_PUB": "LFV Steiermark",
+      "TYROL_LFS_APP": "Einsätze Tirol App"
     }
+  },
+  "common": {
+    "back": "Zurück",
+    "unknown": "Unbekannt"
+  },
+  "operation": {
+    "title": "Einsätze",
+    "noData": "Keine Einsätze gefunden.",
+    "details": {
+      "alarmed": "Alarmierung",
+      "unit": {
+        "alarmed": "Alarmiert",
+        "disposition": "Disposition",
+        "out": "Ausgerückt",
+        "in": "Eingerückt",
+        "placeholderUnit": "Fahrzeug",
+        "placeholderFiredepartment": "Feuerwehr"
+      },
+      "nerdInformation": {
+        "system": {
+          "title": "System Informationen",
+          "dataOrigin": "Daten Herkunft",
+          "firstSeen": "Ersterfassung",
+          "lastUpdate": "Letzte Aktualisierung",
+          "lastSeen": "Letzte Erfassung"
+        },
+        "id": {
+          "title": "IDs",
+          "uuid": "UUID",
+          "upperAustriaId": "Oberösterreich ID",
+          "tyrolEventId": "Tirol Event ID",
+          "burgenlandId": "Burgenland ID",
+          "styriaId": "Steiermark ID",
+          "lowerAustriaWastlPubId": "Niederösterreich WASTL Pub ID",
+          "lowerAustriaSysId": "Niederösterreich System ID",
+          "lowerAustriaId": "Niederösterreich ID"
+        }
+      }
+    }
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "group": {
+      "general": {
+        "title": "Allgemein",
+        "language": "Sprache",
+        "nerdMode": "Nerd-Modus"
+      }
+    },
+    "extended": {
+      "language": {
+        "title": "Sprache"
+      }
+    }
+  }
 }
