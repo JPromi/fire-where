@@ -10,7 +10,7 @@ import { OperationService } from '@/services/OperationService';
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, RefreshControl, ScrollView, StyleSheet, Text, useColorScheme, View } from "react-native";
+import { ActivityIndicator, Pressable, RefreshControl, ScrollView, StyleSheet, Text, useColorScheme, View } from "react-native";
 
 export default function OperationSelectDistrict() {
   const colorScheme = useColorScheme();
@@ -24,9 +24,12 @@ export default function OperationSelectDistrict() {
   const [district, setDistrict] = useState<{ id: string, name: string }>({ id: districtId, name: "" });
   const [operations, setOperations] = useState<Operation[]>([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [loading, setLoading] = useState(true);
 
 
   useEffect(() => {
+    setLoading(true);
+
     // federal states data processing
     const fsData = federStatesData.map(fs => ({
       id: fs.id,
@@ -59,8 +62,17 @@ export default function OperationSelectDistrict() {
         // fetch operations
         OperationService.getOperationsByFsDistrict(fs.idLong, dist.id)
           .then(setOperations)
-          .catch(console.error);
+          .catch(console.error)
+          .finally(() => {
+            setLoading(false);
+          });
+      } else {
+        console.error(t('operation.noDistrictData', { federalState: fs.name }));
+        setLoading(false);
       }
+    } else {
+      console.error(t('operation.noFederalStateData', { federalStateId }));
+      setLoading(false);
     }
   }, [federalStateId, districtId, t]);
 
@@ -119,132 +131,138 @@ export default function OperationSelectDistrict() {
     <>
       <Stack.Screen options={{ title: district.name }} />
       <ThemedView style={[styles.container]}>
-        <ScrollView
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
-          }>
-          <View style={[styles.contentList, { marginBottom: marginBottom + 50 }]}>
-            {operations.length === 0 ? (
-              <ThemedText
-                style={{
-                  textAlign: 'center',
-                  color: Colors[colorScheme ?? 'light'].text,
-                  fontSize: 16,
-                  marginTop: 20,
-                }}>
-                {t('operation.noData')}
-              </ThemedText>
-            ) : (null) }
-            {operations.map((op) => (
-              <Pressable
-                key={op.uuid}
-                style={({ pressed }) => ({
-                  padding: 12,
-                  borderBottomWidth: 1,
-                  borderColor: Colors[colorScheme ?? 'light'].border,
-                  opacity: pressed ? 0.7 : 1,
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                })}
-                onPress={() => handlePress(op.uuid)}
-              >
-                {/* Alarm Message */}
-                <View
+        { loading ? (
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: marginBottom + 50 }}>
+            <ActivityIndicator size="large" color={Colors[colorScheme ?? 'light'].tint} />
+          </View>
+        ) : (
+          <ScrollView
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+            }>
+            <View style={[styles.contentList, { marginBottom: marginBottom + 50 }]}>
+              {operations.length === 0 ? (
+                <ThemedText
                   style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'flex-start',
-                    flex: 1,
+                    textAlign: 'center',
+                    color: Colors[colorScheme ?? 'light'].text,
+                    fontSize: 16,
+                    marginTop: 20,
                   }}>
-                  <ThemedText
-                    numberOfLines={1}
-                    ellipsizeMode="tail"
-                    style={{
-                      color: Colors[colorScheme ?? 'light'].text,
-                      fontWeight: 'bold',
-                      fontSize: 18,
-                      maxWidth: '80%',
-                      textAlign: 'left',
-                      }}>{op.alarm.message}</ThemedText>
-
-                  {/* additional informations */}
+                  {t('operation.noData')}
+                </ThemedText>
+              ) : (null) }
+              {operations.map((op) => (
+                <Pressable
+                  key={op.uuid}
+                  style={({ pressed }) => ({
+                    padding: 12,
+                    borderBottomWidth: 1,
+                    borderColor: Colors[colorScheme ?? 'light'].border,
+                    opacity: pressed ? 0.7 : 1,
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                  })}
+                  onPress={() => handlePress(op.uuid)}
+                >
+                  {/* Alarm Message */}
                   <View
                     style={{
                       display: 'flex',
-                      flexDirection: 'row',
-                      alignItems: 'flex-end',
-                      gap: 12,
+                      flexDirection: 'column',
+                      alignItems: 'flex-start',
+                      flex: 1,
                     }}>
                     <ThemedText
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
                       style={{
                         color: Colors[colorScheme ?? 'light'].text,
-                        fontSize: 14,
-                        opacity: 0.5,
-                        lineHeight: 15,
-                        marginTop: 4,
-                        }}>{getDate(op.startTime)}</ThemedText>
+                        fontWeight: 'bold',
+                        fontSize: 18,
+                        maxWidth: '80%',
+                        textAlign: 'left',
+                        }}>{op.alarm.message}</ThemedText>
 
-                    { op.address.location ? (                      
+                    {/* additional informations */}
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'flex-end',
+                        gap: 12,
+                      }}>
                       <ThemedText
                         style={{
                           color: Colors[colorScheme ?? 'light'].text,
                           fontSize: 14,
                           opacity: 0.5,
-                          lineHeight: 15
-                        }}>{op.address.location}</ThemedText>
-                    ) : (null) }
-                  </View>
-                </View>
+                          lineHeight: 15,
+                          marginTop: 4,
+                          }}>{getDate(op.startTime)}</ThemedText>
 
-                {/* Alarm Type */}
-                { op.alarm.level || op.alarm.type || op.alarm.levelAddition ? (
-                  // B2T
-                  <View
-                    style={{
-                      backgroundColor: getOperationColor(op.alarm.type || ''),
-                      width: 45,
-                      height: 45,
-                      borderRadius: 3,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}>
-                    <Text
-                      style={{
-                        color: Colors[colorScheme ?? 'light'].text,
-                        fontWeight: 'bold',
-                        textAlign: 'center',
-                        fontSize: `${op.alarm.type || ''}${op.alarm.level?.toString() || ''}${op.alarm.levelAddition || ''}`.length <= 2 ? 18 : 13,
-                      }}>{op.alarm.type}{op.alarm.level}{op.alarm.levelAddition}</Text>
+                      { op.address.location ? (                      
+                        <ThemedText
+                          style={{
+                            color: Colors[colorScheme ?? 'light'].text,
+                            fontSize: 14,
+                            opacity: 0.5,
+                            lineHeight: 15
+                          }}>{op.address.location}</ThemedText>
+                      ) : (null) }
+                    </View>
                   </View>
-                ) : (
-                  // FW-A-BRANDG
-                  <View
-                    style={{
-                      backgroundColor: Colors[colorScheme ?? 'light'].opTechnical,
-                      width: 80,
-                      height: 45,
-                      borderRadius: 3,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      padding: 4,
-                    }}>
+
+                  {/* Alarm Type */}
+                  { op.alarm.level || op.alarm.type || op.alarm.levelAddition ? (
+                    // B2T
+                    <View
+                      style={{
+                        backgroundColor: getOperationColor(op.alarm.type || ''),
+                        width: 45,
+                        height: 45,
+                        borderRadius: 3,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}>
                       <Text
                         style={{
                           color: Colors[colorScheme ?? 'light'].text,
                           fontWeight: 'bold',
                           textAlign: 'center',
-                          fontSize: (op.alarm?.tyrolCategory?.length ?? 0) >= 8 ? 12 : 18,
-                        }}>{`${op.alarm.tyrolCategory}`}</Text>
-                  </View>
-                )}
-              </Pressable>
-            ))}
-          </View>
-        </ScrollView>
+                          fontSize: `${op.alarm.type || ''}${op.alarm.level?.toString() || ''}${op.alarm.levelAddition || ''}`.length <= 2 ? 18 : 13,
+                        }}>{op.alarm.type}{op.alarm.level}{op.alarm.levelAddition}</Text>
+                    </View>
+                  ) : (
+                    // FW-A-BRANDG
+                    <View
+                      style={{
+                        backgroundColor: Colors[colorScheme ?? 'light'].opTechnical,
+                        width: 80,
+                        height: 45,
+                        borderRadius: 3,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: 4,
+                      }}>
+                        <Text
+                          style={{
+                            color: Colors[colorScheme ?? 'light'].text,
+                            fontWeight: 'bold',
+                            textAlign: 'center',
+                            fontSize: (op.alarm?.tyrolCategory?.length ?? 0) >= 8 ? 12 : 18,
+                          }}>{`${op.alarm.tyrolCategory}`}</Text>
+                    </View>
+                  )}
+                </Pressable>
+              ))}
+            </View>
+          </ScrollView>
+        ) }
       </ThemedView>
     </>
   );
