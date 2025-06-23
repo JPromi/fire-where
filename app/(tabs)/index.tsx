@@ -28,9 +28,6 @@ export default function Index() {
             }
           });
         }
-      } else {
-        // no federal state set, redirect to operation
-        router.push('/operation');
       }
     });
   }, []);
