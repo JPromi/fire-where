@@ -224,7 +224,7 @@ export default function OperationSelectDistrict() {
                     // FW-A-BRANDG
                     <View
                       style={{
-                        backgroundColor: Colors[colorScheme ?? 'light'].opTechnical,
+                        backgroundColor: OperationVariablesService.getOperationCategoryColorTyrol(op.alarm?.tyrolCategory || '', colorScheme),
                         width: 80,
                         height: 45,
                         borderRadius: 3,
@@ -235,7 +235,7 @@ export default function OperationSelectDistrict() {
                       }}>
                         <Text
                           style={{
-                            color: Colors[colorScheme ?? 'light'].text,
+                            color: OperationVariablesService.getOperationTypeTextColor(op.alarm?.tyrolCategory || '', colorScheme),
                             fontWeight: 'bold',
                             textAlign: 'center',
                             fontSize: (op.alarm?.tyrolCategory?.length ?? 0) >= 8 ? 12 : 18,
