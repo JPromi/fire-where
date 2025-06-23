@@ -41,6 +41,7 @@ export default function SettingsScreen() {
           name: t('settings.group.general.language'),
           type: 'extra',
           valueExtra: 'Deutsch',
+          valueTranslationKey: 'assets.language',
         },
         {
           key: 'nerdMode',

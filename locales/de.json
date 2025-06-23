@@ -75,6 +75,10 @@
       "UA_LFV_PUB": "LFV Oberösterreich",
       "ST_LFV_PUB": "LFV Steiermark",
       "TYROL_LFS_APP": "Einsätze Tirol App"
+    },
+    "language": {
+      "de": "Deutsch",
+      "en": "Englisch"
     }
   },
   "common": {

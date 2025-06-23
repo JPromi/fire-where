@@ -38,8 +38,8 @@ export default function OperationDetailScreen() {
 
   const data: Record<string, DataSet[]> = {
     language: [
-      { value: 'de', label: 'Deutsch' },
-      { value: 'en', label: 'English' },
+      { value: 'de', label: t('assets.language.de') },
+      { value: 'en', label: t('assets.language.en') },
     ],
     jumpToFederalState: [
       { value: '', label: t('common.none') },
