@@ -5,6 +5,7 @@
 # Android/IntelliJ
 #
 build/
+app/release/
 .idea
 .gradle
 local.properties
