@@ -1,4 +1,4 @@
-type SettingValue = string | boolean | undefined;
+type SettingValue = string | boolean | undefined | null;
 
 class SettingsLocalService {
   private settings: Record<string, SettingValue> = {};
@@ -9,7 +9,7 @@ class SettingsLocalService {
   }
 
   set(key: string, value: SettingValue) {
-    this.settings[key] = value;
+    this.settings[key] = value ?? '';
     this.notify();
   }
 

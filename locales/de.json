@@ -79,7 +79,8 @@
   },
   "common": {
     "back": "Zurück",
-    "unknown": "Unbekannt"
+    "unknown": "Unbekannt",
+    "none": "Keine"
   },
   "operation": {
     "title": "Einsätze",
@@ -128,6 +129,12 @@
     "extended": {
       "language": {
         "title": "Sprache"
+      },
+      "jumpToFederalState": {
+        "title": "In Bundesland springen"
+      },
+      "jumpToDistrict": {
+        "title": "In Bezirk springen"
       }
     }
   }

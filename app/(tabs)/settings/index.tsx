@@ -1,9 +1,11 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Colors } from "@/constants/Colors";
+import { useDynamicBottom } from "@/hooks/useDynamicBottom";
+import { settingsLocalService } from "@/services/local/SettingLocalService";
 import { SettingService } from "@/services/local/SettingService";
-import { Stack, useFocusEffect, useRouter } from "expo-router";
-import { useCallback, useEffect, useState } from "react";
+import { Stack, useRouter } from "expo-router";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, ScrollView, StyleSheet, Switch, useColorScheme, View } from "react-native";
 
@@ -14,6 +16,7 @@ type SettingsItem = {
   type: 'extra' | 'switch';
   valueSwitch?: boolean;
   valueExtra?: string;
+  showIfKeyIsset?: string;
 }
 
 type SettingsGroup = {
@@ -25,12 +28,7 @@ export default function SettingsScreen() {
   const colorScheme = useColorScheme();
   const { t } = useTranslation();
   const router = useRouter();
-  /*
-  ToDo:
-  - Change language
-  - Activate nerd mode (display operation ids, uuids, system informations,...)
-  - Activate jump to district / federal state
-  */
+  const marginBottom = useDynamicBottom();
 
   const [settings, setSettings] = useState<SettingsGroup[]>([
     {
@@ -50,17 +48,50 @@ export default function SettingsScreen() {
         },
       ],
     },
+    {
+      groupName: "Einsätze",
+      items: [
+        {
+          key: 'jumpToFederalState',
+          name: 'In Bundesland springen',
+          type: 'extra',
+          valueExtra: '',
+        },
+        {
+          key: 'jumpToDistrict',
+          name: 'In Bezirk springen',
+          type: 'extra',
+          valueExtra: '',
+          showIfKeyIsset: 'jumpToFederalState',
+        }
+      ]
+    }
   ]);
   
   useEffect(() => {
     loadSettings();
-  }, []);
 
-  useFocusEffect(
-    useCallback(() => {
-      loadSettings();
-    }, [])
-  );
+    const unsubscribe = settingsLocalService.subscribe(() => {
+      const updatedSettings = [...settings];
+      for (const group of updatedSettings) {
+        for (const item of group.items) {
+          const value = settingsLocalService.get(item.key);
+          if (value !== undefined) {
+            if (item.type === 'switch') {
+              item.valueSwitch = value as boolean;
+            } else if (item.type === 'extra') {
+              item.valueExtra = value as string;
+            }
+          }
+        }
+      }
+      setSettings(updatedSettings);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   const loadSettings = async () => {
     const updatedSettings = [...settings];
@@ -92,13 +123,23 @@ export default function SettingsScreen() {
     setSettings(updatedSettings);
   }
 
+  function isItemDisabled(item: SettingsItem): boolean {
+    if (item.showIfKeyIsset) {
+      const relatedItem = settings.flatMap(group => group.items).find(i => i.key === item.showIfKeyIsset);
+      if (relatedItem) {
+        const relatedValue = settingsLocalService.get(relatedItem.key);
+        return relatedValue === undefined || relatedValue === null || relatedValue === '';
+      }
+    }
+    return false;
+  }
 
   return (
     <>
       <Stack.Screen options={{ title: t('settings.title') }} />
       <ThemedView style={styles.container}>
         <ScrollView>
-          <View style={styles.contentList}>
+          <View style={[styles.contentList, { marginBottom: marginBottom + 50 }]}>
             {settings.map((group, index) => (
               <View
                 key={index}
@@ -139,6 +180,7 @@ export default function SettingsScreen() {
                           <ThemedText style={{
                             fontSize: 16,
                             color: Colors[colorScheme ?? 'light'].text,
+                            opacity: isItemDisabled(item) ? 0.5 : 1,
                           }}>{item.name}</ThemedText>
                           {item.type === 'switch' && (
                             <Switch
@@ -150,6 +192,10 @@ export default function SettingsScreen() {
                           )}
                           {item.type === 'extra' && (
                             <Pressable onPress={() => {
+                              if(isItemDisabled(item)) {
+                                return;
+                              }
+
                               router.push(
                                 {
                                   pathname: `/settings/[settingKey]`,
@@ -162,7 +208,7 @@ export default function SettingsScreen() {
                               <ThemedText style={{
                                 fontSize: 16,
                                 color: Colors[colorScheme ?? 'light'].textSub,
-                              }}>{item.valueExtra}</ThemedText>
+                              }}>{item.valueExtra || item.valueExtra != '' ? item.valueExtra : t('common.none')}</ThemedText>
                             </Pressable>
                           )}
                         </View>
