@@ -3,11 +3,11 @@
     "name": "Fire Point",
     "slug": "Fire Point",
     "version": "1.0.0",
-    "orientation": "ALL",
     "icon": "./assets/images/icon.png",
     "scheme": "FirePoint",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "jsEngine": "hermes",
     "ios": {
       "supportsTablet": true
     },
