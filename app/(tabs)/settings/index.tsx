@@ -78,20 +78,22 @@ export default function SettingsScreen() {
 
     const unsubscribe = settingsLocalService.subscribe(() => {
       const updatedSettings = [...settings];
+      var updated = false;
       for (const group of updatedSettings) {
         for (const item of group.items) {
           const value = settingsLocalService.get(item.key);
           if (value !== undefined) {
-            if (item.type === 'switch') {
-              item.valueSwitch = value as boolean;
-            } else if (item.type === 'extra') {
+            if (item.type === 'extra') {
               item.valueExtra = value as string;
+              updated = true;
             }
           }
         }
       }
-      setRuntimeSettings();
-      setSettings(updatedSettings);
+      if (updated) {
+        setRuntimeSettings();
+        setSettings(updatedSettings);
+      }
     });
 
     return () => {
