@@ -11,6 +11,7 @@ const opTextLight = '#11181C';
 export const Colors = {
   light: {
     text: '#11181C',
+    textSub: '#AAAAAA',
     background: '#fff',
     backgroundForground: '#F0F1F350',
     tint: tintColorLight,
@@ -34,6 +35,7 @@ export const Colors = {
   },
   dark: {
     text: '#ECEDEE',
+    textSub: '#666',
     background: '#151718',
     backgroundForground: '#88888850',
     tint: tintColorDark,

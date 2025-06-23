@@ -1,0 +1,107 @@
+{
+  "assets": {
+    "federalStates": {
+      "la": "Lower Austria",
+      "ua": "Upper Austria",
+      "st": "Styria",
+      "bl": "Burgenland",
+      "vi": "Vienna",
+      "ca": "Carinthia",
+      "sb": "Salzburg",
+      "ty": "Tyrol",
+      "vb": "Vorarlberg"
+    },
+    "districts": {
+      "bl": {
+        "eisenstadt": "Eisenstadt",
+        "rust": "Rust",
+        "eisenstadt-umgebung": "Eisenstadt-Umgebung",
+        "guessing": "Güssing",
+        "jennersdorf": "Jennersdorf",
+        "mattersburg": "Mattersburg",
+        "neusiedl-am-see": "Neusiedl am See",
+        "oberpullendorf": "Oberpullendorf",
+        "oberwart": "Oberwart"
+      },
+      "la": {
+        "amstetten": "Amstetten",
+        "baden": "Baden",
+        "bruck-an-der-leitha": "Bruck an der Leitha",
+        "gaenserndorf": "Gänserndorf",
+        "gmuend": "Gmünd",
+        "hollabrunn": "Hollabrunn",
+        "horn": "Horn",
+        "krems-an-der-donau": "Krems an der Donau",
+        "kloserneuburg": "kloserneuburg",
+        "lilienfeld": "Lilienfeld",
+        "melk": "Melk",
+        "mistelbach": "Mistelbach",
+        "moedling": "Mödling",
+        "neunkirchen": "Neunkirchen",
+        "purkersdorf": "Purkersdorf",
+        "scheibbs": "Scheibbs",
+        "schwechat": "Schwechat",
+        "st-poelten": "St. Pölten",
+        "stockerau": "Stockerau",
+        "tulln": "Tulln",
+        "waidhofen-an-der-thaya": "Waidhofen an der Thaya",
+        "wr-neustadt": "Wr. Neustadt",
+        "zwettl": "Zwettl"
+      },
+      "ua": {
+        "braunau": "Braunau",
+        "eferding": "Eferding",
+        "freistadt": "Freistadt",
+        "gmunden": "Gmunden",
+        "grieskirchen": "Grieskirchen",
+        "kirchdorf": "Kirchdorf",
+        "linz": "Linz",
+        "linz-land": "LinzLand",
+        "perg": "Perg",
+        "ried": "Ried",
+        "rohrbach": "Rohrbach",
+        "schaerding": "Schärding",
+        "steyr": "Steyr",
+        "steyr-land": "Steyr Land",
+        "urfahr-umgebung": "Urfahr Umgebung",
+        "voecklabruck": "Vöcklabruck",
+        "wels": "Wels",
+        "wels-land": "Wels Land"
+      }
+    }
+  },
+  "common": {
+    "back": "Back",
+    "unknown": "Unknown"
+  },
+  "operation": {
+    "title": "Operations",
+    "noData": "No operations found.",
+    "details": {
+      "alarmed": "Alarm",
+      "unit": {
+        "alarmed": "Alerted",
+        "disposition": "Dispatched",
+        "out": "Departed",
+        "in": "Returned",
+        "placeholderUnit": "Vehicle",
+        "placeholderFiredepartment": "Fire Department"
+      }
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "group": {
+      "general": {
+        "title": "General",
+        "language": "Language",
+        "nerdMode": "Nerd Mode"
+      }
+    },
+    "extended": {
+      "language": {
+        "title": "Language"
+      }
+    }
+  }
+}

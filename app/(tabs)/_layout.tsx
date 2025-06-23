@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Platform } from 'react-native';
 
 import { HapticTab } from '@/components/HapticTab';
@@ -8,6 +8,9 @@ import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useDynamicBottom } from '@/hooks/useDynamicBottom';
+import i18n from '@/i18n';
+import { settingsLocalService } from '@/services/local/SettingLocalService';
+import { SettingService } from '@/services/local/SettingService';
 import { CommonActions } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 
@@ -15,6 +18,34 @@ export default function TabLayout() {
   const colorScheme = useColorScheme();
   const marginBottom = useDynamicBottom();
   const { t } = useTranslation();
+
+  // init i18n
+  useEffect(() => {
+    // from storage
+    const initLanguage = async () => {
+      const language = SettingService.getByKey('language');
+      if (language) {
+        language.then((lang) => {
+          if (lang) {
+            i18n.changeLanguage(lang as string);
+          } else {
+            i18n.changeLanguage('de');
+          }
+        });
+      } else {
+        i18n.changeLanguage('de');
+      }
+    };
+
+    initLanguage();
+
+    settingsLocalService.subscribe(async () => {
+      const value = await SettingService.getByKey('language');
+      if (value) {
+        i18n.changeLanguage(value as string);
+      }
+    });
+  }, []);
 
   return (
     <Tabs
@@ -64,8 +95,19 @@ export default function TabLayout() {
         name="settings"
         options={{
           title: t('settings.title'),
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          headerShown: false,
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="gear" color={color} />,
         }}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 0,
+                routes: [{ name: 'settings' }],
+              })
+            );
+          },
+        })}
       />
       <Tabs.Screen
         name="operation/[federalStateId]"
@@ -77,6 +119,10 @@ export default function TabLayout() {
       />
       <Tabs.Screen
         name="operation/details/[uuid]"
+        options={{ href: null }}
+      />
+      <Tabs.Screen
+        name="settings/[settingKey]"
         options={{ href: null }}
       />
       <Tabs.Screen

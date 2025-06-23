@@ -84,12 +84,24 @@
                 "disposition": "Disposition",
                 "out": "Ausgerückt",
                 "in": "Eingerückt",
-                "placeHolderUnit": "Fahrzeug",
+                "placeholderUnit": "Fahrzeug",
                 "placeholderFiredepartment": "Feuerwehr"
             }
         }
     },
     "settings": {
-        "title": "Einstellungen"
+        "title": "Einstellungen",
+        "group": {
+            "general": {
+                "title": "Allgemein",
+                "language": "Sprache",
+                "nerdMode": "Nerd-Modus"
+            }
+        },
+        "extended": {
+            "language": {
+                "title": "Sprache"
+            }
+        }
     }
 }
