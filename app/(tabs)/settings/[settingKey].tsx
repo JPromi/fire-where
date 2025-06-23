@@ -179,7 +179,7 @@ export default function OperationDetailScreen() {
               style={{
                 backgroundColor: Colors[colorScheme ?? 'light'].backgroundForground,
                 borderRadius: 10,
-                paddingHorizontal: 10,
+                paddingHorizontal: 15,
               }}>
               {dataSet.map((item, index) => (
                 <Pressable
