@@ -7,9 +7,11 @@ import { ThemedView } from "@/components/ThemedView";
 import { Colors } from "@/constants/Colors";
 import { useDynamicBottom } from "@/hooks/useDynamicBottom";
 import { FederalState } from "@/models/FederalState";
+import { LocationStatistic } from "@/models/LocationStatistic";
+import { OperationService } from "@/services/OperationService";
 import { BlurView } from "expo-blur";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Platform, Pressable, ScrollView, StyleSheet, useColorScheme, View } from "react-native";
 
@@ -23,12 +25,17 @@ export default function OperationSelectDistrict() {
 
 
   const [isMapView, setIsMapView] = useState(true);
+  const [statistic, setStatistic] = useState<LocationStatistic[]>([]);
 
   const federalStates: FederalState[] = [];
   var federalState: FederalState | null = federalStates.find(fs => fs.idLong === federalStateId) || null;
   const districts: { id: string, name: string }[] = [];
 
   loadFederalStatesFromData();
+
+  useEffect(() => {
+    getStatistic(federalStateId);
+  }, [federalStateId]);
 
   function loadFederalStatesFromData() {
     const data: FederalState[] = federStatesData.map((fs) => ({
@@ -80,6 +87,13 @@ export default function OperationSelectDistrict() {
     }
   }
 
+  function getStatistic(federalStateId: string) {
+    OperationService.getStatisticFromFederalStates(federalStateId)
+      .then((data) => {
+        setStatistic(data);
+      });
+  }
+
   return (
     <>
       <Stack.Screen options={{
@@ -87,7 +101,7 @@ export default function OperationSelectDistrict() {
         }} />
       <ThemedView style={[styles.container, { paddingBottom: marginBottom + 50 }]}>
         {isMapView ? (
-          <SvgAtFederalStateMap federalState={federalState?.id} onSelect={(district) => handlePress(district)}/>
+          <SvgAtFederalStateMap federalState={federalState?.id} onSelect={(district) => handlePress(district)} statistic={statistic}/>
         ) : (
           <ScrollView>
             <View style={[styles.contentList, { marginBottom: marginBottom + 50 }]}>

@@ -7,10 +7,12 @@ import { ThemedView } from '@/components/ThemedView';
 import { SvgAtMap } from '@/components/assets/SvgAtMap';
 import { Colors } from '@/constants/Colors';
 import { FederalState } from '@/models/FederalState';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import federStatesData from '@/assets/data/federal-states.json';
 import { useDynamicBottom } from '@/hooks/useDynamicBottom';
+import { LocationStatistic } from '@/models/LocationStatistic';
+import { OperationService } from '@/services/OperationService';
 import { BlurView } from 'expo-blur';
 import { useTranslation } from 'react-i18next';
 
@@ -22,8 +24,13 @@ export default function OperationSelectFederalStateScreen() {
   const blurSupported = Platform.OS === 'ios' || (Platform.OS === 'android' && Platform.Version >= 31);
 
   const [isMapView, setIsMapView] = useState(true);
+  const [statistic, setStatistic] = useState<LocationStatistic[]>([]);
 
   const federalStates: FederalState[] = [];
+
+  useEffect(() => {
+    getStatistic();
+  }, []);
 
   setFederalStatesFromData();
 
@@ -65,13 +72,20 @@ export default function OperationSelectFederalStateScreen() {
     }
   }
 
+  function getStatistic() {
+    OperationService.getStatistic()
+      .then((data) => {
+        setStatistic(data);
+      });
+  }
+
   return (
     <>
       <Stack.Screen options={{ title: t('operation.title') }} />
       <ThemedView style={styles.container}>
         { isMapView ? ( 
           <View style={[styles.contentMap, {marginBottom: marginBottom + 50}]}>
-            <SvgAtMap activeFs={getActiveFederalStates()} onSelect={(fsId) => selectFederalState(fsId)}/>
+            <SvgAtMap activeFs={getActiveFederalStates()} onSelect={(fsId) => selectFederalState(fsId)} statistic={statistic}/>
           </View>
         ) : (
           <ScrollView>
