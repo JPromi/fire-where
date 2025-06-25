@@ -40,7 +40,7 @@ export default function SettingsScreen() {
           key: 'language',
           name: t('settings.group.general.language'),
           type: 'extra',
-          valueExtra: 'Deutsch',
+          valueExtra: 'de',
           valueTranslationKey: 'assets.language',
         },
         {
