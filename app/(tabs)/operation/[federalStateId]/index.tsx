@@ -96,7 +96,6 @@ export default function OperationSelectDistrict() {
   }
 
   function getActiveOperations(fsId: string): number {
-    console.log('getActiveOperations', fsId);
     const fsStatistic = statistic.find(stat => stat.nameId === fsId);
     return fsStatistic ? fsStatistic.countActive : 0;
   }
