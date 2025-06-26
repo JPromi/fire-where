@@ -107,7 +107,9 @@ export default function OperationSelectDistrict() {
         }} />
       <ThemedView style={[styles.container]}>
         {isMapView ? (
-          <SvgAtFederalStateMap federalState={federalState?.id} onSelect={(district) => handlePress(district)} statistic={statistic}/>
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginBottom: marginBottom + 50 }}>
+            <SvgAtFederalStateMap federalState={federalState?.id} onSelect={(district) => handlePress(district)} statistic={statistic}/>
+          </View>
         ) : (
           <ScrollView>
             <View style={[styles.contentList, { marginBottom: marginBottom + 50 }]}>
