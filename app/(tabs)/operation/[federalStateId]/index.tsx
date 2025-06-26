@@ -105,7 +105,7 @@ export default function OperationSelectDistrict() {
       <Stack.Screen options={{
         title: federalState?.name,
         }} />
-      <ThemedView style={[styles.container, { paddingBottom: marginBottom + 50 }]}>
+      <ThemedView style={[styles.container]}>
         {isMapView ? (
           <SvgAtFederalStateMap federalState={federalState?.id} onSelect={(district) => handlePress(district)} statistic={statistic}/>
         ) : (
