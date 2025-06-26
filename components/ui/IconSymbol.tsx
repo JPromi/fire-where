@@ -37,6 +37,6 @@ export function IconSymbol({
   style?: StyleProp<TextStyle>;
 }) {
   return (
-    <FontAwesomeIcon icon={ICONS[name]} size={size - 5} color={color as string} />
+    <FontAwesomeIcon icon={ICONS[name]} size={size - 5} color={color as string} style={{outline: 'none'}} />
   );
 }
