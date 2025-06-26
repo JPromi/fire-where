@@ -14,7 +14,7 @@ import { BlurView } from "expo-blur";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Platform, Pressable, ScrollView, StyleSheet, useColorScheme, View } from "react-native";
+import { Platform, Pressable, ScrollView, StyleSheet, Text, useColorScheme, View } from "react-native";
 
 export default function OperationSelectDistrict() {
   const { t } = useTranslation();
@@ -95,6 +95,12 @@ export default function OperationSelectDistrict() {
       });
   }
 
+  function getActiveOperations(fsId: string): number {
+    console.log('getActiveOperations', fsId);
+    const fsStatistic = statistic.find(stat => stat.nameId === fsId);
+    return fsStatistic ? fsStatistic.countActive : 0;
+  }
+
   return (
     <>
       <Stack.Screen options={{
@@ -115,6 +121,10 @@ export default function OperationSelectDistrict() {
                     borderBottomWidth: 1,
                     borderColor: Colors[colorScheme ?? 'light'].border,
                     opacity: pressed ? 0.7 : 1,
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
                     // cursor: fs.disabled ? 'not-allowed' : 'pointer',
                   })}
                   onPress={() => handlePress(fs.id)}
@@ -122,6 +132,18 @@ export default function OperationSelectDistrict() {
                   <ThemedText style={{ color: Colors[colorScheme ?? 'light'].text }}>
                     {fs.name}
                   </ThemedText>
+                  { getActiveOperations(fs.id ??'') > 0 && (
+                    <Text style={{
+                      color: Colors[colorScheme ?? 'light'].opSupportText,
+                      fontSize: 16,
+                      fontWeight: 'semibold',
+                      backgroundColor: Colors[colorScheme ?? 'light'].opSupport,
+                      width: 40,
+                      textAlign: 'center',
+                      borderRadius: 5,
+                      paddingVertical: 2,
+                    }}>{getActiveOperations(fs.id ??'')}</Text>
+                  )}
                 </Pressable>
               ))}
             </View>

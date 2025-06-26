@@ -1,5 +1,5 @@
 import { Stack, useRouter } from 'expo-router';
-import { Platform, Pressable, ScrollView, StyleSheet, useColorScheme, View } from 'react-native';
+import { Platform, Pressable, ScrollView, StyleSheet, Text, useColorScheme, View } from 'react-native';
 
 import IconAtMap from '@/assets/icons/map-at.svg';
 import { ThemedText } from '@/components/ThemedText';
@@ -80,6 +80,11 @@ export default function OperationSelectFederalStateScreen() {
       });
   }
 
+  function getActiveOperations(fsId: string): number {
+    const fsStatistic = statistic.find(stat => stat.nameId === fsId);
+    return fsStatistic ? fsStatistic.countActive : 0;
+  }
+
   return (
     <>
       <Stack.Screen options={{ title: t('operation.title') }} />
@@ -101,12 +106,29 @@ export default function OperationSelectFederalStateScreen() {
                     borderBottomWidth: 1,
                     borderColor: Colors[colorScheme ?? 'light'].border,
                     opacity: fs.disabled ? 0.25 : pressed ? 0.7 : 1,
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
                     // cursor: fs.disabled ? 'not-allowed' : 'pointer',
                   })}
                 >
                   <ThemedText style={{ color: Colors[colorScheme ?? 'light'].text }}>
                     {fs.name}
                   </ThemedText>
+
+                  { getActiveOperations(fs.id ??'') > 0 && (
+                    <Text style={{
+                      color: Colors[colorScheme ?? 'light'].opSupportText,
+                      fontSize: 16,
+                      fontWeight: 'semibold',
+                      backgroundColor: Colors[colorScheme ?? 'light'].opSupport,
+                      width: 40,
+                      textAlign: 'center',
+                      borderRadius: 5,
+                      paddingVertical: 2,
+                    }}>{getActiveOperations(fs.id ??'')}</Text>
+                  )}
                 </Pressable>
               ))}
             </View>
