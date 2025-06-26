@@ -4,6 +4,7 @@ import IconAtMap from "@/assets/icons/map-at.svg";
 import { SvgAtFederalStateMap } from "@/components/assets/SvgAtFederalStateMap";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { IconSymbol } from "@/components/ui/IconSymbol";
 import { Colors } from "@/constants/Colors";
 import { useDynamicBottom } from "@/hooks/useDynamicBottom";
 import { FederalState } from "@/models/FederalState";
@@ -159,6 +160,7 @@ export default function OperationSelectDistrict() {
               <IconAtMap style={[styles.buttonIcon, { filter: colorScheme === 'dark' ? '' : 'invert(1)' }]}/>
             </Pressable>
             <Pressable style={styles.button} onPress={() => {setView(false)}}>
+              <IconSymbol name="rectangle.grid.1x2" size={24} color={colorScheme === 'dark' ? '#fff' : '#000'} />
             </Pressable>
           </BlurView>
         </View>

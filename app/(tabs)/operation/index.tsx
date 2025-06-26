@@ -10,6 +10,7 @@ import { FederalState } from '@/models/FederalState';
 import { useEffect, useState } from 'react';
 
 import federStatesData from '@/assets/data/federal-states.json';
+import { IconSymbol } from '@/components/ui/IconSymbol';
 import { useDynamicBottom } from '@/hooks/useDynamicBottom';
 import { LocationStatistic } from '@/models/LocationStatistic';
 import { OperationService } from '@/services/OperationService';
@@ -144,6 +145,7 @@ export default function OperationSelectFederalStateScreen() {
               <IconAtMap style={[styles.buttonIcon, { filter: colorScheme === 'dark' ? '' : 'invert(1)' }]}/>
             </Pressable>
             <Pressable style={styles.button} onPress={() => {setView(false)}}>
+              <IconSymbol name="rectangle.grid.1x2" size={24} color={colorScheme === 'dark' ? '#fff' : '#000'} />
             </Pressable>
           </BlurView>
         </View>
