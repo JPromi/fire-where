@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "Fire Point",
-    "slug": "Fire Point",
+    "name": "Fire Whear",
+    "slug": "Fire Whear",
     "version": "1.0.0",
     "icon": "./assets/images/icon.png",
-    "scheme": "FirePoint",
+    "scheme": "FireWhear",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "jsEngine": "hermes",
