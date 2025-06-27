@@ -1,6 +1,7 @@
+import Firedepartment from '@/assets/icons/firedepartment.svg';
+import Firetruck from '@/assets/icons/firetruck.svg';
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { IconSymbol } from "@/components/ui/IconSymbol";
 import { Colors } from "@/constants/Colors";
 import { ServiceOriginEnum } from "@/enums/ServiceOriginEnum";
 import { useDynamicBottom } from "@/hooks/useDynamicBottom";
@@ -269,7 +270,7 @@ export default function OperationDetailScreen() {
                             width: '100%',
                           }}
                           onPress={() => expand(index)}>
-                          <IconSymbol size={28} name="house.fill" color={Colors[colorScheme ?? 'light'].text} />
+                          <Firedepartment height={28} width={28} color={Colors[colorScheme ?? 'light'].text}/>
                           <ThemedText
                             numberOfLines={1}
                             ellipsizeMode="tail"
@@ -340,7 +341,7 @@ export default function OperationDetailScreen() {
                             width: '100%',
                           }}
                           onPress={() => expand(index)}>
-                          <IconSymbol size={28} name="car.fill" color={Colors[colorScheme ?? 'light'].text} />
+                          <Firetruck height={28} width={28} color={Colors[colorScheme ?? 'light'].text}/>
                           <ThemedText
                             numberOfLines={1}
                             ellipsizeMode="tail"

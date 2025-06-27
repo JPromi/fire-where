@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="firedepartment" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: currentColor;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 3px;
+      }
+    </style>
+  </defs>
+  <polyline class="cls-1" points="37.504 14.796 37.504 37.5 7.5 37.5 7.5 20.625"/>
+  <line class="cls-1" x1="3.75" y1="14.796" x2="41.25" y2="7.296"/>
+  <rect class="cls-1" x="13.125" y="26.038" width="11.25" height="11.454"/>
+</svg>
