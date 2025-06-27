@@ -147,6 +147,12 @@ export default function OperationDetailScreen() {
 
     SettingService.setByKey(settingKey, selectedData);
     setSelectedData(selectedData);
+    
+    if (navRef.isReady()) {
+      navRef.goBack();
+    } else {
+      router.back();
+    }
   }
 
   async function getDataSet(settingKey: string): Promise<DataSet[]> {
