@@ -32,7 +32,7 @@
         "hollabrunn": "Hollabrunn",
         "horn": "Horn",
         "krems-an-der-donau": "Krems an der Donau",
-        "kloserneuburg": "kloserneuburg",
+        "kloserneuburg": "Kloserneuburg",
         "lilienfeld": "Lilienfeld",
         "melk": "Melk",
         "mistelbach": "Mistelbach",
@@ -56,7 +56,7 @@
         "grieskirchen": "Grieskirchen",
         "kirchdorf": "Kirchdorf",
         "linz": "Linz",
-        "linz-land": "LinzLand",
+        "linz-land": "Linz Land",
         "perg": "Perg",
         "ried": "Ried",
         "rohrbach": "Rohrbach",
@@ -67,53 +67,84 @@
         "voecklabruck": "Vöcklabruck",
         "wels": "Wels",
         "wels-land": "Wels Land"
+      },
+      "st": {
+        "bruck-muerzzuschlag": "Bruck-Mürzzuschlag",
+        "deutschlandsberg": "Deutschlandsberg",
+        "fuerstenfeld": "Fürstenfeld",
+        "graz": "Graz",
+        "graz-umgebung": "Graz Umgebung",
+        "leibnitz": "Leibnitz",
+        "leoben": "Leoben",
+        "liezen": "Liezen",
+        "murau": "Murau",
+        "murtal": "Murtal",
+        "suedost-steiermark": "Southeast Styria",
+        "voitsberg": "Voitsberg",
+        "weiz": "Weiz"
+      },
+      "ty": {
+        "imst": "Imst",
+        "innsbruck": "Innsbruck City",
+        "innsbruck-land": "Innsbruck Land",
+        "kitzbuehel": "Kitzbühel",
+        "kufstein": "Kufstein",
+        "landeck": "Landeck",
+        "lienz": "Lienz",
+        "reutte": "Reutte",
+        "schwaz": "Schwaz"
       }
     },
-      "serviceOrigin": {
-        "BL_LSZ_PUB ": "LSZ Burgenland",
-        "LA_WASTL_PUBLIC": "WASTL Lower Austria",
-        "UA_LFV_PUB": "LFV Upper Austria",
-        "ST_LFV_PUB": "LFV Styria",
-        "TYROL_LFS_APP": "Einsätze Tirol App"
-      }
-},
+    "serviceOrigin": {
+      "BL_LSZ_PUB": "LSZ Burgenland",
+      "LA_WASTL_PUB": "WASTL Lower Austria",
+      "UA_LFV_PUB": "LFV Upper Austria",
+      "ST_LFV_PUB": "LFV Styria",
+      "TYROL_LFS_APP": "Tyrol Incidents App"
+    },
+    "language": {
+      "de": "German",
+      "en": "English"
+    }
+  },
   "common": {
     "back": "Back",
-    "unknown": "Unknown"
+    "unknown": "Unknown",
+    "none": "None"
   },
   "operation": {
-    "title": "Operations",
-    "noData": "No operations found.",
+    "title": "Incidents",
+    "noData": "No incidents found.",
     "details": {
-      "alarmed": "Alarm",
+      "alarmed": "Alerted",
       "unit": {
         "alarmed": "Alerted",
         "disposition": "Dispatched",
         "out": "Departed",
         "in": "Returned",
         "placeholderUnit": "Vehicle",
-        "placeholderFiredepartment": "Fire Department"
+        "placeholderFiredepartment": "Fire department"
       },
-        "nerdInformation": {
-          "system": {
-            "title": "System Information",
-            "dataOrigin": "Data Origin",
-            "firstSeen": "First Seen",
-            "lastUpdate": "Last Update",
-            "lastSeen": "Last Seen"
-          },
-          "id": {
-            "title": "IDs",
-            "uuid": "UUID",
-            "upperAustriaId": "Upper Austria ID",
-            "tyrolEventId": "Tyrol Event ID",
-            "burgenlandId": "Burgenland ID",
-            "styriaId": "Styria ID",
-            "lowerAustriaWastlPubId": "Lower Austria WASTL Pub ID",
-            "lowerAustriaSysId": "Lower Austria System ID",
-            "lowerAustriaId": "Lower Austria ID"
-          }
+      "nerdInformation": {
+        "system": {
+          "title": "System Information",
+          "dataOrigin": "Data Source",
+          "firstSeen": "First Seen",
+          "lastUpdate": "Last Update",
+          "lastSeen": "Last Seen"
+        },
+        "id": {
+          "title": "IDs",
+          "uuid": "UUID",
+          "upperAustriaId": "Upper Austria ID",
+          "tyrolEventId": "Tyrol Event ID",
+          "burgenlandId": "Burgenland ID",
+          "styriaId": "Styria ID",
+          "lowerAustriaWastlPubId": "Lower Austria WASTL Pub ID",
+          "lowerAustriaSysId": "Lower Austria System ID",
+          "lowerAustriaId": "Lower Austria ID"
         }
+      }
     }
   },
   "settings": {
@@ -128,6 +159,12 @@
     "extended": {
       "language": {
         "title": "Language"
+      },
+      "jumpToFederalState": {
+        "title": "Jump to Federal State"
+      },
+      "jumpToDistrict": {
+        "title": "Jump to District"
       }
     }
   }
