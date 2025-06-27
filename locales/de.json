@@ -32,7 +32,7 @@
         "hollabrunn": "Hollabrunn",
         "horn": "Horn",
         "krems-an-der-donau": "Krems an der Donau",
-        "kloserneuburg": "kloserneuburg",
+        "kloserneuburg": "Kloserneuburg",
         "lilienfeld": "Lilienfeld",
         "melk": "Melk",
         "mistelbach": "Mistelbach",
@@ -67,6 +67,32 @@
         "voecklabruck": "Vöcklabruck",
         "wels": "Wels",
         "wels-land": "Wels Land"
+      },
+      "st": {
+        "bruck-muerzzuschlag": "Bruck-Mürzzuschlag",
+        "deutschlandsberg": "Deutschlandsberg",
+        "fuerstenfeld": "Fürstenfeld",
+        "graz": "Graz",
+        "graz-umgebung": "Graz Umgebung",
+        "leibnitz": "Leibnitz",
+        "leoben": "Leoben",
+        "liezen": "Liezen",
+        "murau": "Murau",
+        "murtal": "Murtal",
+        "suedost-steiermark": "Südoststeiermark",
+        "voitsberg": "Voitsberg",
+        "weiz": "Weiz"
+      },
+      "ty": {
+        "imst": "Imst",
+        "innsbruck": "Innsbruck Stadt",
+        "innsbruck-land": "Innsbruck Land",
+        "kitzbuehel": "Kitzbühel",
+        "kufstein": "Kufstein",
+        "landeck": "Landeck",
+        "lienz": "Lienz",
+        "reutte": "Reutte",
+        "schwaz": "Schwaz"
       }
     },
     "serviceOrigin": {
