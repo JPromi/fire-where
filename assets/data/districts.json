@@ -14,12 +14,6 @@
     ]
   },
   {
-    "fdId": "ty",
-    "districts": [
-      "innsbruck"
-    ]
-  },
-  {
     "fdId": "la",
     "districts": [
       "amstetten",
@@ -73,13 +67,34 @@
   {
     "fdId": "st",
     "districts": [
-      "graz"
+      "bruck-muerzzuschlag",
+      "deutschlandsberg",
+      "fuerstenfeld",
+      "graz",
+      "graz-umgebung",
+      "leibnitz",
+      "leoben",
+      "liezen",
+      "murau",
+      "murtal",
+      "suedost-steiermark",
+      "voitsberg",
+      "weiz"
+
     ]
   },
   {
     "fdId": "ty",
     "districts": [
-      "innsbruck"
+      "imst",
+      "innsbruck",
+      "innsbruck-land",
+      "kitzbuehel",
+      "kufstein",
+      "landeck",
+      "lienz",
+      "reutte",
+      "schwaz"
     ]
   }
 ]
