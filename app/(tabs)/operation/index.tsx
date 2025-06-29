@@ -59,8 +59,6 @@ export default function OperationSelectFederalStateScreen() {
       return a.name.localeCompare(b.name);
     });
 
-    console.log('Federal States:', data);
-
     federalStates.push(...data);
   }
 
