@@ -14,6 +14,7 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import { useDynamicBottom } from '@/hooks/useDynamicBottom';
 import { LocationStatistic } from '@/models/LocationStatistic';
 import { OperationService } from '@/services/OperationService';
+import { ServiceService } from '@/services/ServiceService';
 import { BlurView } from 'expo-blur';
 import { useTranslation } from 'react-i18next';
 
@@ -40,14 +41,25 @@ export default function OperationSelectFederalStateScreen() {
       id: fs.id,
       idLong: fs.idLong,
       name: t(`assets.federalStates.${fs.id}`),
-      disabled: fs.disabled || false,
+      disabled: false,
     }));
+
+    ServiceService.getServices().then((services) => {
+      data.forEach((fs) => {
+        const service = services.find(s => s.serviceName === `fs-${fs.id}`);
+        if (service && !service.isEnabled) {
+          fs.disabled = true;
+        }
+      });
+    })
 
     data.sort((a, b) => {
       if (a.disabled && !b.disabled) return 1;
       if (!a.disabled && b.disabled) return -1;
       return a.name.localeCompare(b.name);
     });
+
+    console.log('Federal States:', data);
 
     federalStates.push(...data);
   }

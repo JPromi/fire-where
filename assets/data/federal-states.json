@@ -1,47 +1,38 @@
 [
     {
         "id": "la",
-        "idLong": "lower-austria",
-        "disabled": false
+        "idLong": "lower-austria"
     },
     {
         "id": "ua",
-        "idLong": "upper-austria",
-        "disabled": false
+        "idLong": "upper-austria"
     },
     {
         "id": "st",
-        "idLong": "styria",
-        "disabled": false
+        "idLong": "styria"
     },
     {
         "id": "bl",
-        "idLong": "burgenland",
-        "disabled": false
+        "idLong": "burgenland"
     },
     {
         "id": "vi",
-        "idLong": "vienna",
-        "disabled": true
+        "idLong": "vienna"
     },
     {
         "id": "ca",
-        "idLong": "carinthia",
-        "disabled": true
+        "idLong": "carinthia"
     },
     {
         "id": "sb",
-        "idLong": "salzburg",
-        "disabled": true
+        "idLong": "salzburg"
     },
     {
         "id": "ty",
-        "idLong": "tyrol",
-        "disabled": false
+        "idLong": "tyrol"
     },
     {
         "id": "vb",
-        "idLong": "vorarlberg",
-        "disabled": true
+        "idLong": "vorarlberg"
     }
 ]
