@@ -2,6 +2,7 @@ import Firedepartment from '@/assets/icons/firedepartment.svg';
 import Firetruck from '@/assets/icons/firetruck.svg';
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { IconSymbol } from '@/components/ui/IconSymbol';
 import { Colors } from "@/constants/Colors";
 import { ServiceOriginEnum } from "@/enums/ServiceOriginEnum";
 import { useDynamicBottom } from "@/hooks/useDynamicBottom";
@@ -279,9 +280,19 @@ export default function OperationDetailScreen() {
                               fontWeight: 'bold',
                               fontSize: 16,
                               maxWidth: '90%',
+                              flex: 1,
                             }}>
                             {fd.firedepartment?.name ?? t('operation.details.unit.placeholderFiredepartment')}
                           </ThemedText>
+                          <View
+                            style={{
+                              transform: [{ rotate: expandedItems[index] ? '180deg' : '0deg' }],
+                            }}>
+                            <IconSymbol
+                              name='chevron.down'
+                              size={18}
+                              color={Colors[colorScheme ?? 'light'].text} />
+                          </View>
                         </Pressable>
 
                         <Animated.View style={{ height: animatedHeight, overflow: 'hidden' }}>
@@ -350,9 +361,19 @@ export default function OperationDetailScreen() {
                               fontWeight: 'bold',
                               fontSize: 16,
                               maxWidth: '90%',
+                              flex: 1,
                             }}>
                             {fd.unit?.name ?? t('operation.details.unit.placeholderUnit')}
                           </ThemedText>
+                          <View
+                            style={{
+                              transform: [{ rotate: expandedItems[index] ? '180deg' : '0deg' }],
+                            }}>
+                            <IconSymbol
+                              name='chevron.down'
+                              size={18}
+                              color={Colors[colorScheme ?? 'light'].text} />
+                          </View>
                         </Pressable>
 
                         <Animated.View style={{ height: animatedHeight, overflow: 'hidden' }}>

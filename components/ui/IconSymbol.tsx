@@ -11,7 +11,8 @@ type IconSymbolName =
   | 'map.fill'
   | 'checkmark'
   | 'list.bullet'
-  | 'rectangle.grid.1x2';
+  | 'rectangle.grid.1x2'
+  | 'chevron.down';
 
 const ICONS: Record<IconSymbolName, any> = {
   'house.fill': fa.faHouse,
@@ -23,6 +24,7 @@ const ICONS: Record<IconSymbolName, any> = {
   'checkmark': fa.faCheck,
   'list.bullet': fa.faList,
   'rectangle.grid.1x2': fa.faBars,
+  'chevron.down': fa.faChevronDown,
 };
 
 export function IconSymbol({
