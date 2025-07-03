@@ -103,13 +103,13 @@ export default function OperationDetailScreen() {
           <ScrollView
             style={{
               flex: 1,
-              padding: 20,
             }}
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
             }>
               <View
                 style={{
+                  padding: 20,
                   paddingBottom: marginBottom + 20 + 50,
                 }}>
                 {/* Top Informations */}
@@ -271,7 +271,20 @@ export default function OperationDetailScreen() {
                             width: '100%',
                           }}
                           onPress={() => expand(index)}>
-                          <Firedepartment height={28} width={28} color={Colors[colorScheme ?? 'light'].text}/>
+                          <View style={styles.extendedInformationIcon}>
+                            <Firedepartment height={28} width={28} color={Colors[colorScheme ?? 'light'].text}/>
+                            {
+                              fd.inTime ? (
+                                <IconSymbol name="arrow.left" color={Colors[colorScheme ?? 'light'].text} size={14} />
+                              ) : fd.outTime ? (
+                                <IconSymbol name="arrow.right" color={Colors[colorScheme ?? 'light'].text} size={14} />
+                              ) : fd.alarmTime ? (
+                                <IconSymbol name="wave.3.right" color={Colors[colorScheme ?? 'light'].text} size={14} />
+                              ) : fd.dispoTime ? (
+                                <IconSymbol name="clipboard" color={Colors[colorScheme ?? 'light'].text} size={14} />
+                              ) : null
+                            }
+                          </View>
                           <ThemedText
                             numberOfLines={1}
                             ellipsizeMode="tail"
@@ -352,7 +365,20 @@ export default function OperationDetailScreen() {
                             width: '100%',
                           }}
                           onPress={() => expand(index)}>
-                          <Firetruck height={28} width={28} color={Colors[colorScheme ?? 'light'].text}/>
+                          <View style={styles.extendedInformationIcon}>
+                            <Firetruck height={28} width={28} color={Colors[colorScheme ?? 'light'].text}/>
+                            {
+                              fd.inTime ? (
+                                <IconSymbol name="arrow.left" color={Colors[colorScheme ?? 'light'].text} size={14} />
+                              ) : fd.outTime ? (
+                                <IconSymbol name="arrow.right" color={Colors[colorScheme ?? 'light'].text} size={14} />
+                              ) : fd.alarmTime ? (
+                                <IconSymbol name="wave.3.right" color={Colors[colorScheme ?? 'light'].text} size={14} />
+                              ) : fd.dispoTime ? (
+                                <IconSymbol name="clipboard" color={Colors[colorScheme ?? 'light'].text} size={14} />
+                              ) : null
+                            }
+                          </View>
                           <ThemedText
                             numberOfLines={1}
                             ellipsizeMode="tail"
@@ -541,5 +567,11 @@ const styles = StyleSheet.create({
   },
   extendedInformationLineDescription: {
     opacity: 0.5,
-  }
+  },
+  extendedInformationIcon: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: 36,
+  },
 });
