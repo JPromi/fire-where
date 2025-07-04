@@ -3,12 +3,13 @@
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
-    "start": "expo start",
+    "start": "node generate-buildinfo.js && expo start",
     "reset-project": "node ./scripts/reset-project.js",
-    "android": "expo run:android",
-    "ios": "expo run:ios",
-    "web": "expo start --web",
-    "lint": "expo lint"
+    "android": "node generate-buildinfo.js && expo run:android",
+    "ios": "node generate-buildinfo.js && expo run:ios",
+    "web": "node generate-buildinfo.js && expo start --web",
+    "lint": "node generate-buildinfo.js && expo lint",
+    "build": "node generate-buildinfo.js"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",
