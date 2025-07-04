@@ -26,6 +26,7 @@
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="FirePoint"/>
         <data android:scheme="FireWhear"/>
+        <data android:scheme="FireWhere"/>
       </intent-filter>
     </activity>
   </application>
