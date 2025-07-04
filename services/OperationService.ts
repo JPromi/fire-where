@@ -1,4 +1,4 @@
-import { CONFIG } from '@/constants/Config';
+import { CONFIG } from '@/constants/Config.example';
 import { LocationStatistic } from '@/models/LocationStatistic';
 import { Operation } from '@/models/Operation';
 import axios from 'axios';

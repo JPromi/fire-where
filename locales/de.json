@@ -165,6 +165,21 @@
       },
       "jumpToDistrict": {
         "title": "In Bezirk springen"
+      },
+      "buildVersion": {
+        "title": "Build Version"
+      },
+      "buildDate": {
+        "title": "Build Datum"
+      },
+      "developer": {
+        "title": "Entwickler"
+      },
+      "feedback": {
+        "title": "Feedback"
+      },
+      "repository": {
+        "title": "Repository"
       }
     }
   }

@@ -1,21 +1,24 @@
+import buildInfo from '@/assets/build-info.json';
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Colors } from "@/constants/Colors";
+import { CONFIG } from '@/constants/Config';
 import { useDynamicBottom } from "@/hooks/useDynamicBottom";
 import { settingsLocalService } from "@/services/local/SettingLocalService";
 import { SettingService } from "@/services/local/SettingService";
 import { Stack, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Switch, useColorScheme, View } from "react-native";
+import { ActivityIndicator, Linking, Pressable, ScrollView, StyleSheet, Switch, useColorScheme, View } from "react-native";
 
 
 type SettingsItem = {
   key: string;
   name: string;
-  type: 'extra' | 'switch';
+  type: 'extra' | 'switch' | 'text' | 'link';
   valueSwitch?: boolean;
   valueExtra?: string;
+  valueLink?: string;
   showIfKeyIsset?: string;
   valueTranslationKey?: string;
 }
@@ -69,6 +72,50 @@ export default function SettingsScreen() {
           showIfKeyIsset: 'jumpToFederalState',
           valueTranslationKey: '',
         }
+      ]
+    },
+    {
+      groupName: 'Software',
+      items: [
+        {
+          key: 'developer',
+          name: t('settings.extended.developer.title'),
+          type: 'link',
+          valueExtra: CONFIG.informations.developer.name,
+          valueLink: CONFIG.informations.developer.website
+        },
+        {
+          key: 'feedback',
+          name: t('settings.extended.feedback.title'),
+          type: 'link',
+          valueExtra: CONFIG.informations.app.feedbackEmail,
+          valueLink: 'mailto:' + CONFIG.informations.app.feedbackEmail
+        },
+        {
+          key: 'repository',
+          name: t('settings.extended.repository.title'),
+          type: 'link',
+          valueExtra: CONFIG.informations.app.repositoryName,
+          valueLink: CONFIG.informations.app.repositoryUrl
+        },
+        {
+          key: 'version',
+          name: t('settings.extended.buildVersion.title'),
+          type: 'text',
+          valueExtra: buildInfo.buildVersion || 'undefined',
+        },
+        {
+          key: 'buildDate',
+          name: t('settings.extended.buildDate.title'),
+          type: 'text',
+          valueExtra: new Date(buildInfo.buildDate).toLocaleDateString('de-DE', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+          }),
+        },
       ]
     }
   ]);
@@ -241,6 +288,27 @@ export default function SettingsScreen() {
                                 <ThemedText style={{
                                   fontSize: 16,
                                   color: Colors[colorScheme ?? 'light'].textSub,
+                                }}>{item.valueExtra || item.valueExtra != '' ? (item.valueTranslationKey ? t(`${item.valueTranslationKey}.${item.valueExtra}`) : item.valueExtra) : t('common.none')}</ThemedText>
+                              </Pressable>
+                            )}
+                            {item.type === 'text' && (
+                              <View>
+                                <ThemedText style={{
+                                  fontSize: 16,
+                                  color: Colors[colorScheme ?? 'light'].textSub,
+                                }}>{item.valueExtra || item.valueExtra != '' ? (item.valueTranslationKey ? t(`${item.valueTranslationKey}.${item.valueExtra}`) : item.valueExtra) : t('common.none')}</ThemedText>
+                              </View>
+                            )}
+                            {item.type === 'link' && (
+                              <Pressable onPress={() => {
+                                if (item.valueLink) {
+                                  Linking.openURL(item.valueLink);
+                                }
+                              }}>
+                                <ThemedText style={{
+                                  fontSize: 16,
+                                  color: Colors[colorScheme ?? 'light'].textSub,
+                                  textDecorationLine: 'underline',
                                 }}>{item.valueExtra || item.valueExtra != '' ? (item.valueTranslationKey ? t(`${item.valueTranslationKey}.${item.valueExtra}`) : item.valueExtra) : t('common.none')}</ThemedText>
                               </Pressable>
                             )}
