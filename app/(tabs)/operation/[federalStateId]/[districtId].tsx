@@ -2,7 +2,6 @@ import districtData from '@/assets/data/districts.json';
 import federStatesData from '@/assets/data/federal-states.json';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from "@/components/ThemedView";
-import { ErrorMessage } from '@/components/ui/ErrorMessage';
 import { Colors } from '@/constants/Colors';
 import { useDynamicBottom } from "@/hooks/useDynamicBottom";
 import { FederalState } from '@/models/FederalState';
@@ -27,7 +26,6 @@ export default function OperationSelectDistrict() {
   const [operations, setOperations] = useState<Operation[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
 
   useEffect(() => {
@@ -121,13 +119,6 @@ export default function OperationSelectDistrict() {
           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: marginBottom + 50 }}>
             <ActivityIndicator size="large" color={Colors[colorScheme ?? 'light'].tint} />
           </View>
-        ) : error ? (
-          <ScrollView
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
-            }>
-              <ErrorMessage message={error} type='error'></ErrorMessage>
-            </ScrollView>
         ) : (
           <ScrollView
             refreshControl={
