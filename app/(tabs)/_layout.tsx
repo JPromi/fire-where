@@ -109,7 +109,7 @@ export default function TabLayout() {
           },
         })}
       />
-      <Tabs.Screen
+      {/* <Tabs.Screen
         name="operation/[federalStateId]"
         options={{ href: null }}
       />
@@ -124,7 +124,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="settings/[settingKey]"
         options={{ href: null }}
-      />
+      /> */}
       <Tabs.Screen
         name="index"
         options={{ href: null }}
