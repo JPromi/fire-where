@@ -25,7 +25,6 @@ export default function RootLayout() {
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
-        <Stack.Screen name="(tabs)/operation/[federalStateId]" options={{ headerShown: false }} />
       </Stack>
     </ThemeProvider>
   );
