@@ -3,17 +3,17 @@ import Firetruck from '@/assets/icons/firetruck.svg';
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { IconSymbol } from '@/components/ui/IconSymbol';
+import { OperationTypeView } from '@/components/ui/OperationTypeView';
 import { Colors } from "@/constants/Colors";
 import { ServiceOriginEnum } from "@/enums/ServiceOriginEnum";
 import { useDynamicBottom } from "@/hooks/useDynamicBottom";
 import { Operation } from "@/models/Operation";
-import { OperationVariablesService } from "@/services/local/OperationVariablesService";
 import { SettingService } from "@/services/local/SettingService";
 import { OperationService } from "@/services/OperationService";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ActivityIndicator, Animated, Pressable, RefreshControl, ScrollView, StyleSheet, Text, useColorScheme, View } from "react-native";
+import { ActivityIndicator, Animated, Pressable, RefreshControl, ScrollView, StyleSheet, useColorScheme, View } from "react-native";
 
 export default function OperationDetailScreen() {
   const { t } = useTranslation();
@@ -131,56 +131,7 @@ export default function OperationDetailScreen() {
                       justifyContent: 'space-between',
                       alignItems: 'center',
                     }}>
-
-                    {/* Alarm Type */}
-                    { operation.alarm?.level?.toString() || operation.alarm?.type || operation.alarm?.levelAddition ? (
-                      // B2T
-                      <View
-                        style={{
-                          backgroundColor: OperationVariablesService.getOperationTypeColor(operation?.alarm.type || '', colorScheme),
-                          width: 64,
-                          height: 64,
-                          borderRadius: 8,
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                        }}>
-                        <Text
-                          style={{
-                            color: OperationVariablesService.getOperationTypeTextColor(operation?.alarm.type || '', colorScheme),
-                            fontWeight: 'bold',
-                            fontSize: `${operation.alarm.type || ''}${operation.alarm.level?.toString() || ''}${operation.alarm.levelAddition || ''}`.length <= 2 ? 28 : 20,
-                          }}>{operation.alarm?.type}{operation.alarm?.level}{operation.alarm?.levelAddition}</Text>
-                      </View>
-                    ) : (
-                      operation.alarm?.tyrolCategory ? (
-                        // FW-A-BRANDG
-                        <View
-                          style= {{
-                            padding: 2,
-                            minWidth: 82,
-                            height: 52,
-                            borderRadius: 8,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            backgroundColor: OperationVariablesService.getOperationCategoryColorTyrol(operation?.alarm.tyrolCategory || '', colorScheme),
-                          }}>
-                          <Text
-                            style={{
-                              color: OperationVariablesService.getOperationTypeTextColor(operation?.alarm.tyrolCategory || '', colorScheme),
-                              fontWeight: 'semibold',
-                              fontSize: 14,
-                            }}>{`${operation.alarm?.tyrolOutOrder}`}</Text>
-                          <Text
-                            style={{
-                              color: OperationVariablesService.getOperationTypeTextColor(operation?.alarm.tyrolCategory || '', colorScheme),
-                              fontWeight: 'bold',
-                              fontSize: (operation.alarm?.tyrolCategory?.length ?? 0) >= 8 ? 16 : 20,
-                            }}>{`${operation.alarm?.tyrolCategory}`}</Text>
-                        </View>
-                      ) : (null)
-                    )}
+                    <OperationTypeView alarm={operation.alarm} size="detail" />
 
                     <View
                       style={{

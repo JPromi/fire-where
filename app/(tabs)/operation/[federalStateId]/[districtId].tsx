@@ -2,16 +2,16 @@ import districtData from '@/assets/data/districts.json';
 import federStatesData from '@/assets/data/federal-states.json';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from "@/components/ThemedView";
+import { OperationTypeView } from '@/components/ui/OperationTypeView';
 import { Colors } from '@/constants/Colors';
 import { useDynamicBottom } from "@/hooks/useDynamicBottom";
 import { FederalState } from '@/models/FederalState';
 import { Operation } from '@/models/Operation';
-import { OperationVariablesService } from '@/services/local/OperationVariablesService';
 import { OperationService } from '@/services/OperationService';
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ActivityIndicator, Pressable, RefreshControl, ScrollView, StyleSheet, Text, useColorScheme, View } from "react-native";
+import { ActivityIndicator, Pressable, RefreshControl, ScrollView, StyleSheet, useColorScheme, View } from "react-native";
 
 export default function OperationSelectDistrict() {
   const colorScheme = useColorScheme();
@@ -200,48 +200,7 @@ export default function OperationSelectDistrict() {
                   </View>
 
                   {/* Alarm Type */}
-                  { op.alarm.level || op.alarm.type || op.alarm.levelAddition ? (
-                    // B2T
-                    <View
-                      style={{
-                        backgroundColor: OperationVariablesService.getOperationTypeColor(op.alarm.type || '', colorScheme),
-                        width: 45,
-                        height: 45,
-                        borderRadius: 3,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}>
-                      <Text
-                        style={{
-                          color: OperationVariablesService.getOperationTypeTextColor(op.alarm.type || '', colorScheme),
-                          fontWeight: 'bold',
-                          textAlign: 'center',
-                          fontSize: `${op.alarm.type || ''}${op.alarm.level?.toString() || ''}${op.alarm.levelAddition || ''}`.length <= 2 ? 18 : 13,
-                        }}>{op.alarm.type}{op.alarm.level}{op.alarm.levelAddition}</Text>
-                    </View>
-                  ) : (
-                    // FW-A-BRANDG
-                    <View
-                      style={{
-                        backgroundColor: OperationVariablesService.getOperationCategoryColorTyrol(op.alarm?.tyrolCategory || '', colorScheme),
-                        width: 80,
-                        height: 45,
-                        borderRadius: 3,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        padding: 4,
-                      }}>
-                        <Text
-                          style={{
-                            color: OperationVariablesService.getOperationTypeTextColor(op.alarm?.tyrolCategory || '', colorScheme),
-                            fontWeight: 'bold',
-                            textAlign: 'center',
-                            fontSize: (op.alarm?.tyrolCategory?.length ?? 0) >= 8 ? 12 : 18,
-                          }}>{`${op.alarm.tyrolCategory}`}</Text>
-                    </View>
-                  )}
+                  <OperationTypeView alarm={op.alarm} size="list" />
                 </Pressable>
               ))}
             </View>
