@@ -148,6 +148,7 @@ export default function OperationSelectDistrict() {
                     flexDirection: 'row',
                     alignItems: 'center',
                     justifyContent: 'space-between',
+                    gap: 12,
                   })}
                   onPress={() => handlePress(op.uuid)}
                 >
@@ -158,6 +159,7 @@ export default function OperationSelectDistrict() {
                       flexDirection: 'column',
                       alignItems: 'flex-start',
                       flex: 1,
+                      overflow: 'hidden',
                     }}>
                     <ThemedText
                       numberOfLines={1}
@@ -166,7 +168,7 @@ export default function OperationSelectDistrict() {
                         color: Colors[colorScheme ?? 'light'].text,
                         fontWeight: 'bold',
                         fontSize: 18,
-                        maxWidth: '80%',
+                        maxWidth: '100%',
                         textAlign: 'left',
                         }}>{op.alarm.message}</ThemedText>
 
@@ -177,6 +179,8 @@ export default function OperationSelectDistrict() {
                         flexDirection: 'row',
                         alignItems: 'flex-end',
                         gap: 12,
+                        maxWidth: '100%',
+                        overflow: 'hidden',
                       }}>
                       <ThemedText
                         style={{
@@ -189,11 +193,16 @@ export default function OperationSelectDistrict() {
 
                       { op.address.location ? (                      
                         <ThemedText
+                          numberOfLines={1}
+                          ellipsizeMode="tail"
                           style={{
                             color: Colors[colorScheme ?? 'light'].text,
                             fontSize: 14,
                             opacity: 0.5,
-                            lineHeight: 15
+                            lineHeight: 15,
+                            textOverflow: 'ellipsis',
+                            overflow: 'hidden',
+                            flex: 1,
                           }}>{op.address.location}</ThemedText>
                       ) : (null) }
                     </View>
