@@ -154,7 +154,24 @@
         "title": "General",
         "language": "Language",
         "nerdMode": "Nerd Mode"
-      }
+      },
+      "operations": {
+          "title": "Operations"
+        },
+        "software": {
+          "title": "Software",
+          "developer": "Developer",
+          "feedback": "Feedback",
+          "repository": "Repository",
+          "buildVersion": "Build Version",
+          "buildDate": "Build Date"
+        },
+        "informations": {
+          "title": "Information",
+          "imprint": "Imprint",
+          "legal": "Privacy Policy",
+          "websiteValue": "Website"
+        }
     },
     "extended": {
       "language": {

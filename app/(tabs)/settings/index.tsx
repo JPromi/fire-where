@@ -55,18 +55,18 @@ export default function SettingsScreen() {
       ],
     },
     {
-      groupName: "Einsätze",
+      groupName: t('settings.group.operations.title'),
       items: [
         {
           key: 'jumpToFederalState',
-          name: 'In Bundesland springen',
+          name: t('settings.extended.jumpToFederalState.title'),
           type: 'extra',
           valueExtra: '',
           valueTranslationKey: 'assets.federalStates',
         },
         {
           key: 'jumpToDistrict',
-          name: 'In Bezirk springen',
+          name: t('settings.extended.jumpToDistrict.title'),
           type: 'extra',
           valueExtra: '',
           showIfKeyIsset: 'jumpToFederalState',
@@ -75,38 +75,38 @@ export default function SettingsScreen() {
       ]
     },
     {
-      groupName: 'Software',
+      groupName: t('settings.group.software.title'),
       items: [
         {
           key: 'developer',
-          name: t('settings.extended.developer.title'),
+          name: t('settings.group.software.developer'),
           type: 'link',
           valueExtra: CONFIG.informations.developer.name,
           valueLink: CONFIG.informations.developer.website
         },
         {
           key: 'feedback',
-          name: t('settings.extended.feedback.title'),
+          name: t('settings.group.software.feedback'),
           type: 'link',
           valueExtra: CONFIG.informations.app.feedbackEmail,
           valueLink: 'mailto:' + CONFIG.informations.app.feedbackEmail
         },
         {
           key: 'repository',
-          name: t('settings.extended.repository.title'),
+          name: t('settings.group.software.repository'),
           type: 'link',
           valueExtra: CONFIG.informations.app.repositoryName,
           valueLink: CONFIG.informations.app.repositoryUrl
         },
         {
           key: 'version',
-          name: t('settings.extended.buildVersion.title'),
+          name: t('settings.group.software.buildVersion'),
           type: 'text',
           valueExtra: buildInfo.buildVersion || 'undefined',
         },
         {
           key: 'buildDate',
-          name: t('settings.extended.buildDate.title'),
+          name: t('settings.group.software.buildDate'),
           type: 'text',
           valueExtra: new Date(buildInfo.buildDate).toLocaleDateString('de-DE', {
             year: 'numeric',
@@ -115,6 +115,25 @@ export default function SettingsScreen() {
             hour: '2-digit',
             minute: '2-digit',
           }),
+        },
+      ]
+    },
+    {
+      groupName: t('settings.group.informations.title'),
+      items: [
+        {
+          key: 'imprint',
+          name: t('settings.group.informations.imprint'),
+          valueExtra: t('settings.group.informations.websiteValue'),
+          type: 'link',
+          valueLink: CONFIG.informations.app.imprint,
+        },
+        {
+          key: 'legal',
+          name: t('settings.group.informations.legal'),
+          type: 'link',
+          valueExtra: t('settings.group.informations.websiteValue'),
+          valueLink: CONFIG.informations.app.legal,
         },
       ]
     }

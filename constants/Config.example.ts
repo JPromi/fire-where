@@ -11,6 +11,8 @@ export const CONFIG = {
       feedbackEmail: 'feedback@example.com', // CHANGE THIS
       repositoryName: 'JPromi/fire-where',
       repositoryUrl: 'https://github.com/JPromi/fire-where',
+      imprint: 'https://example.com/impressum', // CHANGE THIS
+      legal: 'https://example.com/legal', // CHANGE THIS
     }
   }
 }

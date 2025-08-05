@@ -154,6 +154,23 @@
         "title": "Allgemein",
         "language": "Sprache",
         "nerdMode": "Nerd-Modus"
+      },
+      "operations": {
+        "title": "Einsätze"
+      },
+      "software": {
+        "title": "Software",
+        "developer": "Entwickler",
+        "feedback": "Feedback",
+        "repository": "Repository",
+        "buildVersion": "Build Version",
+        "buildDate": "Build Datum"
+      },
+      "informations": {
+        "title": "Informationen",
+        "imprint": "Impressum",
+        "legal": "Datenschutz",
+        "websiteValue": "Website"
       }
     },
     "extended": {
@@ -165,21 +182,6 @@
       },
       "jumpToDistrict": {
         "title": "In Bezirk springen"
-      },
-      "buildVersion": {
-        "title": "Build Version"
-      },
-      "buildDate": {
-        "title": "Build Datum"
-      },
-      "developer": {
-        "title": "Entwickler"
-      },
-      "feedback": {
-        "title": "Feedback"
-      },
-      "repository": {
-        "title": "Repository"
       }
     }
   }
