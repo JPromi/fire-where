@@ -64,7 +64,7 @@ export function OperationTypeView({
           {size == 'detail' && alarm?.tyrolOrganization ? (
             <Text
               style={{
-                color: OperationVariablesService.getOperationTypeTextColor(alarm.tyrolCategory || '', colorScheme),
+                color: OperationVariablesService.getOperationCategoryTextColorTyrol(alarm.tyrolCategory || '', colorScheme),
                 fontWeight: 'semibold',
                 fontSize: 14,
               }}>{`${alarm?.tyrolOutOrder}`}</Text>
