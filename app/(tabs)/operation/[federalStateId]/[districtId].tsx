@@ -4,7 +4,7 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from "@/components/ThemedView";
 import { OperationTypeView } from '@/components/ui/OperationTypeView';
 import { Colors } from '@/constants/Colors';
-import { useDynamicBottom } from "@/hooks/useDynamicBottom";
+import { useDynamicSide } from '@/hooks/useDynamicSide';
 import { FederalState } from '@/models/FederalState';
 import { Operation } from '@/models/Operation';
 import { OperationService } from '@/services/OperationService';
@@ -17,7 +17,7 @@ export default function OperationSelectDistrict() {
   const colorScheme = useColorScheme();
   const { t } = useTranslation();
   const { federalStateId, districtId } = useLocalSearchParams<{ federalStateId: string, districtId: string }>();
-  const marginBottom = useDynamicBottom();
+  const dynamicSide = useDynamicSide();
   const router = useRouter();
 
   const [federalState, setFederalState] = useState<FederalState | null>(null);
@@ -116,15 +116,16 @@ export default function OperationSelectDistrict() {
       <Stack.Screen options={{ title: district.name }} />
       <ThemedView style={[styles.container]}>
         { loading ? (
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: marginBottom + 50 }}>
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: dynamicSide.bottom + 50 }}>
             <ActivityIndicator size="large" color={Colors[colorScheme ?? 'light'].tint} />
           </View>
         ) : (
           <ScrollView
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
-            }>
-            <View style={[styles.contentList, { marginBottom: marginBottom + 50 }]}>
+            }
+            style={{ paddingLeft: dynamicSide.left, paddingRight: dynamicSide.right }}>
+            <View style={[styles.contentList, { marginBottom: dynamicSide.bottom + 50 }]}>
               {operations.length === 0 ? (
                 <ThemedText
                   style={{

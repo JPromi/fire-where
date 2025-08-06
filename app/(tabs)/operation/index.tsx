@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react';
 
 import federStatesData from '@/assets/data/federal-states.json';
 import { IconSymbol } from '@/components/ui/IconSymbol';
-import { useDynamicBottom } from '@/hooks/useDynamicBottom';
+import { useDynamicSide } from '@/hooks/useDynamicSide';
 import { LocationStatistic } from '@/models/LocationStatistic';
 import { OperationService } from '@/services/OperationService';
 import { ServiceService } from '@/services/ServiceService';
@@ -22,7 +22,7 @@ export default function OperationSelectFederalStateScreen() {
   const colorScheme = useColorScheme();
   const { t } = useTranslation();
   const router = useRouter();
-  const marginBottom = useDynamicBottom();
+  const dynamicSide = useDynamicSide();
   const blurSupported = Platform.OS === 'ios' || (Platform.OS === 'android' && Platform.Version >= 31);
 
   const [isMapView, setIsMapView] = useState(true);
@@ -102,12 +102,12 @@ export default function OperationSelectFederalStateScreen() {
         <Stack.Screen options={{ title: t('operation.title') }} />
         <ThemedView style={styles.container}>
           { isMapView ? ( 
-            <View style={[styles.contentMap, {marginBottom: marginBottom + 50}]}>
+            <View style={[styles.contentMap, {marginBottom: dynamicSide.bottom + 50, paddingLeft: dynamicSide.left, paddingRight: dynamicSide.right}]}>
               <SvgAtMap activeFs={getActiveFederalStates()} onSelect={(fsId) => selectFederalState(fsId)} statistic={statistic}/>
             </View>
           ) : (
             <ScrollView>
-              <View style={[styles.contentList, { marginBottom: marginBottom + 50 }]}>
+              <View style={[styles.contentList, { marginBottom: dynamicSide.bottom + 50, paddingLeft: dynamicSide.left, paddingRight: dynamicSide.right }]}>
                 {federalStates.map((fs) => (
                   <Pressable
                     key={fs.id}
@@ -151,7 +151,7 @@ export default function OperationSelectFederalStateScreen() {
             style={
               [
                 {
-                  marginBottom: marginBottom + 50,
+                  marginBottom: dynamicSide.bottom + 50,
                   position: 'absolute',
                   bottom: 20,
                   right: 20,
@@ -160,6 +160,7 @@ export default function OperationSelectFederalStateScreen() {
                   overflow: 'hidden',
                   backgroundColor: blurSupported ? '' : Colors[colorScheme ?? 'light'].backgroundForground,
                   backdropFilter: blurSupported ? 'blur(10px) brightness(0.2)' : '',
+                  marginRight: dynamicSide.right,
                 }
               ]
             }

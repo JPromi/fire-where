@@ -6,7 +6,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import { Colors } from "@/constants/Colors";
-import { useDynamicBottom } from "@/hooks/useDynamicBottom";
+import { useDynamicSide } from "@/hooks/useDynamicSide";
 import { FederalState } from "@/models/FederalState";
 import { LocationStatistic } from "@/models/LocationStatistic";
 import { OperationService } from "@/services/OperationService";
@@ -20,7 +20,7 @@ export default function OperationSelectDistrict() {
   const { t } = useTranslation();
   const { federalStateId } = useLocalSearchParams<{ federalStateId: string }>();
   const colorScheme = useColorScheme();
-  const marginBottom = useDynamicBottom();
+  const dynamicSide = useDynamicSide();
   const router = useRouter();
   const blurSupported = Platform.OS === 'ios' || (Platform.OS === 'android' && Platform.Version >= 31);
 
@@ -43,7 +43,7 @@ export default function OperationSelectDistrict() {
       id: fs.id,
       idLong: fs.idLong,
       name: t(`assets.federalStates.${fs.id}`),
-      disabled: fs.disabled || false,
+      disabled: false,
     }));
 
     data.sort((a, b) => {
@@ -107,12 +107,12 @@ export default function OperationSelectDistrict() {
         }} />
       <ThemedView style={[styles.container]}>
         {isMapView ? (
-          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginBottom: marginBottom + 50 }}>
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginBottom: dynamicSide.bottom + 50, paddingLeft: dynamicSide.left, paddingRight: dynamicSide.right }}>
             <SvgAtFederalStateMap federalState={federalState?.id} onSelect={(district) => handlePress(district)} statistic={statistic}/>
           </View>
         ) : (
           <ScrollView>
-            <View style={[styles.contentList, { marginBottom: marginBottom + 50 }]}>
+            <View style={[styles.contentList, { marginBottom: dynamicSide.bottom + 50, paddingLeft: dynamicSide.left, paddingRight: dynamicSide.right }]}>
               {districts.map((fs) => (
                 <Pressable
                   key={fs.id}
@@ -155,7 +155,7 @@ export default function OperationSelectDistrict() {
           style={
             [
               {
-                marginBottom: marginBottom + 50,
+                marginBottom: dynamicSide.bottom + 50,
                 position: 'absolute',
                 bottom: 20,
                 right: 20,
@@ -164,6 +164,7 @@ export default function OperationSelectDistrict() {
                 overflow: 'hidden',
                 backgroundColor: blurSupported ? '' : Colors[colorScheme ?? 'light'].backgroundForground,
                 backdropFilter: blurSupported ? 'blur(10px) brightness(0.2)' : '',
+                marginRight: dynamicSide.right,
               }
             ]
           }
