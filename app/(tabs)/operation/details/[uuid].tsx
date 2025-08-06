@@ -6,21 +6,22 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import { OperationTypeView } from '@/components/ui/OperationTypeView';
 import { Colors } from "@/constants/Colors";
 import { ServiceOriginEnum } from "@/enums/ServiceOriginEnum";
-import { useDynamicBottom } from "@/hooks/useDynamicBottom";
+import { useDynamicSide } from '@/hooks/useDynamicSide';
 import { Operation } from "@/models/Operation";
 import { SettingService } from "@/services/local/SettingService";
 import { OperationService } from "@/services/OperationService";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ActivityIndicator, Animated, Pressable, RefreshControl, ScrollView, StyleSheet, useColorScheme, View } from "react-native";
+import { ActivityIndicator, Animated, Dimensions, Pressable, RefreshControl, ScrollView, StyleSheet, useColorScheme, View } from "react-native";
 
 export default function OperationDetailScreen() {
   const { t } = useTranslation();
   const { uuid } = useLocalSearchParams<{ uuid: string }>();
   const colorScheme = useColorScheme();
-  const marginBottom = useDynamicBottom();
+  const dynamicSide = useDynamicSide();
   const animationValues = useRef<Animated.Value[]>([]);
+  const screenWidth = Dimensions.get('window').width;
   const [loading, setLoading] = useState(true);
 
   const [nerdMode, setNerdMode] = useState(false);
@@ -96,13 +97,15 @@ export default function OperationDetailScreen() {
         }} />
       <ThemedView style={[styles.container]}>
         { loading ? (
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: marginBottom + 50 }}>
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: dynamicSide.bottom + 50 }}>
             <ActivityIndicator size="large" color={Colors[colorScheme ?? 'light'].tint} />
           </View>
         ) : (
           <ScrollView
             style={{
               flex: 1,
+              paddingLeft: dynamicSide.left,
+              paddingRight: dynamicSide.right,
             }}
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
@@ -110,7 +113,7 @@ export default function OperationDetailScreen() {
               <View
                 style={{
                   padding: 20,
-                  paddingBottom: marginBottom + 20 + 50,
+                  paddingBottom: dynamicSide.bottom + 20 + 50,
                 }}>
                 {/* Top Informations */}
                 <View
@@ -211,7 +214,7 @@ export default function OperationDetailScreen() {
                             flexDirection: 'column',
                             backgroundColor: Colors[colorScheme ?? 'light'].backgroundForground,
                             width: '100%',
-                            maxWidth: 494,
+                            maxWidth: screenWidth > 700 ? (screenWidth > 1040 ? 500 - 6 : (screenWidth - 40 - dynamicSide.left - dynamicSide.right) * 0.5 - 7) : 700,
                           }}>
                         <Pressable
                           style={{
@@ -305,7 +308,7 @@ export default function OperationDetailScreen() {
                             flexDirection: 'column',
                             backgroundColor: Colors[colorScheme ?? 'light'].backgroundForground,
                             width: '100%',
-                            maxWidth: 494,
+                            maxWidth: screenWidth > 700 ? (screenWidth > 1040 ? 500 - 6 : (screenWidth - 40 - dynamicSide.left - dynamicSide.right) * 0.5 - 6) : 700,
                           }}>
                         <Pressable
                           style={{
