@@ -40,7 +40,7 @@ export function SvgAtFederalStateMap({federalState, onSelect, statistic = []}: S
 
     return {
       onStartShouldSetResponder: () => true,
-      onResponderGrant: handler,
+      onResponderRelease: handler,
     } as any;
   };
 

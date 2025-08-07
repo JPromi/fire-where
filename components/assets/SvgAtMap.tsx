@@ -50,7 +50,7 @@ export function SvgAtMap({activeFs = [], statistic = [], onSelect}: SvgAtMapProp
 
     return {
       onStartShouldSetResponder: () => true,
-      onResponderGrant: handler,
+      onResponderRelease: handler,
     } as any;
   };
 
