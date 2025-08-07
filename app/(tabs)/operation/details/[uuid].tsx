@@ -13,7 +13,7 @@ import { OperationService } from "@/services/OperationService";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ActivityIndicator, Animated, Dimensions, Pressable, RefreshControl, ScrollView, StyleSheet, useColorScheme, View } from "react-native";
+import { ActivityIndicator, Animated, Dimensions, PixelRatio, Pressable, RefreshControl, ScrollView, StyleSheet, useColorScheme, View } from "react-native";
 
 export default function OperationDetailScreen() {
   const { t } = useTranslation();
@@ -202,7 +202,7 @@ export default function OperationDetailScreen() {
                     const animatedHeight = animationValues.current[index]
                       ? animationValues.current[index].interpolate({
                           inputRange: [0, 1],
-                          outputRange: [0, 125],
+                          outputRange: [0, 125 * PixelRatio.getFontScale()],
                         }) : 0;
                     return (
                       <View
@@ -296,7 +296,7 @@ export default function OperationDetailScreen() {
                     const animatedHeight = animationValues.current[index]
                       ? animationValues.current[index].interpolate({
                           inputRange: [0, 1],
-                          outputRange: [0, 125],
+                          outputRange: [0, 125 * PixelRatio.getFontScale()],
                         }) : 0;
                     return (
                       <View
