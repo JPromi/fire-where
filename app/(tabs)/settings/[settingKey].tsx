@@ -178,7 +178,7 @@ export default function OperationDetailScreen() {
       <Stack.Screen options={{ title: t(`settings.extended.${settingKey}.title`) }} />
       <ThemedView style={styles.container}>
         <ScrollView>
-          <View style={[styles.contentList, { paddingBottom: dynamicSide.bottom + 50, paddingLeft: dynamicSide.left, paddingRight: dynamicSide.right }]}>
+          <View style={[styles.contentList, { paddingBottom: dynamicSide.bottom + 50 + 10, paddingLeft: dynamicSide.left + 10, paddingRight: dynamicSide.right + 10 }]}>
             <View
               style={{
                 backgroundColor: Colors[colorScheme ?? 'light'].backgroundForground,
@@ -198,7 +198,7 @@ export default function OperationDetailScreen() {
                     alignItems: 'center',
                     height: 48,
                     borderTopWidth: index === 0 && index === 0 ? 0 : 1,
-                    borderTopColor: Colors[colorScheme ?? 'light'].textSub,
+                    borderTopColor: Colors[colorScheme ?? 'light'].backgroundForgroundBorder,
                   }}>
                   <ThemedText>{item.label}</ThemedText>
                   { selectedData == item.value &&

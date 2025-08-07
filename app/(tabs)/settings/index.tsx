@@ -276,8 +276,8 @@ export default function SettingsScreen() {
                               justifyContent: 'space-between',
                               alignItems: 'center',
                               height: 48,
-                              borderBottomWidth: index === 0 && itemIndex === 0 ? 1 : 0,
-                              borderBottomColor: Colors[colorScheme ?? 'light'].textSub,
+                              borderTopWidth: itemIndex === 0 ? 0 : 1,
+                              borderTopColor: Colors[colorScheme ?? 'light'].backgroundForgroundBorder,
                             }}>
                             <ThemedText style={{
                               fontSize: 16,
