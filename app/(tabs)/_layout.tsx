@@ -79,6 +79,7 @@ export default function TabLayout() {
           headerShown: false,
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="map.fill" color={color} />,
           // href: '/operation',
+          animation: 'fade'
         }}
         listeners={({ navigation }) => ({
           tabPress: (e) => {
@@ -97,6 +98,7 @@ export default function TabLayout() {
           title: t('settings.title'),
           headerShown: false,
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="gear" color={color} />,
+          animation: 'fade',
         }}
         listeners={({ navigation }) => ({
           tabPress: (e) => {
