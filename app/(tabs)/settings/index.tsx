@@ -3,7 +3,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Colors } from "@/constants/Colors";
 import { CONFIG } from '@/constants/Config';
-import { useDynamicBottom } from "@/hooks/useDynamicBottom";
+import { useDynamicSide } from '@/hooks/useDynamicSide';
 import { settingsLocalService } from "@/services/local/SettingLocalService";
 import { SettingService } from "@/services/local/SettingService";
 import { Stack, useRouter } from "expo-router";
@@ -32,7 +32,7 @@ export default function SettingsScreen() {
   const colorScheme = useColorScheme();
   const { t } = useTranslation();
   const router = useRouter();
-  const marginBottom = useDynamicBottom();
+  const dynamicSide = useDynamicSide();
   const [loading, setLoading] = useState(true);
 
   const [settings, setSettings] = useState<SettingsGroup[]>([
@@ -233,12 +233,12 @@ export default function SettingsScreen() {
       <Stack.Screen options={{ title: t('settings.title') }} />
       <ThemedView style={styles.container}>
         {loading ? (
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: marginBottom + 50 }}>
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: dynamicSide.bottom + 50 }}>
             <ActivityIndicator size="large" color={Colors[colorScheme ?? 'light'].tint} />
           </View>
         ) : (
           <ScrollView>
-            <View style={[styles.contentList, { marginBottom: marginBottom + 50 }]}>
+            <View style={[styles.contentList, { paddingBottom: dynamicSide.bottom + 50, paddingLeft: dynamicSide.left, paddingRight: dynamicSide.right }]}>
               {settings.map((group, index) => (
                 <View
                   key={index}

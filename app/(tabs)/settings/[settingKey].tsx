@@ -2,7 +2,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import { Colors } from "@/constants/Colors";
-import { useDynamicBottom } from "@/hooks/useDynamicBottom";
+import { useDynamicSide } from "@/hooks/useDynamicSide";
 import { SettingService } from "@/services/local/SettingService";
 import { Stack, useLocalSearchParams, useNavigationContainerRef, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
@@ -19,7 +19,7 @@ export default function OperationDetailScreen() {
   const colorScheme = useColorScheme();
   const { t } = useTranslation();
   const { settingKey } = useLocalSearchParams<{ settingKey: string }>();
-  const marginBottom = useDynamicBottom();
+  const dynamicSide = useDynamicSide();
   const router = useRouter();
   const navRef = useNavigationContainerRef();
 
@@ -178,9 +178,7 @@ export default function OperationDetailScreen() {
       <Stack.Screen options={{ title: t(`settings.extended.${settingKey}.title`) }} />
       <ThemedView style={styles.container}>
         <ScrollView>
-          <View style={[styles.contentList, {
-            marginBottom: marginBottom + 50,
-          }]}>
+          <View style={[styles.contentList, { paddingBottom: dynamicSide.bottom + 50, paddingLeft: dynamicSide.left, paddingRight: dynamicSide.right }]}>
             <View
               style={{
                 backgroundColor: Colors[colorScheme ?? 'light'].backgroundForground,
