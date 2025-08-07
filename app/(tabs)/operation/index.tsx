@@ -242,10 +242,10 @@ export default function OperationSelectFederalStateScreen() {
                 }
                 tint={colorScheme === 'dark' ? 'dark' : 'light'}
               >
-              <Pressable style={styles.button} onPress={() => {setView(true)}}>
+              <Pressable style={[styles.button, { opacity: isMapView ? .75 : .32 }]} onPress={() => {setView(true)}}>
                 <IconAtMap style={[styles.buttonIcon]} color={colorScheme === 'dark' ? '#fff' : '#000'}/>
               </Pressable>
-              <Pressable style={styles.button} onPress={() => {setView(false)}}>
+              <Pressable style={[styles.button, { opacity: !isMapView ? .75 : .32 }]} onPress={() => {setView(false)}}>
                 <IconSymbol name="rectangle.grid.1x2" size={24} color={colorScheme === 'dark' ? '#fff' : '#000'} />
               </Pressable>
             </BlurView>
@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 8,
     fontSize: 12,
-    opacity: .32,
+    // opacity: .32,
   },
   buttonIcon: {
     width: "100%",
