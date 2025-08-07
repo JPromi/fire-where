@@ -445,21 +445,21 @@ export default function OperationDetailScreen() {
 
                       <View>
                         <ThemedText>{t('operation.details.nerdInformation.id.uuid')}</ThemedText>
-                        <ThemedText style={{ opacity: 0.5 }}>{operation.uuid}</ThemedText>
+                        <ThemedText style={{ opacity: 0.5 }} selectable={true}>{operation.uuid}</ThemedText>
                       </View>
                       { operation.system.serviceOrigin === ServiceOriginEnum.LA_WASTL_PUB && (
                         <>
                           <View>
                             <ThemedText>{t('operation.details.nerdInformation.id.lowerAustriaWastlPubId')}</ThemedText>
-                            <ThemedText style={{ opacity: 0.5 }}>{operation.externalIds.lowerAustriaWastlPubId}</ThemedText>
+                            <ThemedText style={{ opacity: 0.5 }} selectable={true}>{operation.externalIds.lowerAustriaWastlPubId}</ThemedText>
                           </View>
                           <View>
                             <ThemedText>{t('operation.details.nerdInformation.id.lowerAustriaSysId')}</ThemedText>
-                            <ThemedText style={{ opacity: 0.5 }}>{operation.externalIds.lowerAustriaSysId}</ThemedText>
+                            <ThemedText style={{ opacity: 0.5 }} selectable={true}>{operation.externalIds.lowerAustriaSysId}</ThemedText>
                           </View>
                           <View>
                             <ThemedText>{t('operation.details.nerdInformation.id.lowerAustriaId')}</ThemedText>
-                            <ThemedText style={{ opacity: 0.5 }}>{operation.externalIds.lowerAustriaId}</ThemedText>
+                            <ThemedText style={{ opacity: 0.5 }} selectable={true}>{operation.externalIds.lowerAustriaId}</ThemedText>
                           </View>
                         </>
                       )}
@@ -467,7 +467,7 @@ export default function OperationDetailScreen() {
                         <>
                           <View>
                             <ThemedText>{t('operation.details.nerdInformation.id.burgenlandId')}</ThemedText>
-                            <ThemedText style={{ opacity: 0.5 }}>{operation.externalIds.burgenlandId}</ThemedText>
+                            <ThemedText style={{ opacity: 0.5 }} selectable={true}>{operation.externalIds.burgenlandId}</ThemedText>
                           </View>
                         </>
                       )}
@@ -475,7 +475,7 @@ export default function OperationDetailScreen() {
                         <>
                           <View>
                             <ThemedText>{t('operation.details.nerdInformation.id.tyrolEventId')}</ThemedText>
-                            <ThemedText style={{ opacity: 0.5 }}>{operation.externalIds.tyrolEventId}</ThemedText>
+                            <ThemedText style={{ opacity: 0.5 }} selectable={true}>{operation.externalIds.tyrolEventId}</ThemedText>
                           </View>
                         </>
                       )}
@@ -483,7 +483,7 @@ export default function OperationDetailScreen() {
                         <>
                           <View>
                             <ThemedText>{t('operation.details.nerdInformation.id.styriaId')}</ThemedText>
-                            <ThemedText style={{ opacity: 0.5 }}>{operation.externalIds.styriaId}</ThemedText>
+                            <ThemedText style={{ opacity: 0.5 }} selectable={true}>{operation.externalIds.styriaId}</ThemedText>
                           </View>
                         </>
                       )}
@@ -491,7 +491,7 @@ export default function OperationDetailScreen() {
                         <>
                           <View>
                             <ThemedText>{t('operation.details.nerdInformation.id.upperAustriaId')}</ThemedText>
-                            <ThemedText style={{ opacity: 0.5 }}>{operation.externalIds.upperAustriaId}</ThemedText>
+                            <ThemedText style={{ opacity: 0.5 }} selectable={true}>{operation.externalIds.upperAustriaId}</ThemedText>
                           </View>
                         </>
                       )}
