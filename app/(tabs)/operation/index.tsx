@@ -1,15 +1,15 @@
 import { Stack, useRouter } from 'expo-router';
-import { ActivityIndicator, Platform, Pressable, ScrollView, StyleSheet, Text, useColorScheme, View } from 'react-native';
+import { ActivityIndicator, Platform, Pressable, RefreshControl, ScrollView, StyleSheet, Text, useColorScheme, View } from 'react-native';
 
 import IconAtMap from '@/assets/icons/map-at.svg';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { SvgAtMap } from '@/components/assets/SvgAtMap';
 import { Colors } from '@/constants/Colors';
 import { FederalState } from '@/models/FederalState';
 import { useEffect, useState } from 'react';
 
 import federStatesData from '@/assets/data/federal-states.json';
+import { SvgAtMap } from '@/components/assets/SvgAtMap';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { useDynamicSide } from '@/hooks/useDynamicSide';
 import { LocationStatistic } from '@/models/LocationStatistic';
@@ -30,8 +30,10 @@ export default function OperationSelectFederalStateScreen() {
   const [federalStates, setFederalStates] = useState<FederalState[]>([]);
   const [loaded, setLoaded] = useState(false);
 
+  const [lastDataUpdate, setLastDataUpdate] = useState<Date | null>(null);
+
   useEffect(() => {
-    setLoaded(true);
+    setLoaded(false);
     setFederalStatesFromData();
   }, []);
 
@@ -56,7 +58,7 @@ export default function OperationSelectFederalStateScreen() {
         if (!a.disabled && b.disabled) return -1;
         return a.name.localeCompare(b.name);
       });
-      federalStates.push(...data);
+      setFederalStates(data);
 
       getStatistic();
     })
@@ -84,10 +86,18 @@ export default function OperationSelectFederalStateScreen() {
   }
 
   function getStatistic() {
+    if (lastDataUpdate && (new Date().getTime() - lastDataUpdate.getTime()) < 1000 * 10) {
+      setTimeout(() => {
+        setLoaded(true);
+      }, 150);
+      return;
+    }
+
     OperationService.getStatistic()
       .then((data) => {
         setStatistic(data);
         setLoaded(true);
+        setLastDataUpdate(new Date());
       });
   }
 
@@ -101,12 +111,47 @@ export default function OperationSelectFederalStateScreen() {
       <>
         <Stack.Screen options={{ title: t('operation.title') }} />
         <ThemedView style={styles.container}>
-          { isMapView ? ( 
-            <View style={[styles.contentMap, {marginBottom: dynamicSide.bottom + 50, paddingLeft: dynamicSide.left, paddingRight: dynamicSide.right}]}>
-              <SvgAtMap activeFs={getActiveFederalStates()} onSelect={(fsId) => selectFederalState(fsId)} statistic={statistic}/>
+          { isMapView ? (
+            <View style={[styles.contentMap, { paddingBottom: dynamicSide.bottom + 50, paddingLeft: dynamicSide.left, paddingRight: dynamicSide.right }]}>
+              {/* Main Content */}
+              <View style={{ flex: 1, display: 'flex', marginHorizontal: 'auto' }}>
+                <SvgAtMap activeFs={getActiveFederalStates()} onSelect={(fsId) => selectFederalState(fsId)} statistic={statistic}/>
+              </View>
+
+              {/* Bottom Informations */}
+              <Pressable
+                onPress={() => {
+                  setLoaded(false);
+                  getStatistic();
+                }}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  opacity: 0.25,
+                  padding: 16,
+                  alignContent: 'center',
+                  gap: 8,
+                  alignSelf: 'flex-start',
+                  position: 'absolute',
+                  bottom: dynamicSide.bottom + 50,
+                  left: dynamicSide.left,
+                }}>
+                <IconSymbol name={'arrow.2.circlepath'} color={Colors[colorScheme ?? 'light'].text} size={16}/>
+                <Text style={{
+                  color: Colors[colorScheme ?? 'light'].text,
+                  fontSize: 12,
+                }}>{lastDataUpdate?.toLocaleString()}</Text>
+              </Pressable>
             </View>
           ) : (
-            <ScrollView>
+            <ScrollView
+              refreshControl={
+                <RefreshControl refreshing={false} onRefresh={() => {
+                  getStatistic();
+                }}/>
+              }
+              style={{ paddingLeft: dynamicSide.left, paddingRight: dynamicSide.right }}>
               <View style={[styles.contentList, { marginBottom: dynamicSide.bottom + 50, paddingLeft: dynamicSide.left, paddingRight: dynamicSide.right }]}>
                 {federalStates.map((fs) => (
                   <Pressable
@@ -143,6 +188,27 @@ export default function OperationSelectFederalStateScreen() {
                     )}
                   </Pressable>
                 ))}
+                <Pressable
+                  onPress={() => {
+                    setLoaded(false);
+                    getStatistic();
+                  }}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    opacity: 0.25,
+                    padding: 16,
+                    alignContent: 'center',
+                    justifyContent: 'center',
+                    gap: 8,
+                  }}>
+                  <IconSymbol name={'arrow.2.circlepath'} color={Colors[colorScheme ?? 'light'].text} size={16}/>
+                  <Text style={{
+                    color: Colors[colorScheme ?? 'light'].text,
+                    fontSize: 12,
+                  }}>{lastDataUpdate?.toLocaleString()}</Text>
+                </Pressable>
               </View>
             </ScrollView>
           )}
@@ -205,9 +271,10 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat',
   },
   contentMap: {
+    display: 'flex',
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexGrow: 1,
+    position: 'relative',
   },
   contentList: {
     width: '100%',

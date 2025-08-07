@@ -1,3 +1,4 @@
+import { Colors } from '@/constants/Colors';
 import { LocationStatistic } from '@/models/LocationStatistic';
 import { Platform, useColorScheme } from 'react-native';
 import { Defs, G, Line, Path, Pattern, Rect, Svg } from 'react-native-svg';
@@ -27,9 +28,13 @@ export function SvgAtMap({activeFs = [], statistic = [], onSelect}: SvgAtMapProp
   function getStatisticFill(fsId: string): string {
     const stat = statistic.find(s => s.nameId === fsId);
     if (stat) {
-      return `rgb(${255}, ${255 - Math.min(stat.countActive, 20) * 7.5}, 0)`;
+      if (colorScheme === 'dark') {
+        return `rgb(${255}, ${255 - Math.min(stat.countActive, 20) * 7.5}, 0)`;
+      } else {
+        return `rgb(${255}, ${225 - Math.min(stat.countActive, 20) * 7.5}, 0)`;
+      }
     }
-    return '#343a40';
+    return Colors[colorScheme ?? 'light'].mapColorNoActivity;
   }
 
   const createResponderProps = (id: string) => {
@@ -48,7 +53,7 @@ export function SvgAtMap({activeFs = [], statistic = [], onSelect}: SvgAtMapProp
   };
 
   return (
-    <Svg id="at_map" viewBox="0 0 1000 513" width="100%" height="100%">
+    <Svg id="at_map" viewBox="0 0 1000 513" style={[{ maxWidth: '100%', aspectRatio: 1000 / 513, maxHeight: '100%', height: '100%' }]}>
       <Defs>
         <Pattern id="diagonalHatch" patternUnits="userSpaceOnUse" width="15" height="15" patternTransform={"rotate(0)"}>
           <Rect x="0" y="0" width="15" height="15" fill="#343a4050"/>

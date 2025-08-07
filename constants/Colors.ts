@@ -13,13 +13,13 @@ export const Colors = {
     text: '#11181C',
     textSub: '#AAAAAA',
     background: '#fff',
-    backgroundForground: '#F0F1F350',
+    backgroundForground: '#b3b4b530',
     tint: tintColorLight,
     icon: '#687076',
     tabIconDefault: '#687076',
     tabIconSelected: tintColorLight,
 
-    mapColor: '#0a7ea4',
+    mapColorNoActivity: '#b3b4b5',
     border: '#F0F1F3',
 
     opFire: '#ff0c0c',
@@ -43,7 +43,7 @@ export const Colors = {
     tabIconDefault: '#9BA1A6',
     tabIconSelected: tintColorDark,
 
-    mapColor: '#0a7ea4',
+    mapColorNoActivity: '#2C2F32',
     border: '#202325',
 
     opFire: '#ff0c0c',

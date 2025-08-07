@@ -14,7 +14,7 @@ import { BlurView } from "expo-blur";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Platform, Pressable, ScrollView, StyleSheet, Text, useColorScheme, View } from "react-native";
+import { ActivityIndicator, Platform, Pressable, ScrollView, StyleSheet, Text, useColorScheme, View } from "react-native";
 
 export default function OperationSelectDistrict() {
   const { t } = useTranslation();
@@ -27,6 +27,9 @@ export default function OperationSelectDistrict() {
 
   const [isMapView, setIsMapView] = useState(true);
   const [statistic, setStatistic] = useState<LocationStatistic[]>([]);
+  const [loaded, setLoaded] = useState(false);
+
+  const [lastDataUpdate, setLastDataUpdate] = useState<Date | null>(null);
 
   const federalStates: FederalState[] = [];
   var federalState: FederalState | null = federalStates.find(fs => fs.idLong === federalStateId) || null;
@@ -89,9 +92,18 @@ export default function OperationSelectDistrict() {
   }
 
   function getStatistic(federalStateId: string) {
+    if (lastDataUpdate && (new Date().getTime() - lastDataUpdate.getTime()) < 1000 * 10) {
+      setTimeout(() => {
+        setLoaded(true);
+      }, 150);
+      return;
+    }
+
     OperationService.getStatisticFromFederalStates(federalStateId)
       .then((data) => {
         setStatistic(data);
+        setLoaded(true);
+        setLastDataUpdate(new Date());
       });
   }
 
@@ -100,97 +112,137 @@ export default function OperationSelectDistrict() {
     return fsStatistic ? fsStatistic.countActive : 0;
   }
 
-  return (
-    <>
-      <Stack.Screen options={{
-        title: federalState?.name,
-        }} />
-      <ThemedView style={[styles.container]}>
-        {isMapView ? (
-          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginBottom: dynamicSide.bottom + 50, paddingLeft: dynamicSide.left, paddingRight: dynamicSide.right }}>
-            <SvgAtFederalStateMap federalState={federalState?.id} onSelect={(district) => handlePress(district)} statistic={statistic}/>
-          </View>
-        ) : (
-          <ScrollView>
-            <View style={[styles.contentList, { marginBottom: dynamicSide.bottom + 50, paddingLeft: dynamicSide.left, paddingRight: dynamicSide.right }]}>
-              {districts.map((fs) => (
-                <Pressable
-                  key={fs.id}
-                  // onPress={() => selectFederalState(fs.id)}
-                  style={({ pressed }) => ({
-                    padding: 12,
-                    borderBottomWidth: 1,
-                    borderColor: Colors[colorScheme ?? 'light'].border,
-                    opacity: pressed ? 0.7 : 1,
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    // cursor: fs.disabled ? 'not-allowed' : 'pointer',
-                  })}
-                  onPress={() => handlePress(fs.id)}
-                >
-                  <ThemedText style={{ color: Colors[colorScheme ?? 'light'].text }}>
-                    {fs.name}
-                  </ThemedText>
-                  { getActiveOperations(fs.id ??'') > 0 && (
-                    <Text style={{
-                      color: Colors[colorScheme ?? 'light'].opSupportText,
-                      fontSize: 16,
-                      fontWeight: 'semibold',
-                      backgroundColor: Colors[colorScheme ?? 'light'].opSupport,
-                      width: 40,
-                      textAlign: 'center',
-                      borderRadius: 5,
-                      paddingVertical: 2,
-                    }}>{getActiveOperations(fs.id ??'')}</Text>
-                  )}
-                </Pressable>
-              ))}
-            </View>
-          </ScrollView>
-        )}
+  if (loaded) {
+    return (
+      <>
+        <Stack.Screen options={{
+          title: federalState?.name,
+          }} />
+        <ThemedView style={[styles.container]}>
+          {isMapView ? (
+            <View style={[styles.contentMap, { marginBottom: dynamicSide.bottom + 50, paddingLeft: dynamicSide.left, paddingRight: dynamicSide.right }]}>
+              {/* Main Content */}
+              <View style={{ flex: 1, display: 'flex', marginHorizontal: 'auto' }}>
+                <SvgAtFederalStateMap federalState={federalState?.id} onSelect={(district) => handlePress(district)} statistic={statistic}/>
+              </View>
 
-        <View
-          style={
-            [
-              {
-                marginBottom: dynamicSide.bottom + 50,
-                position: 'absolute',
-                bottom: 20,
-                right: 20,
-                zIndex: 2,
-                borderRadius: 10,
-                overflow: 'hidden',
-                backgroundColor: blurSupported ? '' : Colors[colorScheme ?? 'light'].backgroundForground,
-                backdropFilter: blurSupported ? 'blur(10px) brightness(0.2)' : '',
-                marginRight: dynamicSide.right,
-              }
-            ]
-          }
-        >
-          <BlurView
+              {/* Bottom Informations */}
+              <Pressable
+                onPress={() => {
+                  setLoaded(false);
+                  getStatistic(federalStateId);
+                }}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  opacity: 0.25,
+                  padding: 16,
+                  alignContent: 'center',
+                  gap: 8,
+                  alignSelf: 'flex-start',
+                  position: 'absolute',
+                  bottom: 0,
+                  left: dynamicSide.left,
+                }}>
+                <IconSymbol name={'arrow.2.circlepath'} color={Colors[colorScheme ?? 'light'].text} size={16}/>
+                <Text style={{
+                  color: Colors[colorScheme ?? 'light'].text,
+                  fontSize: 12,
+                }}>{lastDataUpdate?.toLocaleString()}</Text>
+              </Pressable>
+            </View>
+          ) : (
+            <ScrollView>
+              <View style={[styles.contentList, { marginBottom: dynamicSide.bottom + 50, paddingLeft: dynamicSide.left, paddingRight: dynamicSide.right }]}>
+                {districts.map((fs) => (
+                  <Pressable
+                    key={fs.id}
+                    // onPress={() => selectFederalState(fs.id)}
+                    style={({ pressed }) => ({
+                      padding: 12,
+                      borderBottomWidth: 1,
+                      borderColor: Colors[colorScheme ?? 'light'].border,
+                      opacity: pressed ? 0.7 : 1,
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      // cursor: fs.disabled ? 'not-allowed' : 'pointer',
+                    })}
+                    onPress={() => handlePress(fs.id)}
+                  >
+                    <ThemedText style={{ color: Colors[colorScheme ?? 'light'].text }}>
+                      {fs.name}
+                    </ThemedText>
+                    { getActiveOperations(fs.id ??'') > 0 && (
+                      <Text style={{
+                        color: Colors[colorScheme ?? 'light'].opSupportText,
+                        fontSize: 16,
+                        fontWeight: 'semibold',
+                        backgroundColor: Colors[colorScheme ?? 'light'].opSupport,
+                        width: 40,
+                        textAlign: 'center',
+                        borderRadius: 5,
+                        paddingVertical: 2,
+                      }}>{getActiveOperations(fs.id ??'')}</Text>
+                    )}
+                  </Pressable>
+                ))}
+              </View>
+            </ScrollView>
+          )}
+
+          <View
             style={
               [
-                styles.buttonContainer,
                 {
-                  backgroundColor: Colors[colorScheme ?? 'light'].tint + '15',
+                  marginBottom: dynamicSide.bottom + 50,
+                  position: 'absolute',
+                  bottom: 20,
+                  right: 20,
+                  zIndex: 2,
+                  borderRadius: 10,
+                  overflow: 'hidden',
+                  backgroundColor: blurSupported ? '' : Colors[colorScheme ?? 'light'].backgroundForground,
+                  backdropFilter: blurSupported ? 'blur(10px) brightness(0.2)' : '',
+                  marginRight: dynamicSide.right,
                 }
               ]
-              }
-              tint={colorScheme === 'dark' ? 'dark' : 'light'}
-            >
-            <Pressable style={styles.button} onPress={() => {setView(true)}}>
-              <IconAtMap style={[styles.buttonIcon]} color={colorScheme === 'dark' ? '#fff' : '#000'}/>
-            </Pressable>
-            <Pressable style={styles.button} onPress={() => {setView(false)}}>
-              <IconSymbol name="rectangle.grid.1x2" size={24} color={colorScheme === 'dark' ? '#fff' : '#000'} />
-            </Pressable>
-          </BlurView>
-        </View>
-      </ThemedView>
-    </>
-  )
+            }
+          >
+            <BlurView
+              style={
+                [
+                  styles.buttonContainer,
+                  {
+                    backgroundColor: Colors[colorScheme ?? 'light'].tint + '15',
+                  }
+                ]
+                }
+                tint={colorScheme === 'dark' ? 'dark' : 'light'}
+              >
+              <Pressable style={styles.button} onPress={() => {setView(true)}}>
+                <IconAtMap style={[styles.buttonIcon]} color={colorScheme === 'dark' ? '#fff' : '#000'}/>
+              </Pressable>
+              <Pressable style={styles.button} onPress={() => {setView(false)}}>
+                <IconSymbol name="rectangle.grid.1x2" size={24} color={colorScheme === 'dark' ? '#fff' : '#000'} />
+              </Pressable>
+            </BlurView>
+          </View>
+        </ThemedView>
+      </>
+    )
+  } else {
+    return (
+      <>
+        <Stack.Screen options={{ title: federalState?.name }} />
+        <ThemedView style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+          <ActivityIndicator size="large" color={Colors[colorScheme ?? 'light'].tint} />
+        </ThemedView>
+      </>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -199,9 +251,10 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat',
   },
   contentMap: {
+    display: 'flex',
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexGrow: 1,
+    position: 'relative',
   },
   contentList: {
     width: '100%',
