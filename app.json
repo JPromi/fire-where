@@ -1,22 +1,24 @@
 {
   "expo": {
-    "name": "fireSpot",
-    "slug": "fireSpot",
-    "version": "1.0.0",
-    "orientation": "portrait",
+    "name": "Fire Where",
+    "slug": "Fire Where",
+    "version": "1.0.1",
     "icon": "./assets/images/icon.png",
-    "scheme": "firespot",
+    "scheme": "FireWhere",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "jsEngine": "hermes",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.jpromi.firePoint"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.jpromi.firePoint"
     },
     "web": {
       "bundler": "metro",

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="firetruck" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+        stroke: currentColor;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .cls-2 {
+        stroke-width: 2px;
+      }
+    </style>
+  </defs>
+  <path class="cls-2" d="M10.376,31.938h-2.876V13.187h22.501l7.499,7.499v11.251h-2.875"/>
+  <line class="cls-2" x1="29.125" y1="31.938" x2="15.875" y2="31.938"/>
+  <circle class="cls-2" cx="13.125" cy="31.935" r="2.75"/>
+  <circle class="cls-2" cx="31.875" cy="31.938" r="2.75"/>
+  <path class="cls-2" d="M26.25,8.485h0c1.035,0,1.875.84,1.875,1.875v2.827h-3.75v-2.827c0-1.035.84-1.875,1.875-1.875Z"/>
+  <line class="cls-2" x1="22.5" y1="13.187" x2="22.5" y2="31.935"/>
+  <line class="cls-2" x1="7.5" y1="26.313" x2="22.5" y2="26.313"/>
+  <line class="cls-1" x1="13.125" y1="23.499" x2="16.875" y2="23.499"/>
+</svg>

@@ -1,0 +1,100 @@
+[
+  {
+    "fdId": "bl",
+    "districts": [
+      "eisenstadt",
+      "rust",
+      "eisenstadt-umgebung",
+      "guessing",
+      "jennersdorf",
+      "mattersburg",
+      "neusiedl-am-see",
+      "oberpullendorf",
+      "oberwart"
+    ]
+  },
+  {
+    "fdId": "la",
+    "districts": [
+      "amstetten",
+      "baden",
+      "bruck-an-der-leitha",
+      "gaenserndorf",
+      "gmuend",
+      "hollabrunn",
+      "horn",
+      "krems-an-der-donau",
+      "kloserneuburg",
+      "lilienfeld",
+      "melk",
+      "mistelbach",
+      "moedling",
+      "neunkirchen",
+      "purkersdorf",
+      "scheibbs",
+      "schwechat",
+      "st-poelten",
+      "stockerau",
+      "tulln",
+      "waidhofen-an-der-thaya",
+      "wr-neustadt",
+      "zwettl"
+    ]
+  },
+  {
+    "fdId": "ua",
+    "districts": [
+      "braunau",
+      "eferding",
+      "freistadt",
+      "gmunden",
+      "grieskirchen",
+      "kirchdorf",
+      "linz",
+      "linz-land",
+      "perg",
+      "ried",
+      "rohrbach",
+      "schaerding",
+      "steyr",
+      "steyr-land",
+      "urfahr-umgebung",
+      "voecklabruck",
+      "wels",
+      "wels-land"
+    ]
+  },
+  {
+    "fdId": "st",
+    "districts": [
+      "bruck-muerzzuschlag",
+      "deutschlandsberg",
+      "fuerstenfeld",
+      "graz",
+      "graz-umgebung",
+      "leibnitz",
+      "leoben",
+      "liezen",
+      "murau",
+      "murtal",
+      "suedost-steiermark",
+      "voitsberg",
+      "weiz"
+
+    ]
+  },
+  {
+    "fdId": "ty",
+    "districts": [
+      "imst",
+      "innsbruck",
+      "innsbruck-land",
+      "kitzbuehel",
+      "kufstein",
+      "landeck",
+      "lienz",
+      "reutte",
+      "schwaz"
+    ]
+  }
+]

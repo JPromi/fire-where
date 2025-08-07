@@ -1,0 +1,38 @@
+[
+    {
+        "id": "la",
+        "idLong": "lower-austria"
+    },
+    {
+        "id": "ua",
+        "idLong": "upper-austria"
+    },
+    {
+        "id": "st",
+        "idLong": "styria"
+    },
+    {
+        "id": "bl",
+        "idLong": "burgenland"
+    },
+    {
+        "id": "vi",
+        "idLong": "vienna"
+    },
+    {
+        "id": "ca",
+        "idLong": "carinthia"
+    },
+    {
+        "id": "sb",
+        "idLong": "salzburg"
+    },
+    {
+        "id": "ty",
+        "idLong": "tyrol"
+    },
+    {
+        "id": "vb",
+        "idLong": "vorarlberg"
+    }
+]
