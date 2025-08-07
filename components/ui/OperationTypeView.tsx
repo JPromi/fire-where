@@ -41,7 +41,7 @@ export function OperationTypeView({
             fontSize:
               `${alarm.type || ''}${alarm.level?.toString() || ''}${alarm.levelAddition || ''}`.length <= 2 ?
                 (size == 'list' ? 18 : 28) :
-                (size == 'list' ? 12 : 20),
+                (size == 'list' ? 11 : 15),
           }}>{alarm.type}{alarm.level}{alarm.levelAddition}</Text>
       </View>
     );
