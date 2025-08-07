@@ -210,6 +210,9 @@ export default function SettingsScreen() {
         item.key === settingKey ? { ...item, valueSwitch: selectedData as boolean, valueExtra: selectedData as string } : item
       ),
     }));
+
+    setSettings(updatedSettings);
+
     setTimeout(() => {
       settingsLocalService.set(settingKey, selectedData);
     }, 0);
