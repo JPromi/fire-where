@@ -430,7 +430,6 @@ export default function OperationDetailScreen() {
                       display: 'flex',
                       flexDirection: 'column',
                       gap: 12,
-                      flexWrap: 'wrap',
                       maxWidth: 1000,
                       width: '100%',
                       alignSelf: 'center',
