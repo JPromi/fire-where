@@ -110,7 +110,11 @@
   "common": {
     "back": "Zurück",
     "unknown": "Unbekannt",
-    "none": "Keine"
+    "none": "Keine",
+    "error": {
+      "notFound": "Nicht gefunden",
+      "internalServerError": "Es ist ein Fehler bei der Anfrage aufgetreten"
+    }
   },
   "operation": {
     "title": "Einsätze",

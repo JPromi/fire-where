@@ -110,7 +110,11 @@
   "common": {
     "back": "Back",
     "unknown": "Unknown",
-    "none": "None"
+    "none": "None",
+    "error": {
+      "notFound": "Not found",
+      "internalServerError": "An error occurred while processing the request"
+    }
   },
   "operation": {
     "title": "Incidents",

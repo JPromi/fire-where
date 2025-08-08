@@ -17,7 +17,8 @@ type IconSymbolName =
   | 'arrow.right'
   | 'wave.3.right'
   | 'clipboard'
-  | 'arrow.2.circlepath';
+  | 'arrow.2.circlepath'
+  | 'xmark';
 
 const ICONS: Record<IconSymbolName, any> = {
   'house.fill': fa.faHouse,
@@ -35,6 +36,7 @@ const ICONS: Record<IconSymbolName, any> = {
   'wave.3.right': fa.faBell,
   'clipboard': fa.faClipboard,
   'arrow.2.circlepath': fa.faArrowRotateRight,
+  'xmark': fa.faXmark,
 };
 
 export function IconSymbol({
