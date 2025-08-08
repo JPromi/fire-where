@@ -248,7 +248,6 @@ export default function OperationSelectDistrict() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    fontFamily: 'Montserrat',
   },
   contentMap: {
     display: 'flex',

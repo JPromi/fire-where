@@ -351,7 +351,6 @@ export default function SettingsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    fontFamily: 'Montserrat',
   },
   contentList: {
     width: '100%',
