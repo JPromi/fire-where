@@ -6,6 +6,9 @@ import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { useEffect } from 'react';
+import { setCustomText } from 'react-native-global-props';
+
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -13,6 +16,14 @@ export default function RootLayout() {
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
     Montserrat: require('../assets/fonts/Montserrat-Regular.ttf'),
   });
+
+  useEffect(() => {
+    if (loaded) {
+      setCustomText({
+        style: { fontFamily: 'Montserrat' },
+      });
+    }
+  }, [loaded]);
 
   if (!loaded) {
     // Async font loading only occurs in development.
