@@ -10,7 +10,13 @@
     "jsEngine": "hermes",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.jpromi.firePoint"
+      "bundleIdentifier": "com.jpromi.firePoint",
+      "infoPlist": {
+        "LSApplicationQueriesSchemes": [
+          "https",
+          "http"
+        ]
+      }
     },
     "android": {
       "adaptiveIcon": {
