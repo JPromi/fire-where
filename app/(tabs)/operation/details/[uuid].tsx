@@ -233,7 +233,6 @@ export default function OperationDetailScreen() {
                             style={{
                               display: 'flex',
                               flexDirection: 'row',
-                              alignItems: 'center',
                               gap: 12,
                               width: '100%',
                             }}
@@ -253,9 +252,10 @@ export default function OperationDetailScreen() {
                               }
                             </View>
                             <ThemedText
-                              numberOfLines={1}
+                              numberOfLines={expandedItems[index] ? undefined : 1}
                               ellipsizeMode="tail"
                               style={{
+                                marginTop: 2,
                                 color: Colors[colorScheme ?? 'light'].text,
                                 fontWeight: 'bold',
                                 fontSize: 16,
@@ -267,6 +267,10 @@ export default function OperationDetailScreen() {
                             <View
                               style={{
                                 transform: [{ rotate: expandedItems[index] ? '180deg' : '0deg' }],
+                                height: 30,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
                               }}>
                               <IconSymbol
                                 name='chevron.down'
@@ -327,7 +331,6 @@ export default function OperationDetailScreen() {
                             style={{
                               display: 'flex',
                               flexDirection: 'row',
-                              alignItems: 'center',
                               gap: 12,
                               width: '100%',
                             }}
@@ -347,9 +350,10 @@ export default function OperationDetailScreen() {
                               }
                             </View>
                             <ThemedText
-                              numberOfLines={1}
+                              numberOfLines={expandedItems[index] ? undefined : 1}
                               ellipsizeMode="tail"
                               style={{
+                                marginTop: 2,
                                 color: Colors[colorScheme ?? 'light'].text,
                                 fontWeight: 'bold',
                                 fontSize: 16,
@@ -361,6 +365,10 @@ export default function OperationDetailScreen() {
                             <View
                               style={{
                                 transform: [{ rotate: expandedItems[index] ? '180deg' : '0deg' }],
+                                height: 30,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
                               }}>
                               <IconSymbol
                                 name='chevron.down'
@@ -539,5 +547,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     width: 36,
+    height: 30,
+    justifyContent: 'center',
   },
 });
