@@ -114,6 +114,10 @@
     "error": {
       "notFound": "Nicht gefunden",
       "internalServerError": "Es ist ein Fehler bei der Anfrage aufgetreten"
+    },
+    "time": {
+      "hours": "Stunden",
+      "minutes": "Minuten"
     }
   },
   "operation": {
@@ -121,6 +125,7 @@
     "noData": "Keine Einsätze gefunden.",
     "details": {
       "alarmed": "Alarmierung",
+      "inOperationSince": "Im Einsatz seit",
       "unit": {
         "alarmed": "Alarmiert",
         "disposition": "Disposition",
@@ -150,6 +155,9 @@
         }
       }
     }
+  },
+  "firedepartment": {
+    "title": "Feuerwehren"
   },
   "settings": {
     "title": "Einstellungen",

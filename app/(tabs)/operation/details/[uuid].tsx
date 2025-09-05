@@ -90,6 +90,21 @@ export default function OperationDetailScreen() {
     }
   }
 
+  function getOperationTotalTime(): string {
+    if (!operation.startTime) return '---';
+    const start = new Date(operation.startTime);
+    const end = operation.endTime ? new Date(operation.endTime) : new Date();
+    const diff = end.getTime() - start.getTime();
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    
+    if (hours > 0) {
+      return `${hours}:${minutes} ${t('common.time.hours')}`;
+    } else {
+      return `${minutes} ${t('common.time.minutes')}`;
+    }
+  }
+
   function expand(index: number) {
     const isExpanded = expandedItems[index];
     setExpandedItems(prev => ({ ...prev, [index]: !isExpanded }));
@@ -196,6 +211,20 @@ export default function OperationDetailScreen() {
                               lineHeight: 15,
                             }}>{t('operation.details.alarmed')}</ThemedText>
                           <ThemedText>{getDate(operation.startTime)}</ThemedText>
+                        </View>
+
+                        <View>
+                          <ThemedText
+                            style={{
+                              opacity: 0.5,
+                              fontSize: 14,
+                              lineHeight: 15,
+                              textAlign: 'right',
+                            }}>{t('operation.details.inOperationSince')}</ThemedText>
+                          <ThemedText
+                            style={{
+                              textAlign: 'right',
+                            }}>{getOperationTotalTime()}</ThemedText>
                         </View>
                     </View>
                   </View>

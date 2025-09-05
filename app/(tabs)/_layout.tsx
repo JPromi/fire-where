@@ -1,3 +1,4 @@
+import Firedepartment from '@/assets/icons/firedepartment.svg';
 import { Tabs } from 'expo-router';
 import React, { useEffect } from 'react';
 import { Platform } from 'react-native';
@@ -87,6 +88,27 @@ export default function TabLayout() {
               CommonActions.reset({
                 index: 0,
                 routes: [{ name: 'operation' }],
+              })
+            );
+          },
+        })}
+      />
+      <Tabs.Screen
+        name="firedepartment"
+        options={{
+          title: t('firedepartment.title'),
+          headerShown: false,
+          // tabBarIcon: ({ color }) => <IconSymbol size={28} name="map.fill" color={color} />,
+          tabBarIcon: ({ color }) => <Firedepartment height={28} width={28} color={color}/>,
+          // href: '/firedepartmnet',
+          animation: 'fade'
+        }}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 0,
+                routes: [{ name: 'firedepartment' }],
               })
             );
           },
