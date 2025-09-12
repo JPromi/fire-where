@@ -1,10 +1,10 @@
 {
   "expo": {
     "name": "Fire Where",
-    "slug": "Fire Where",
+    "slug": "fire-where",
     "version": "1.0.1",
     "icon": "./assets/images/icon.png",
-    "scheme": "FireWhere",
+    "scheme": "firewhere",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "jsEngine": "hermes",
@@ -41,7 +41,9 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
-      ]
+      ],
+      "expo-font",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true
