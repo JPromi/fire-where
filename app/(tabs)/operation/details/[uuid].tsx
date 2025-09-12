@@ -99,7 +99,7 @@ export default function OperationDetailScreen() {
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
     
     if (hours > 0) {
-      return `${hours}:${minutes} ${t('common.time.hours')}`;
+      return `${hours}:${minutes.toString().padStart(2, "0")} ${t('common.time.hours')}`;
     } else {
       return `${minutes} ${t('common.time.minutes')}`;
     }
