@@ -11,6 +11,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
 		4F40C21FAA093C3A61C23FFC /* libPods-FirePoint.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DE61EED98919CC789D56FC8F /* libPods-FirePoint.a */; };
+		7B9C631B2E79632700E4806A /* FireWhereIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 7B9C631A2E79632700E4806A /* FireWhereIcon.icon */; };
 		82CFBFA7C484D745E4238FC8 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 08D71FA56A81F362C50B8FF1 /* PrivacyInfo.xcprivacy */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 		F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11748412D0307B40044C1D9 /* AppDelegate.swift */; };
@@ -22,6 +23,7 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = FirePoint/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = FirePoint/Info.plist; sourceTree = "<group>"; };
 		4D234B4AFEECF2470F1B0AC4 /* Pods-FirePoint.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FirePoint.release.xcconfig"; path = "Target Support Files/Pods-FirePoint/Pods-FirePoint.release.xcconfig"; sourceTree = "<group>"; };
+		7B9C631A2E79632700E4806A /* FireWhereIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = FireWhereIcon.icon; sourceTree = "<group>"; };
 		816C4D284D0B025850F94835 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-FirePoint/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = FirePoint/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
@@ -54,6 +56,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
 				08D71FA56A81F362C50B8FF1 /* PrivacyInfo.xcprivacy */,
+				7B9C631A2E79632700E4806A /* FireWhereIcon.icon */,
 			);
 			name = FirePoint;
 			sourceTree = "<group>";
@@ -195,6 +198,7 @@
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
+				7B9C631B2E79632700E4806A /* FireWhereIcon.icon in Resources */,
 				82CFBFA7C484D745E4238FC8 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -340,7 +344,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4D234B4AFEECF2470F1B0AC4 /* Pods-FirePoint.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = FireWhereIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = FirePoint/FirePoint.entitlements;
 				CURRENT_PROJECT_VERSION = 2;
@@ -379,7 +383,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4D234B4AFEECF2470F1B0AC4 /* Pods-FirePoint.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = FireWhereIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = FirePoint/FirePoint.entitlements;
 				CURRENT_PROJECT_VERSION = 2;
