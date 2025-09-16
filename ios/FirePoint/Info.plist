@@ -27,13 +27,18 @@
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
-          <string>FireWhere</string>
+          <string>firewhere</string>
           <string>com.jpromi.firePoint</string>
         </array>
       </dict>
     </array>
     <key>CFBundleVersion</key>
     <string>1</string>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>https</string>
+      <string>http</string>
+    </array>
     <key>LSMinimumSystemVersion</key>
     <string>12.0</string>
     <key>LSRequiresIPhoneOS</key>
