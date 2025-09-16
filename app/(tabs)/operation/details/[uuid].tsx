@@ -220,7 +220,7 @@ export default function OperationDetailScreen() {
                               fontSize: 14,
                               lineHeight: 15,
                               textAlign: 'right',
-                            }}>{t('operation.details.inOperationSince')}</ThemedText>
+                            }}>{operation.endTime ? t('operation.details.operationDuration') : t('operation.details.inOperationSince')}</ThemedText>
                           <ThemedText
                             style={{
                               textAlign: 'right',
