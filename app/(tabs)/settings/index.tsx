@@ -290,6 +290,9 @@ export default function SettingsScreen() {
                                 onValueChange={(value) => {
                                   updateSetting(item.key, value);
                                 }}
+                                style={{
+                                  marginVertical: 'auto'
+                                }}
                               />
                             )}
                             {item.type === 'extra' && (
