@@ -114,6 +114,10 @@
     "error": {
       "notFound": "Not found",
       "internalServerError": "An error occurred while processing the request"
+    },
+    "time": {
+      "hours": "hours",
+      "minutes": "minutes"
     }
   },
   "operation": {
@@ -121,6 +125,8 @@
     "noData": "No incidents found.",
     "details": {
       "alarmed": "Alerted",
+      "inOperationSince": "In operation since",
+      "operationDuration": "Operation duration",
       "unit": {
         "alarmed": "Alerted",
         "disposition": "Dispatched",
@@ -150,6 +156,9 @@
         }
       }
     }
+  },
+  "firedepartment": {
+    "title": "Fire Departments"
   },
   "settings": {
     "title": "Settings",

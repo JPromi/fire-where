@@ -126,6 +126,7 @@
     "details": {
       "alarmed": "Alarmierung",
       "inOperationSince": "Im Einsatz seit",
+      "operationDuration": "Einsatzdauer",
       "unit": {
         "alarmed": "Alarmiert",
         "disposition": "Disposition",
