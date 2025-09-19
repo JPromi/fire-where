@@ -10,7 +10,13 @@ export type Firedepartment = {
       federalState: string | null;
       country: string | null;
     };
-    contact: {
-      website: string | null;
-    }
+    links: [
+      {
+        type: string | null;
+        url: string;
+        name: string | null;
+      }
+    ];
+    logo: string | null;
+    banner: string | null;
 }
