@@ -1,5 +1,4 @@
 import { ThemedView } from "@/components/ThemedView";
-import { IconSymbol } from "@/components/ui/IconSymbol";
 import { TagChip } from "@/components/ui/TagChip";
 import { Colors } from "@/constants/Colors";
 import { useDynamicSide } from "@/hooks/useDynamicSide";
@@ -7,7 +6,8 @@ import { Firedepartment } from "@/models/Firedepartment";
 import { FiredepartmentService } from "@/services/FiredeparmentService";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { Dimensions, Image, Linking, Platform, Pressable, ScrollView, StyleSheet, Text, useColorScheme, View } from "react-native";
+import { Dimensions, Image, Platform, ScrollView, StyleSheet, Text, useColorScheme, View } from "react-native";
+import { SvgUri } from "react-native-svg";
 
 export default function FiredepartmentDetailScreen() {
   const dynamicSide = useDynamicSide();
@@ -54,7 +54,7 @@ export default function FiredepartmentDetailScreen() {
                 justifyContent: 'center',
               }}>
               <Image
-                source={{ uri: "https://www.ziegler.de/mediadatabase/service/bilder/picture_calendar_2020_smartphone_wallpapers/ziegler-2020-03-hlf20.jpg" }}
+                source={{ uri: firedepartment.banner ?? "" }}
                 style={{
                   width: '100%',
                   height: '100%',
@@ -65,7 +65,7 @@ export default function FiredepartmentDetailScreen() {
                 }}/>
                 { Platform.OS === 'web' ? (
                   <img
-                    src="https://www.feuerwehr-mariazell.at/wp-content/uploads/2015/06/2000px-Korpsabzeichen-FFOE.svg_.png"
+                    src={ firedepartment.logo ?? "" }
                     style={{
                       position: 'absolute',
                       minWidth: 100,
@@ -87,16 +87,26 @@ export default function FiredepartmentDetailScreen() {
                       shadowOpacity: .75,
                       shadowRadius: 10,
                     }}>
-
-                    <Image
-                      source={{ uri: "https://www.feuerwehr-mariazell.at/wp-content/uploads/2015/06/2000px-Korpsabzeichen-FFOE.svg_.png" }}
-                      style={{
-                        width: 100,
-                        height: "50%",
-                        left: "5%",
-                        objectFit: 'contain',
-                        
-                      }}/>
+                    { firedepartment.logo?.split('.').pop()?.toLowerCase() === 'svg' ? (
+                      <SvgUri
+                          uri={firedepartment.logo ?? ""}
+                          width={100}
+                          height="60%"
+                          style={{
+                            left: "5%",
+                          }}
+                          preserveAspectRatio="xMidYMid meet"
+                        />
+                    ) : (
+                      <Image
+                        source={{ uri: firedepartment.logo ?? "" }}
+                        style={{
+                          width: 100,
+                          height: "60%",
+                          left: "5%",
+                          objectFit: 'contain',
+                        }}/>
+                    )}
                   </View>
                 )}
             </View>
@@ -140,7 +150,7 @@ export default function FiredepartmentDetailScreen() {
                 </View>
 
                 {/* links */}
-                <View
+                {/* <View
                   style={{
                     display: 'flex',
                     flexDirection: 'row',
@@ -153,7 +163,7 @@ export default function FiredepartmentDetailScreen() {
                         <IconSymbol name="globe" size={25} color={Colors[colorScheme ?? 'light'].textSub} />
                       </Pressable>
                     )}
-                </View>
+                </View> */}
               </View>
             </View>
           </ScrollView>
