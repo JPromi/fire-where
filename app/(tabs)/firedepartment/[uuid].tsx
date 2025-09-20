@@ -1,12 +1,15 @@
 import { ThemedView } from "@/components/ThemedView";
+import { IconSymbol } from "@/components/ui/IconSymbol";
 import { TagChip } from "@/components/ui/TagChip";
 import { Colors } from "@/constants/Colors";
 import { useDynamicSide } from "@/hooks/useDynamicSide";
 import { Firedepartment } from "@/models/Firedepartment";
 import { FiredepartmentService } from "@/services/FiredeparmentService";
+import * as faBrand from '@fortawesome/free-brands-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { Dimensions, Image, Platform, ScrollView, StyleSheet, Text, useColorScheme, View } from "react-native";
+import { Dimensions, Image, Linking, Platform, Pressable, ScrollView, StyleSheet, Text, useColorScheme, View } from "react-native";
 import { SvgUri } from "react-native-svg";
 
 export default function FiredepartmentDetailScreen() {
@@ -143,27 +146,86 @@ export default function FiredepartmentDetailScreen() {
                     flexWrap: 'wrap',
                     columnGap: 8,
                     rowGap: 10,
-                    marginBottom: 20,
+                    marginBottom: 0,
                   }}>
                     {firedepartment.isVolunteer && (<TagChip name="Freiwillig" icon={"heart.fill"} tagColor="#33C2CC"/>)}
                     {true && (<TagChip name="Einsatzbereit" icon={"flame.fill"} tagColor="#13F24E"/>)}
                 </View>
 
                 {/* links */}
-                {/* <View
+                <View
                   style={{
                     display: 'flex',
                     flexDirection: 'row',
-                    gap: 15,
+                    gap: 0,
                   }}>
-                    {firedepartment.contact?.website && (
-                      <Pressable onPress={() => {
-                        Linking.openURL(firedepartment.contact?.website!);
-                      }}>
-                        <IconSymbol name="globe" size={25} color={Colors[colorScheme ?? 'light'].textSub} />
+                    {firedepartment.links && firedepartment.links.map((link) => (
+                      <Pressable
+                        key={link.url}
+                        onPress={() => Linking.openURL(link.url)}
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          width: 44,
+                          height: 44,
+                          justifyContent: 'center',
+
+                        }}
+                      >
+                        {(() => {
+                          switch (link.type) {
+                            case 'instagram':
+                              return (
+                                <>
+                                  <FontAwesomeIcon icon={faBrand.faInstagram} size={25} color={Colors[colorScheme ?? 'light'].textSub}/>
+                                </>
+                              );
+                            case 'facebook':
+                              return (
+                                <>
+                                  <FontAwesomeIcon icon={faBrand.faFacebook} size={25} color={Colors[colorScheme ?? 'light'].textSub}/>
+                                </>
+                              );
+                            case 'x':
+                              return (
+                                <>
+                                  <FontAwesomeIcon icon={faBrand.faXTwitter} size={25} color={Colors[colorScheme ?? 'light'].textSub}/>
+                                </>
+                              );
+                            case 'youtube':
+                              return (
+                                <>
+                                  <FontAwesomeIcon icon={faBrand.faYoutube} size={25} color={Colors[colorScheme ?? 'light'].textSub}/>
+                                </>
+                              );
+                            case 'tiktok':
+                              return (
+                                <>
+                                  <FontAwesomeIcon icon={faBrand.faTiktok} size={25} color={Colors[colorScheme ?? 'light'].textSub}/>
+                                </>
+                              );
+                            case 'flickr':
+                              return (
+                                <>
+                                  <FontAwesomeIcon icon={faBrand.faFlickr} size={25} color={Colors[colorScheme ?? 'light'].textSub}/>
+                                </>
+                              );
+                            default:
+                              return (
+                                <>
+                                  <IconSymbol
+                                    name="globe"
+                                    size={25}
+                                    color={Colors[colorScheme ?? 'light'].textSub}
+                                  />
+                                </>
+                              );
+                          }
+                        })()}
                       </Pressable>
-                    )}
-                </View> */}
+                    ))}
+                </View>
               </View>
             </View>
           </ScrollView>
