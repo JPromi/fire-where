@@ -63,7 +63,7 @@ export default function FiredepartmentDetailScreen() {
                   top: 0,
                   left: 0,
                 }}/>
-                { Platform.OS === 'web' ? (
+                { firedepartment.logo ? (Platform.OS === 'web' ? (
                   <img
                     src={ firedepartment.logo ?? "" }
                     style={{
@@ -87,7 +87,7 @@ export default function FiredepartmentDetailScreen() {
                       shadowOpacity: .75,
                       shadowRadius: 10,
                     }}>
-                    { firedepartment.logo?.split('.').pop()?.toLowerCase() === 'svg' ? (
+                    { firedepartment.logo.split('.').pop()?.toLowerCase() === 'svg' ? (
                       <SvgUri
                           uri={firedepartment.logo ?? ""}
                           width={100}
@@ -108,7 +108,7 @@ export default function FiredepartmentDetailScreen() {
                         }}/>
                     )}
                   </View>
-                )}
+                )) : null }
             </View>
 
             {/* content */}
