@@ -290,6 +290,9 @@ export default function SettingsScreen() {
                                 onValueChange={(value) => {
                                   updateSetting(item.key, value);
                                 }}
+                                style={{
+                                  marginVertical: 'auto'
+                                }}
                               />
                             )}
                             {item.type === 'extra' && (
@@ -351,7 +354,6 @@ export default function SettingsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    fontFamily: 'Montserrat',
   },
   contentList: {
     width: '100%',

@@ -110,13 +110,23 @@
   "common": {
     "back": "Back",
     "unknown": "Unknown",
-    "none": "None"
+    "none": "None",
+    "error": {
+      "notFound": "Not found",
+      "internalServerError": "An error occurred while processing the request"
+    },
+    "time": {
+      "hours": "hours",
+      "minutes": "minutes"
+    }
   },
   "operation": {
     "title": "Incidents",
     "noData": "No incidents found.",
     "details": {
       "alarmed": "Alerted",
+      "inOperationSince": "In operation since",
+      "operationDuration": "Operation duration",
       "unit": {
         "alarmed": "Alerted",
         "disposition": "Dispatched",
@@ -146,6 +156,9 @@
         }
       }
     }
+  },
+  "firedepartment": {
+    "title": "Fire Departments"
   },
   "settings": {
     "title": "Settings",

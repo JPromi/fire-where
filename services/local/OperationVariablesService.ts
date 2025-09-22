@@ -5,14 +5,18 @@ export class OperationVariablesService {
   static getOperationTypeColor(operationType: string, colorScheme: ColorSchemeName): string {
     switch (operationType) {
       case 'B':
+      case 'BMA':
+      case 'F':
         return Colors[colorScheme ?? 'light'].opFire;
       case 'T':
       case 'V':
+      case 'KL':
         return Colors[colorScheme ?? 'light'].opTechnical;
       case 'G':
       case 'S':
         return Colors[colorScheme ?? 'light'].opChimical;
       case 'SOF':
+      case 'SD':
         return Colors[colorScheme ?? 'light'].opSupport;
       default:
         return Colors[colorScheme ?? 'light'].opOther;
@@ -22,14 +26,18 @@ export class OperationVariablesService {
   static getOperationTypeTextColor(operationType: string, colorScheme: ColorSchemeName): string {
     switch (operationType) {
       case 'B':
+      case 'BMA':
+      case 'F':
         return Colors[colorScheme ?? 'light'].opFireText;
       case 'T':
       case 'V':
+      case 'KL':
         return Colors[colorScheme ?? 'light'].opTechnicalText;
       case 'G':
       case 'S':
         return Colors[colorScheme ?? 'light'].opChimicalText;
       case 'SOF':
+      case 'SD':
         return Colors[colorScheme ?? 'light'].opSupportText;
       default:
         return Colors[colorScheme ?? 'light'].opOtherText;

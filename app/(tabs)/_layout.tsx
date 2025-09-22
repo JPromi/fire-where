@@ -1,5 +1,6 @@
+import Firedepartment from '@/assets/icons/firedepartment.svg';
 import { Tabs } from 'expo-router';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Platform } from 'react-native';
 
 import { HapticTab } from '@/components/HapticTab';
@@ -79,7 +80,6 @@ export default function TabLayout() {
           headerShown: false,
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="map.fill" color={color} />,
           // href: '/operation',
-          animation: 'fade'
         }}
         listeners={({ navigation }) => ({
           tabPress: (e) => {
@@ -93,12 +93,31 @@ export default function TabLayout() {
         })}
       />
       <Tabs.Screen
+        name="firedepartment"
+        options={{
+          title: t('firedepartment.title'),
+          headerShown: false,
+          // tabBarIcon: ({ color }) => <IconSymbol size={28} name="map.fill" color={color} />,
+          tabBarIcon: ({ color }) => <Firedepartment height={28} width={28} color={color}/>,
+          // href: '/firedepartmnet',
+        }}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 0,
+                routes: [{ name: 'firedepartment' }],
+              })
+            );
+          },
+        })}
+      />
+      <Tabs.Screen
         name="settings"
         options={{
           title: t('settings.title'),
           headerShown: false,
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="gear" color={color} />,
-          animation: 'fade',
         }}
         listeners={({ navigation }) => ({
           tabPress: (e) => {

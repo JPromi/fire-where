@@ -1,16 +1,22 @@
 {
   "expo": {
     "name": "Fire Where",
-    "slug": "Fire Where",
-    "version": "1.0.1",
+    "slug": "fire-where",
+    "version": "1.0.2",
     "icon": "./assets/images/icon.png",
-    "scheme": "FireWhere",
+    "scheme": "firewhere",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "jsEngine": "hermes",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.jpromi.firePoint"
+      "bundleIdentifier": "com.jpromi.firePoint",
+      "infoPlist": {
+        "LSApplicationQueriesSchemes": [
+          "https",
+          "http"
+        ]
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -35,7 +41,9 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
-      ]
+      ],
+      "expo-font",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true

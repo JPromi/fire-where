@@ -110,13 +110,23 @@
   "common": {
     "back": "Zurück",
     "unknown": "Unbekannt",
-    "none": "Keine"
+    "none": "Keine",
+    "error": {
+      "notFound": "Nicht gefunden",
+      "internalServerError": "Es ist ein Fehler bei der Anfrage aufgetreten"
+    },
+    "time": {
+      "hours": "Stunden",
+      "minutes": "Minuten"
+    }
   },
   "operation": {
     "title": "Einsätze",
     "noData": "Keine Einsätze gefunden.",
     "details": {
       "alarmed": "Alarmierung",
+      "inOperationSince": "Im Einsatz seit",
+      "operationDuration": "Einsatzdauer",
       "unit": {
         "alarmed": "Alarmiert",
         "disposition": "Disposition",
@@ -146,6 +156,9 @@
         }
       }
     }
+  },
+  "firedepartment": {
+    "title": "Feuerwehren"
   },
   "settings": {
     "title": "Einstellungen",

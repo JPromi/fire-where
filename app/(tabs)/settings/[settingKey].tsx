@@ -217,7 +217,6 @@ export default function OperationDetailScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    fontFamily: 'Montserrat',
   },
   contentList: {
     width: '100%',
