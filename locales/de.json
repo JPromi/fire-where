@@ -176,8 +176,7 @@
         "developer": "Entwickler",
         "feedback": "Feedback",
         "repository": "Repository",
-        "buildVersion": "Build Version",
-        "buildDate": "Build Datum"
+        "buildVersion": "Build Version"
       },
       "informations": {
         "title": "Informationen",

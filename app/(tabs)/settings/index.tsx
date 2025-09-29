@@ -1,4 +1,3 @@
-import buildInfo from '@/assets/build-info.json';
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Colors } from "@/constants/Colors";
@@ -6,6 +5,7 @@ import { CONFIG } from '@/constants/Config';
 import { useDynamicSide } from '@/hooks/useDynamicSide';
 import { settingsLocalService } from "@/services/local/SettingLocalService";
 import { SettingService } from "@/services/local/SettingService";
+import Constants from 'expo-constants';
 import { Stack, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -102,20 +102,8 @@ export default function SettingsScreen() {
           key: 'version',
           name: t('settings.group.software.buildVersion'),
           type: 'text',
-          valueExtra: buildInfo.buildVersion || 'undefined',
-        },
-        {
-          key: 'buildDate',
-          name: t('settings.group.software.buildDate'),
-          type: 'text',
-          valueExtra: new Date(buildInfo.buildDate).toLocaleDateString('de-DE', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-          }),
-        },
+          valueExtra: `${Constants.manifest?.version}` + (Constants.manifest?.buildNumber ? ` (${Constants.manifest?.buildNumber})` : ''),
+        }
       ]
     },
     {
