@@ -11,6 +11,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.jpromi.firePoint",
       "buildNumber": "1",
+      "icon": "./assets/images/icon.png",
       "infoPlist": {
         "LSApplicationQueriesSchemes": [
           "https",
