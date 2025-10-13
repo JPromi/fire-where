@@ -25,6 +25,7 @@
     "ajv": "^6.12.6",
     "ajv-keywords": "^3.5.2",
     "axios": "^1.10.0",
+    "dotenv": "^17.2.3",
     "expo": "54.0.2",
     "expo-blur": "~15.0.7",
     "expo-constants": "~18.0.8",

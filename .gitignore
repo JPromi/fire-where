@@ -39,5 +39,4 @@ yarn-error.*
 app-example
 
 # Fire Where
-/assets/build-info.json
-/constants/Config.ts
+.env
