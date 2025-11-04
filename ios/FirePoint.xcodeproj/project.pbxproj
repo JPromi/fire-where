@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -11,11 +11,46 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
 		4F40C21FAA093C3A61C23FFC /* libPods-FirePoint.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DE61EED98919CC789D56FC8F /* libPods-FirePoint.a */; };
+		7B2EE1C52EB6256300F7D8A1 /* OperationDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B2EE1C42EB622EA00F7D8A1 /* OperationDTO.swift */; };
+		7B2EE1C62EB6256300F7D8A1 /* OperationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B2EE1C22EB620C000F7D8A1 /* OperationService.swift */; };
+		7B2EE1C72EB6256300F7D8A1 /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B2EE1C12EB620B100F7D8A1 /* ApiClient.swift */; };
+		7B2EE1C82EB6256300F7D8A1 /* OperationDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B2EE1C42EB622EA00F7D8A1 /* OperationDTO.swift */; };
+		7B2EE1C92EB6256300F7D8A1 /* OperationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B2EE1C22EB620C000F7D8A1 /* OperationService.swift */; };
+		7B2EE1CA2EB6256300F7D8A1 /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B2EE1C12EB620B100F7D8A1 /* ApiClient.swift */; };
+		7B2EE1D82EB6332B00F7D8A1 /* FederalState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B2EE1D72EB6332800F7D8A1 /* FederalState.swift */; };
+		7B2EE1D92EB6332B00F7D8A1 /* FederalState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B2EE1D72EB6332800F7D8A1 /* FederalState.swift */; };
 		7B9C631B2E79632700E4806A /* FireWhereIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 7B9C631A2E79632700E4806A /* FireWhereIcon.icon */; };
+		7BB6A7442EB3693200B614A1 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BB6A7432EB3693200B614A1 /* WidgetKit.framework */; };
+		7BB6A7462EB3693200B614A1 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BB6A7452EB3693200B614A1 /* SwiftUI.framework */; };
+		7BB6A7532EB3693300B614A1 /* OperationListWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7BB6A7422EB3693200B614A1 /* OperationListWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		82CFBFA7C484D745E4238FC8 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 08D71FA56A81F362C50B8FF1 /* PrivacyInfo.xcprivacy */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 		F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11748412D0307B40044C1D9 /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		7BB6A7512EB3693300B614A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7BB6A7412EB3693200B614A1;
+			remoteInfo = OperationListWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		7BB6A7542EB3693300B614A1 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				7BB6A7532EB3693300B614A1 /* OperationListWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		08D71FA56A81F362C50B8FF1 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = FirePoint/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
@@ -23,7 +58,14 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = FirePoint/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = FirePoint/Info.plist; sourceTree = "<group>"; };
 		4D234B4AFEECF2470F1B0AC4 /* Pods-FirePoint.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FirePoint.release.xcconfig"; path = "Target Support Files/Pods-FirePoint/Pods-FirePoint.release.xcconfig"; sourceTree = "<group>"; };
+		7B2EE1C12EB620B100F7D8A1 /* ApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiClient.swift; sourceTree = "<group>"; };
+		7B2EE1C22EB620C000F7D8A1 /* OperationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationService.swift; sourceTree = "<group>"; };
+		7B2EE1C42EB622EA00F7D8A1 /* OperationDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationDTO.swift; sourceTree = "<group>"; };
+		7B2EE1D72EB6332800F7D8A1 /* FederalState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FederalState.swift; sourceTree = "<group>"; };
 		7B9C631A2E79632700E4806A /* FireWhereIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = FireWhereIcon.icon; sourceTree = "<group>"; };
+		7BB6A7422EB3693200B614A1 /* OperationListWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OperationListWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		7BB6A7432EB3693200B614A1 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = /System/Library/Frameworks/WidgetKit.framework; sourceTree = "<absolute>"; };
+		7BB6A7452EB3693200B614A1 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = /System/Library/Frameworks/SwiftUI.framework; sourceTree = "<absolute>"; };
 		816C4D284D0B025850F94835 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-FirePoint/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = FirePoint/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
@@ -34,12 +76,35 @@
 		F11748442D0722820044C1D9 /* FirePoint-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "FirePoint-Bridging-Header.h"; path = "FirePoint/FirePoint-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		7BB6A7572EB3693300B614A1 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 7BB6A7412EB3693200B614A1 /* OperationListWidgetExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		7BB6A7472EB3693200B614A1 /* OperationListWidget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (7BB6A7572EB3693300B614A1 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = OperationListWidget; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		13B07F8C1A680F5B00A75B9A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				4F40C21FAA093C3A61C23FFC /* libPods-FirePoint.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7BB6A73F2EB3693200B614A1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7BB6A7462EB3693200B614A1 /* SwiftUI.framework in Frameworks */,
+				7BB6A7442EB3693200B614A1 /* WidgetKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,6 +131,8 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				DE61EED98919CC789D56FC8F /* libPods-FirePoint.a */,
+				7BB6A7432EB3693200B614A1 /* WidgetKit.framework */,
+				7BB6A7452EB3693200B614A1 /* SwiftUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -76,6 +143,41 @@
 				7BFD2BA0111EA98103585E07 /* FirePoint */,
 			);
 			name = ExpoModulesProviders;
+			sourceTree = "<group>";
+		};
+		7B2EE1BF2EB6208400F7D8A1 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				7B2EE1D62EB6332000F7D8A1 /* Enum */,
+				7B2EE1C32EB622C000F7D8A1 /* Module */,
+				7B2EE1C02EB6209500F7D8A1 /* Networking */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		7B2EE1C02EB6209500F7D8A1 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				7B2EE1C22EB620C000F7D8A1 /* OperationService.swift */,
+				7B2EE1C12EB620B100F7D8A1 /* ApiClient.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		7B2EE1C32EB622C000F7D8A1 /* Module */ = {
+			isa = PBXGroup;
+			children = (
+				7B2EE1C42EB622EA00F7D8A1 /* OperationDTO.swift */,
+			);
+			path = Module;
+			sourceTree = "<group>";
+		};
+		7B2EE1D62EB6332000F7D8A1 /* Enum */ = {
+			isa = PBXGroup;
+			children = (
+				7B2EE1D72EB6332800F7D8A1 /* FederalState.swift */,
+			);
+			path = Enum;
 			sourceTree = "<group>";
 		};
 		7BFD2BA0111EA98103585E07 /* FirePoint */ = {
@@ -96,8 +198,10 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				7B2EE1BF2EB6208400F7D8A1 /* Shared */,
 				13B07FAE1A68108700A75B9A /* FirePoint */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
+				7BB6A7472EB3693200B614A1 /* OperationListWidget */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				A5CB6A0DFC645DAF5134F29E /* Pods */,
@@ -112,6 +216,7 @@
 			isa = PBXGroup;
 			children = (
 				13B07F961A680F5B00A75B9A /* FireWhere.app */,
+				7BB6A7422EB3693200B614A1 /* OperationListWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -149,15 +254,39 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
 				986355A58D234A777FF77FFE /* [CP] Embed Pods Frameworks */,
+				7BB6A7542EB3693300B614A1 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				7BB6A7522EB3693300B614A1 /* PBXTargetDependency */,
 			);
 			name = FirePoint;
 			productName = FirePoint;
 			productReference = 13B07F961A680F5B00A75B9A /* FireWhere.app */;
 			productType = "com.apple.product-type.application";
+		};
+		7BB6A7412EB3693200B614A1 /* OperationListWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7BB6A7582EB3693300B614A1 /* Build configuration list for PBXNativeTarget "OperationListWidgetExtension" */;
+			buildPhases = (
+				7BB6A73E2EB3693200B614A1 /* Sources */,
+				7BB6A73F2EB3693200B614A1 /* Frameworks */,
+				7BB6A7402EB3693200B614A1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				7BB6A7472EB3693200B614A1 /* OperationListWidget */,
+			);
+			name = OperationListWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = OperationListWidgetExtension;
+			productReference = 7BB6A7422EB3693200B614A1 /* OperationListWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -165,10 +294,14 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 1130;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
 						LastSwiftMigration = 1250;
+					};
+					7BB6A7412EB3693200B614A1 = {
+						CreatedOnToolsVersion = 26.0.1;
 					};
 				};
 			};
@@ -187,6 +320,7 @@
 			projectRoot = "";
 			targets = (
 				13B07F861A680F5B00A75B9A /* FirePoint */,
+				7BB6A7412EB3693200B614A1 /* OperationListWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -201,6 +335,13 @@
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
 				7B9C631B2E79632700E4806A /* FireWhereIcon.icon in Resources */,
 				82CFBFA7C484D745E4238FC8 /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7BB6A7402EB3693200B614A1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -334,11 +475,34 @@
 			buildActionMask = 2147483647;
 			files = (
 				F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */,
+				7B2EE1D82EB6332B00F7D8A1 /* FederalState.swift in Sources */,
+				7B2EE1C52EB6256300F7D8A1 /* OperationDTO.swift in Sources */,
+				7B2EE1C62EB6256300F7D8A1 /* OperationService.swift in Sources */,
+				7B2EE1C72EB6256300F7D8A1 /* ApiClient.swift in Sources */,
 				1337AB15CEF0ECFF898E60E4 /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7BB6A73E2EB3693200B614A1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7B2EE1C82EB6256300F7D8A1 /* OperationDTO.swift in Sources */,
+				7B2EE1C92EB6256300F7D8A1 /* OperationService.swift in Sources */,
+				7B2EE1D92EB6332B00F7D8A1 /* FederalState.swift in Sources */,
+				7B2EE1CA2EB6256300F7D8A1 /* ApiClient.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7BB6A7522EB3693300B614A1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7BB6A7412EB3693200B614A1 /* OperationListWidgetExtension */;
+			targetProxy = 7BB6A7512EB3693300B614A1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
@@ -358,7 +522,7 @@
 				INFOPLIST_FILE = FirePoint/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Fire Where";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -392,7 +556,7 @@
 				INFOPLIST_FILE = FirePoint/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Fire Where";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -410,6 +574,119 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
+		};
+		7BB6A7552EB3693300B614A1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 6G9BZS387Y;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OperationListWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = OperationListWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.6;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jpromi.firePoint.OperationListWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				XROS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Debug;
+		};
+		7BB6A7562EB3693300B614A1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 6G9BZS387Y;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OperationListWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = OperationListWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.6;
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jpromi.firePoint.OperationListWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				XROS_DEPLOYMENT_TARGET = 26.0;
 			};
 			name = Release;
 		};
@@ -539,6 +816,15 @@
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
 				13B07F951A680F5B00A75B9A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7BB6A7582EB3693300B614A1 /* Build configuration list for PBXNativeTarget "OperationListWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7BB6A7552EB3693300B614A1 /* Debug */,
+				7BB6A7562EB3693300B614A1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
