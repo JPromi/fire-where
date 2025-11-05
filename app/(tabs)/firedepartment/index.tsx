@@ -1,12 +1,52 @@
+import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { Colors } from "@/constants/Colors";
 import { useDynamicSide } from "@/hooks/useDynamicSide";
+import { Firedepartment } from "@/models/Firedepartment";
+import { FiredepartmentService } from "@/services/FiredeparmentService";
 import { Stack, useRouter } from "expo-router";
-import { Pressable, StyleSheet, Text, useColorScheme } from "react-native";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, Pressable, ScrollView, StyleSheet, TextInput, useColorScheme, View } from "react-native";
 
 export default function FiredepartmentDetailScreen() {
   const dynamicSide = useDynamicSide();
   const colorScheme = useColorScheme();
   const router = useRouter();
+
+  const [firedepartments, setFiredepartments] = useState<Firedepartment[]>([]);
+  const [refreshing, setRefreshing] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [query, setQuery] = useState("");
+
+  useEffect(() => {
+    if (!query) {
+      setLoading(false);
+      setFiredepartments([]);
+      return;
+    }
+
+    setLoading(true);
+
+    const t = setTimeout(() => {
+      FiredepartmentService.searchFiredepartments(query)
+        .then(setFiredepartments)
+        .finally(() => setLoading(false));
+    }, 300);
+
+    return () => clearTimeout(t);
+  }, [query]);
+
+  function searchChange(text: string) {
+    setQuery(text);
+  }
+
+  function openFd(uuid: string) {
+    if (!uuid) return;
+    router.push({
+        pathname: "/firedepartment/[uuid]",
+        params: { uuid: uuid },
+      });
+  }
 
   return (
     <>
@@ -15,11 +55,80 @@ export default function FiredepartmentDetailScreen() {
           title: "Feuerwehr",
         }}/>
         <ThemedView style={styles.container}>
-          <Pressable onPress={() => {
-            router.push(`/firedepartment/8e873c8c-92cc-4e03-ad7d-61771156fa2b`);
-          }}>
-            <Text>Test</Text>
-          </Pressable>
+          <ScrollView style={{
+            flex: 1,
+            paddingLeft: dynamicSide.left,
+            paddingRight: dynamicSide.right,
+            display: 'flex',
+          }}
+          contentContainerStyle={{ flexGrow: 1 }}>
+            <View style={[styles.contentList, { flex: 1 }]}>
+              {/* Search */}
+              <View
+                style={{
+                  padding: 10,
+                  marginVertical: 20,
+                  marginHorizontal: 12,
+                  backgroundColor: Colors[colorScheme ?? 'light'].backgroundForground,
+                  borderRadius: 100,
+                  display: 'flex',
+                }}
+                >
+                <TextInput placeholder="Suchen..." onChangeText={searchChange} style={{ color: Colors[colorScheme ?? 'light'].text, paddingHorizontal: 5 }}></TextInput>
+              </View>
+
+              {/* List */}
+              { loading ? (
+                <View style={{ display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: dynamicSide.bottom + 50 }}>
+                  <ActivityIndicator size="small" color={Colors[colorScheme ?? 'light'].tint} />
+                </View>
+              ) : (
+                <View style={{ flex: 1, marginBottom: dynamicSide.bottom + 50 }}>
+                  {firedepartments.map((fd) => (
+                    <Pressable
+                      key={fd.uuid}
+                      onPress={() => openFd(fd.uuid)}
+                      style={{
+                        padding: 12,
+                        borderBottomWidth: 1,
+                        borderColor: Colors[colorScheme ?? 'light'].border,
+                        //opacity: pressed ? 0.7 : 1,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-between',
+                      }}>
+                      {/* Name */}
+                      <ThemedText
+                        numberOfLines={1}
+                        ellipsizeMode="tail"
+                        style={{
+                          color: Colors[colorScheme ?? 'light'].text,
+                          fontWeight: 'bold',
+                          fontSize: 18,
+                          maxWidth: '100%',
+                          textAlign: 'left',
+                          }}>{fd.name}</ThemedText>
+
+                      {/* Sub */}
+                      <View>
+                        <ThemedText
+                          numberOfLines={1}
+                          ellipsizeMode="tail"
+                          style={{
+                              color: Colors[colorScheme ?? 'light'].text,
+                              fontSize: 14,
+                              opacity: 0.5,
+                              lineHeight: 15,
+                              marginTop: 4,
+                            }}>{fd.address.federalState}</ThemedText>
+                      </View>
+                    </Pressable>
+                  ))}
+                </View>
+              )}
+
+            </View>
+          </ScrollView>
         </ThemedView>
     </>
   );
@@ -28,5 +137,10 @@ export default function FiredepartmentDetailScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  contentList: {
+    width: '100%',
+    maxWidth: 1000,
+    marginHorizontal: 'auto',
   },
 });
