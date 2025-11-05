@@ -86,6 +86,12 @@ export default function FiredepartmentDetailScreen() {
                 <View style={{ display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: dynamicSide.bottom + 50 }}>
                   <ActivityIndicator size="small" color={Colors[colorScheme ?? 'light'].tint} />
                 </View>
+              ) : firedepartments.length === 0 ? (
+                <View style={{ justifyContent: 'center', alignItems: 'center', marginBottom: dynamicSide.bottom + 50 }}>
+                  <ThemedText style={{ color: Colors[colorScheme ?? 'light'].text, opacity: 0.5 }}>
+                    { query ? t('firedepartment.search.error.noResults') : t('firedepartment.search.error.noQuery') }
+                  </ThemedText>
+                </View>
               ) : (
                 <View style={{ flex: 1, marginBottom: dynamicSide.bottom + 50 }}>
                   {firedepartments.map((fd) => (

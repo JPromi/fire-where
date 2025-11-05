@@ -158,7 +158,14 @@
     }
   },
   "firedepartment": {
-    "title": "Fire Departments"
+    "title": "Fire Departments",
+    "search": {
+      "placeholder": "Search Fire Department...",
+      "error": {
+        "noResults": "No fire departments found.",
+        "noQuery": "Please enter a search term."
+      }
+    }
   },
   "settings": {
     "title": "Settings",
