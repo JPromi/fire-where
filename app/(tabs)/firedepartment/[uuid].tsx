@@ -9,6 +9,7 @@ import * as faBrand from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Dimensions, Image, Linking, Platform, Pressable, ScrollView, StyleSheet, Text, useColorScheme, View } from "react-native";
 import { SvgUri } from "react-native-svg";
 
@@ -18,6 +19,7 @@ export default function FiredepartmentDetailScreen() {
   const colorScheme = useColorScheme();
   const [loading, setLoading] = useState(true);
   const { uuid } = useLocalSearchParams<{ uuid: string }>();
+  const { t } = useTranslation();
 
   const [firedepartment, setFiredepartment] = useState<Firedepartment>({} as Firedepartment);
 
@@ -148,7 +150,7 @@ export default function FiredepartmentDetailScreen() {
                     rowGap: 10,
                     marginBottom: 0,
                   }}>
-                    {firedepartment.isVolunteer && (<TagChip name="Freiwillig" icon={"heart.fill"} tagColor="#33C2CC"/>)}
+                    {firedepartment.isVolunteer && (<TagChip name={t("firedepartment.details.chip.volunteer")} icon={"heart.fill"} tagColor="#33C2CC"/>)}
                     {true && (<TagChip name="Einsatzbereit" icon={"flame.fill"} tagColor="#13F24E"/>)}
                 </View>
 
