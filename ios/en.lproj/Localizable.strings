@@ -5,6 +5,8 @@
 //  Created by Jonas Prominzer on 05.11.25.
 //
 
+"federalState" = "Federl State";
+
 "operation.active" = "Active Operations";
 
 "federalState.la" = "Lower Austria";

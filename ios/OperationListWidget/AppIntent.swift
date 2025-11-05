@@ -10,9 +10,9 @@ import AppIntents
 
 struct ConfigurationAppIntent: WidgetConfigurationIntent {
   static var title: LocalizedStringResource { "Configuration" }
-  static var description: IntentDescription { "This is an example widget." }
+  static var description: IntentDescription { "Fire Where Operation Widget" }
 
-  @Parameter(title: "Bundesland", default: FederalState.none)
+  @Parameter(title: LocalizedStringResource("federalState"), default: FederalState.none)
   var federalState: FederalState
   
   /* @Parameter(title: "Bezirk")

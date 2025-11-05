@@ -5,6 +5,8 @@
 //  Created by Jonas Prominzer on 05.11.25.
 //
 
+"federalState" = "Bundesland";
+
 "operation.active" = "Aktive Einsätze";
 
 "federalState.la" = "Niederösterreich";
