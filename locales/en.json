@@ -166,7 +166,7 @@
       "general": {
         "title": "General",
         "language": "Language",
-        "nerdMode": "Nerd Mode"
+        "nerdMode": "Developer Mode"
       },
       "operations": {
           "title": "Operations"

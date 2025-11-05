@@ -1,5 +1,6 @@
 import { CONFIG } from '@/constants/Config';
 import { Firedepartment } from '@/models/Firedepartment';
+import { Page } from '@/models/Page';
 import axios from 'axios';
 
 export class FiredepartmentService {
@@ -8,8 +9,8 @@ export class FiredepartmentService {
     return res.data;
   }
 
-  static async searchFiredepartments(q: string, limit: number = 20, page: number = 1) {
-    const res = await axios.get<Firedepartment[]>(`${CONFIG.api.baseUrl}/firedepartment/list`, {
+  static async searchFiredepartments(q: string, limit: number = 20, page: number = 0) {
+    const res = await axios.get<Page<Firedepartment>>(`${CONFIG.api.baseUrl}/firedepartment/list`, {
       params: {
         q,
         limit,

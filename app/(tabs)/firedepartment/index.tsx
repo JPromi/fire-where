@@ -6,12 +6,14 @@ import { Firedepartment } from "@/models/Firedepartment";
 import { FiredepartmentService } from "@/services/FiredeparmentService";
 import { Stack, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, TextInput, useColorScheme, View } from "react-native";
 
 export default function FiredepartmentDetailScreen() {
   const dynamicSide = useDynamicSide();
   const colorScheme = useColorScheme();
   const router = useRouter();
+  const { t } = useTranslation();
 
   const [firedepartments, setFiredepartments] = useState<Firedepartment[]>([]);
   const [refreshing, setRefreshing] = useState(false);
@@ -28,8 +30,10 @@ export default function FiredepartmentDetailScreen() {
     setLoading(true);
 
     const t = setTimeout(() => {
-      FiredepartmentService.searchFiredepartments(query)
-        .then(setFiredepartments)
+      FiredepartmentService.searchFiredepartments(query, 36, 0)
+        .then((res) => {
+          setFiredepartments(res.content);
+        })
         .finally(() => setLoading(false));
     }, 300);
 
@@ -52,7 +56,7 @@ export default function FiredepartmentDetailScreen() {
     <>
       <Stack.Screen
         options={{
-          title: "Feuerwehr",
+          title: t('firedepartment.title'),
         }}/>
         <ThemedView style={styles.container}>
           <ScrollView style={{
@@ -74,7 +78,7 @@ export default function FiredepartmentDetailScreen() {
                   display: 'flex',
                 }}
                 >
-                <TextInput placeholder="Suchen..." onChangeText={searchChange} style={{ color: Colors[colorScheme ?? 'light'].text, paddingHorizontal: 5 }}></TextInput>
+                <TextInput placeholder={t('firedepartment.search.placeholder')} onChangeText={searchChange} style={{ color: Colors[colorScheme ?? 'light'].text, paddingHorizontal: 5 }}></TextInput>
               </View>
 
               {/* List */}
