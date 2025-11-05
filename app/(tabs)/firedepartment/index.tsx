@@ -52,6 +52,31 @@ export default function FiredepartmentDetailScreen() {
       });
   }
 
+  function getFederalStateName(fsName: string) : string{
+    switch (fsName) {
+      case 'Lower Austria':
+        return t('assets.federalStates.la');
+      case 'Upper Austria':
+        return t('assets.federalStates.ua');
+      case 'Styria':
+        return t('assets.federalStates.st');
+      case 'Burgenland':
+        return t('assets.federalStates.bl');
+      case 'Vienna':
+        return t('assets.federalStates.vi');
+      case 'Carinthia':
+        return t('assets.federalStates.ca');
+      case 'Salzburg':
+        return t('assets.federalStates.sb');
+      case 'Tyrol':
+        return t('assets.federalStates.ty');
+      case 'Vorarlberg':
+        return t('assets.federalStates.vb');
+      default:
+        return fsName;
+    }
+  }
+
   return (
     <>
       <Stack.Screen
@@ -120,18 +145,20 @@ export default function FiredepartmentDetailScreen() {
                           }}>{fd.name}</ThemedText>
 
                       {/* Sub */}
-                      <View>
-                        <ThemedText
-                          numberOfLines={1}
-                          ellipsizeMode="tail"
-                          style={{
-                              color: Colors[colorScheme ?? 'light'].text,
-                              fontSize: 14,
-                              opacity: 0.5,
-                              lineHeight: 15,
-                              marginTop: 4,
-                            }}>{fd.address.federalState}</ThemedText>
-                      </View>
+                      { fd.address.federalState && (
+                        <View>
+                          <ThemedText
+                            numberOfLines={1}
+                            ellipsizeMode="tail"
+                            style={{
+                                color: Colors[colorScheme ?? 'light'].text,
+                                fontSize: 14,
+                                opacity: 0.5,
+                                lineHeight: 15,
+                                marginTop: 4,
+                              }}>{getFederalStateName(fd.address.federalState)}</ThemedText>
+                        </View>
+                      ) }
                     </Pressable>
                   ))}
                 </View>
