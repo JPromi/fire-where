@@ -124,7 +124,8 @@ export default function OperationSelectDistrict() {
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
             }
-            style={{ paddingLeft: dynamicSide.left, paddingRight: dynamicSide.right }}>
+            style={{ paddingLeft: dynamicSide.left, paddingRight: dynamicSide.right }}
+            contentContainerStyle={{ flexGrow: 1 }}>
             <View style={[styles.contentList, { marginBottom: dynamicSide.bottom + 50 }]}>
               {operations.length === 0 ? (
                 <ThemedText

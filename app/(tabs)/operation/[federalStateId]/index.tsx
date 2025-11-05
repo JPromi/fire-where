@@ -153,7 +153,7 @@ export default function OperationSelectDistrict() {
               </Pressable>
             </View>
           ) : (
-            <ScrollView>
+            <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
               <View style={[styles.contentList, { marginBottom: dynamicSide.bottom + 50, paddingLeft: dynamicSide.left, paddingRight: dynamicSide.right }]}>
                 {districts.map((fs) => (
                   <Pressable

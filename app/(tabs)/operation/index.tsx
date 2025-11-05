@@ -151,7 +151,8 @@ export default function OperationSelectFederalStateScreen() {
                   getStatistic();
                 }}/>
               }
-              style={{ paddingLeft: dynamicSide.left, paddingRight: dynamicSide.right }}>
+              style={{ paddingLeft: dynamicSide.left, paddingRight: dynamicSide.right }}
+              contentContainerStyle={{ flexGrow: 1 }}>
               <View style={[styles.contentList, { marginBottom: dynamicSide.bottom + 50, paddingLeft: dynamicSide.left, paddingRight: dynamicSide.right }]}>
                 {federalStates.map((fs) => (
                   <Pressable
