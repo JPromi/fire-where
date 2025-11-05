@@ -17,12 +17,14 @@
 		7B2EE1C82EB6256300F7D8A1 /* OperationDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B2EE1C42EB622EA00F7D8A1 /* OperationDTO.swift */; };
 		7B2EE1C92EB6256300F7D8A1 /* OperationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B2EE1C22EB620C000F7D8A1 /* OperationService.swift */; };
 		7B2EE1CA2EB6256300F7D8A1 /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B2EE1C12EB620B100F7D8A1 /* ApiClient.swift */; };
-		7B2EE1D82EB6332B00F7D8A1 /* FederalState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B2EE1D72EB6332800F7D8A1 /* FederalState.swift */; };
 		7B2EE1D92EB6332B00F7D8A1 /* FederalState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B2EE1D72EB6332800F7D8A1 /* FederalState.swift */; };
 		7B9C631B2E79632700E4806A /* FireWhereIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 7B9C631A2E79632700E4806A /* FireWhereIcon.icon */; };
 		7BB6A7442EB3693200B614A1 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BB6A7432EB3693200B614A1 /* WidgetKit.framework */; };
 		7BB6A7462EB3693200B614A1 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BB6A7452EB3693200B614A1 /* SwiftUI.framework */; };
 		7BB6A7532EB3693300B614A1 /* OperationListWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7BB6A7422EB3693200B614A1 /* OperationListWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		7BFEAA442EBB85B2009BB21A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7BFEAA432EBB85B2009BB21A /* Localizable.strings */; };
+		7BFEAA462EBB8D03009BB21A /* FederalState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B2EE1D72EB6332800F7D8A1 /* FederalState.swift */; };
+		7BFEAA472EBB8D0F009BB21A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7BFEAA432EBB85B2009BB21A /* Localizable.strings */; };
 		82CFBFA7C484D745E4238FC8 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 08D71FA56A81F362C50B8FF1 /* PrivacyInfo.xcprivacy */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 		F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11748412D0307B40044C1D9 /* AppDelegate.swift */; };
@@ -66,6 +68,8 @@
 		7BB6A7422EB3693200B614A1 /* OperationListWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OperationListWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		7BB6A7432EB3693200B614A1 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = /System/Library/Frameworks/WidgetKit.framework; sourceTree = "<absolute>"; };
 		7BB6A7452EB3693200B614A1 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = /System/Library/Frameworks/SwiftUI.framework; sourceTree = "<absolute>"; };
+		7BFEAA422EBB85B2009BB21A /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		7BFEAA452EBB85B5009BB21A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		816C4D284D0B025850F94835 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-FirePoint/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = FirePoint/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
@@ -213,6 +217,7 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				A5CB6A0DFC645DAF5134F29E /* Pods */,
 				524C5420E48413FBB0DFF5E8 /* ExpoModulesProviders */,
+				7BFEAA432EBB85B2009BB21A /* Localizable.strings */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -336,6 +341,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
+				7BFEAA472EBB8D0F009BB21A /* Localizable.strings in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
 				7B9C631B2E79632700E4806A /* FireWhereIcon.icon in Resources */,
@@ -347,6 +353,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7BFEAA442EBB85B2009BB21A /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -422,9 +429,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-FirePoint/Pods-FirePoint-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-FirePoint/Pods-FirePoint-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -439,9 +450,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-FirePoint/Pods-FirePoint-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-FirePoint/Pods-FirePoint-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -456,7 +471,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */,
-				7B2EE1D82EB6332B00F7D8A1 /* FederalState.swift in Sources */,
+				7BFEAA462EBB8D03009BB21A /* FederalState.swift in Sources */,
 				7B2EE1C52EB6256300F7D8A1 /* OperationDTO.swift in Sources */,
 				7B2EE1C62EB6256300F7D8A1 /* OperationService.swift in Sources */,
 				7B2EE1C72EB6256300F7D8A1 /* ApiClient.swift in Sources */,
@@ -484,6 +499,18 @@
 			targetProxy = 7BB6A7512EB3693300B614A1 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		7BFEAA432EBB85B2009BB21A /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7BFEAA422EBB85B2009BB21A /* de */,
+				7BFEAA452EBB85B5009BB21A /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
@@ -728,10 +755,7 @@
 				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/usr/lib/swift\"$(inherited)\"";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -786,10 +810,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/usr/lib/swift\"$(inherited)\"";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;

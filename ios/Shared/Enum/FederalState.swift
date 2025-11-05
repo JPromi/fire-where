@@ -6,9 +6,8 @@
 //
 import AppIntents
 
-
 enum FederalState: String, AppEnum, CaseIterable {
-  case none = "None"
+  case none = "none"
   case la = "lower-austria"
   case ua = "upper-austria"
   case st = "styria"
@@ -19,12 +18,12 @@ enum FederalState: String, AppEnum, CaseIterable {
 
   static var caseDisplayRepresentations: [FederalState: DisplayRepresentation] {
     [
-      .none: "--",
-      .la: "Niederösterreich",
-      .ua: "Oberösterreich",
-      .st: "Steiermark",
-      .bl: "Burgenland",
-      .ty: "Tirol",
+      .none: .init(title: "--"),
+      .la:   .init(title: LocalizedStringResource("federalState.la")),
+      .ua:   .init(title: LocalizedStringResource("federalState.ua")),
+      .st:   .init(title: LocalizedStringResource("federalState.st")),
+      .bl:   .init(title: LocalizedStringResource("federalState.bl")),
+      .ty:   .init(title: LocalizedStringResource("federalState.ty")),
     ]
   }
 }

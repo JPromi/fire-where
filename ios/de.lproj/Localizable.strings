@@ -1,0 +1,21 @@
+//
+//  Localizable.strings
+//  FirePoint
+//
+//  Created by Jonas Prominzer on 05.11.25.
+//
+
+"operation.active" = "Aktive Einsätze";
+
+"federalState.la" = "Niederösterreich";
+"federalState.ua" = "Oberösterreich";
+"federalState.bl" = "Burgenland";
+"federalState.st" = "Steiermark";
+"federalState.ty" = "Tirol";
+"federalState.vb" = "Vorarlberg";
+"federalState.ca" = "Kärnten";
+"federalState.sb" = "Salzburg";
+"federalState.vi" = "Wien";
+
+"country.at" = "Österreich";
+

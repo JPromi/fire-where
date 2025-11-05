@@ -15,8 +15,8 @@ struct ConfigurationAppIntent: WidgetConfigurationIntent {
   @Parameter(title: "Bundesland", default: FederalState.none)
   var federalState: FederalState
   
-  @Parameter(title: "Bezirk")
-  var district: String?
+  /* @Parameter(title: "Bezirk")
+  var district: String? */
   
   @MainActor
   func perform() async throws -> some IntentResult {

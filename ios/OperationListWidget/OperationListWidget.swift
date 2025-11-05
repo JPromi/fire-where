@@ -7,6 +7,7 @@
 
 import WidgetKit
 import SwiftUI
+import AppIntents
 
 struct Provider: AppIntentTimelineProvider {
   func placeholder(in context: Context) -> SimpleEntry {
@@ -51,8 +52,7 @@ struct Provider: AppIntentTimelineProvider {
       entries.append(entry)
     }
 
-    // z. B. alle 15 Minuten aktualisieren
-    return Timeline(entries: entries, policy: .after(Date().addingTimeInterval(10)))
+    return Timeline(entries: entries, policy: .after(Date().addingTimeInterval(120)))
   }
 }
 
@@ -83,12 +83,19 @@ struct OperationListWidgetEntryView : View {
       
       // Title
       VStack(alignment: .leading, spacing: 0) {
-        Text("Aktive Einsätze") // TODO: Translate
+        Text(LocalizedStringResource("operation.active"))
           .font(.caption2)
           .fontWeight(.light)
           .foregroundStyle(.secondary)
         
-        Text(entry.configuration.district ?? entry.configuration.federalState.rawValue) // TODO: Custom Text
+        Text(
+          entry.configuration.federalState == .none ?
+          LocalizedStringResource("country.at")
+          :
+          FederalState.caseDisplayRepresentations[entry.configuration.federalState]?
+            .title
+          ?? LocalizedStringResource(stringLiteral: "")
+        )
           .font(.headline)
           .fontWeight(.semibold)
       }
@@ -97,7 +104,7 @@ struct OperationListWidgetEntryView : View {
       
       // Active Operation count
       Text("\(entry.operations.count)")
-        .font(.system(size: 64, weight: .bold, design: .rounded))
+        .font(.system(size: 64, weight: .bold, design: .default))
         .monospacedDigit()
         .opacity(0.9)
         .padding(.top, 24)
