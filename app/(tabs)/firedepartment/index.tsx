@@ -123,15 +123,15 @@ export default function FiredepartmentDetailScreen() {
                     <Pressable
                       key={fd.uuid}
                       onPress={() => openFd(fd.uuid)}
-                      style={{
+                      style={({ pressed }) => ({
                         padding: 12,
                         borderBottomWidth: 1,
                         borderColor: Colors[colorScheme ?? 'light'].border,
-                        //opacity: pressed ? 0.7 : 1,
+                        opacity: pressed ? 0.7 : 1,
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'space-between',
-                      }}>
+                      })}>
                       {/* Name */}
                       <ThemedText
                         numberOfLines={1}
