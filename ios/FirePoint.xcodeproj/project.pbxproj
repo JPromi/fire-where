@@ -25,6 +25,8 @@
 		7BFEAA442EBB85B2009BB21A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7BFEAA432EBB85B2009BB21A /* Localizable.strings */; };
 		7BFEAA462EBB8D03009BB21A /* FederalState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B2EE1D72EB6332800F7D8A1 /* FederalState.swift */; };
 		7BFEAA472EBB8D0F009BB21A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7BFEAA432EBB85B2009BB21A /* Localizable.strings */; };
+		7BFEAA4A2EBCAECC009BB21A /* OperationColorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFEAA492EBCAEC8009BB21A /* OperationColorService.swift */; };
+		7BFEAA4B2EBCAECC009BB21A /* OperationColorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFEAA492EBCAEC8009BB21A /* OperationColorService.swift */; };
 		82CFBFA7C484D745E4238FC8 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 08D71FA56A81F362C50B8FF1 /* PrivacyInfo.xcprivacy */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 		F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11748412D0307B40044C1D9 /* AppDelegate.swift */; };
@@ -70,6 +72,7 @@
 		7BB6A7452EB3693200B614A1 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = /System/Library/Frameworks/SwiftUI.framework; sourceTree = "<absolute>"; };
 		7BFEAA422EBB85B2009BB21A /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		7BFEAA452EBB85B5009BB21A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		7BFEAA492EBCAEC8009BB21A /* OperationColorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationColorService.swift; sourceTree = "<group>"; };
 		816C4D284D0B025850F94835 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-FirePoint/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = FirePoint/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
@@ -159,6 +162,7 @@
 		7B2EE1BF2EB6208400F7D8A1 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				7BFEAA482EBCAEBC009BB21A /* Service */,
 				7B2EE1D62EB6332000F7D8A1 /* Enum */,
 				7B2EE1C32EB622C000F7D8A1 /* Module */,
 				7B2EE1C02EB6209500F7D8A1 /* Networking */,
@@ -197,6 +201,14 @@
 				816C4D284D0B025850F94835 /* ExpoModulesProvider.swift */,
 			);
 			name = FirePoint;
+			sourceTree = "<group>";
+		};
+		7BFEAA482EBCAEBC009BB21A /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				7BFEAA492EBCAEC8009BB21A /* OperationColorService.swift */,
+			);
+			path = Service;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -475,6 +487,7 @@
 				7B2EE1C52EB6256300F7D8A1 /* OperationDTO.swift in Sources */,
 				7B2EE1C62EB6256300F7D8A1 /* OperationService.swift in Sources */,
 				7B2EE1C72EB6256300F7D8A1 /* ApiClient.swift in Sources */,
+				7BFEAA4A2EBCAECC009BB21A /* OperationColorService.swift in Sources */,
 				1337AB15CEF0ECFF898E60E4 /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -487,6 +500,7 @@
 				7B2EE1C92EB6256300F7D8A1 /* OperationService.swift in Sources */,
 				7B2EE1D92EB6332B00F7D8A1 /* FederalState.swift in Sources */,
 				7B2EE1CA2EB6256300F7D8A1 /* ApiClient.swift in Sources */,
+				7BFEAA4B2EBCAECC009BB21A /* OperationColorService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

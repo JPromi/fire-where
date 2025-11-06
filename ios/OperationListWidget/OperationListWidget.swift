@@ -66,6 +66,14 @@ struct OperationListWidgetEntryView : View {
   
   @Environment(\.widgetFamily) var family
   var entry: Provider.Entry
+  
+  var locationLink: URL {
+    if entry.configuration.federalState != .none {
+      return URL(string: "firepoint://operation/\(entry.configuration.federalState.rawValue)")!
+    } else {
+      return URL(string: "firepoint://operation/")!
+    }
+  }
 
   var body: some View {
     switch family {
@@ -79,8 +87,8 @@ struct OperationListWidgetEntryView : View {
   }
   
   var smallWidget: some View {
+    // TODO: Open selected federal state
     ZStack {
-      
       // Title
       VStack(alignment: .leading, spacing: 0) {
         Text(LocalizedStringResource("operation.active"))
@@ -92,12 +100,12 @@ struct OperationListWidgetEntryView : View {
           entry.configuration.federalState == .none ?
           LocalizedStringResource("country.at")
           :
-          FederalState.caseDisplayRepresentations[entry.configuration.federalState]?
+            FederalState.caseDisplayRepresentations[entry.configuration.federalState]?
             .title
           ?? LocalizedStringResource(stringLiteral: "")
         )
-          .font(.headline)
-          .fontWeight(.semibold)
+        .font(.headline)
+        .fontWeight(.semibold)
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
       .padding(0)
@@ -112,15 +120,108 @@ struct OperationListWidgetEntryView : View {
   }
       
   var mediumWidget: some View {
-    ZStack {
-      Text("\(entry.operations.count)")
-          .font(.system(size: 64, weight: .bold, design: .rounded))
-          .monospacedDigit()
-          .opacity(0.9)
-          .padding(.top, 24)
+    HStack(alignment: .top, spacing: 16) {
+      
+      /// Counter
+      Link(destination: locationLink) {
+        VStack(alignment: .leading, spacing: 4) {
+          /// Title
+          VStack(alignment: .leading, spacing: 0) {
+            Text(LocalizedStringResource("operation.active"))
+              .font(.caption2)
+              .fontWeight(.light)
+              .foregroundStyle(.secondary)
+            
+            Text(
+              entry.configuration.federalState == .none ?
+              LocalizedStringResource("country.at")
+              :
+                FederalState.caseDisplayRepresentations[entry.configuration.federalState]?
+                .title
+              ?? LocalizedStringResource(stringLiteral: "")
+            )
+            .font(.headline)
+            .fontWeight(.semibold)
+          }
+          .frame(maxWidth: .infinity, alignment: .topLeading)
+          
+          Spacer()
+          
+          /// Counter
+          Text("\(entry.operations.count)")
+            .font(.system(size: 32, weight: .bold, design: .default))
+            .monospacedDigit()
+            .opacity(0.9)
+        }
+        .frame(width: 90, alignment: .leading)
+      }
+      
+      // Operations
+      VStack(alignment: .leading, spacing: 8) {
+        ForEach(entry.operations.prefix(4), id: \.id) { operation in
+          Link(destination: URL(string: "firepoint://operation/details/\(operation.uuid)")!) {
+            HStack(spacing: 6) {
+              operationTypeBox(alarm: operation.alarm)
+              Text(operation.alarm.message ?? "")
+                .font(.system(size: 14, weight: .regular, design: .default))
+                .lineLimit(1)
+            }
+          }
+        }
+      }
+      .frame(maxWidth: .infinity, alignment: .leading)
     }
   }
       
+}
+
+@ViewBuilder
+func operationTypeBox(alarm: Alarm) -> some View {
+  let colorService = OperationColorService()
+
+  let alarmText: String = {
+    if let tyrol = alarm.tyrolCategory, !tyrol.isEmpty {
+      return tyrol
+    }
+    let type = alarm.type ?? ""
+    let level = alarm.level.map(String.init) ?? ""
+    let add = alarm.levelAddition ?? ""
+    let s = type + level + add
+    return s.isEmpty ? "" : s
+  }()
+  
+  let fontSize: CGFloat = {
+    if (alarm.tyrolCategory != nil) {
+      return 12
+    } else {
+      return alarmText.count > 3 ? (alarmText.count > 3 ? 8 : 12) : 14
+    }
+  }()
+  
+  let boxWidth: CGFloat = {
+    if (alarm.tyrolCategory != nil) {
+      return 64
+    } else {
+      return 32
+    }
+  }()
+
+  VStack {
+    Text(alarmText)
+      .font(
+        .system(
+          size: fontSize,
+          weight: .regular
+        )
+      )
+      .lineLimit(1)
+      .frame(width: boxWidth, height: 20, alignment: .center)
+      .padding(2)
+      .foregroundColor(colorService.text(alarm: alarm))
+
+  }
+    .background(colorService.background(alarm: alarm))
+    .cornerRadius(4)
 }
 
 struct OperationListWidget: Widget {
