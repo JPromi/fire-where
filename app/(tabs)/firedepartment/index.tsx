@@ -7,7 +7,7 @@ import { FiredepartmentService } from "@/services/FiredeparmentService";
 import { Stack, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, TextInput, useColorScheme, View } from "react-native";
+import { ActivityIndicator, Platform, Pressable, ScrollView, StyleSheet, TextInput, useColorScheme, View } from "react-native";
 
 export default function FiredepartmentDetailScreen() {
   const dynamicSide = useDynamicSide();
@@ -103,7 +103,20 @@ export default function FiredepartmentDetailScreen() {
                   display: 'flex',
                 }}
                 >
-                <TextInput placeholder={t('firedepartment.search.placeholder')} onChangeText={searchChange} style={{ color: Colors[colorScheme ?? 'light'].text, paddingHorizontal: 5 }}></TextInput>
+                <TextInput
+                  placeholder={t('firedepartment.search.placeholder')}
+                  onChangeText={searchChange}
+                  style={
+                    {
+                      color: Colors[colorScheme ?? 'light'].text,
+                      paddingHorizontal: 5,
+                      ...Platform.select({
+                        web: {
+                          outline: 'none',
+                        }
+                      })
+                    }
+                  }/>
               </View>
 
               {/* List */}
