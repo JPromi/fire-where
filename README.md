@@ -25,3 +25,9 @@ Nachdem für Niederösterreich die App [Grisu](https://github.com/Grisu-NOE/mobi
 2. Install packages `npm install`
 3. Copy `.env.example` to `.env` and change the values.
 4. Start expo server `npm start`
+
+### Version setzen
+Ändere in den folgenden Datein die Version
+- `package.json`
+- `package-lock.json`
+- `app.json`
