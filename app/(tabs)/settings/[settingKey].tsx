@@ -69,7 +69,7 @@ export default function OperationDetailScreen() {
       { value: 'hollabrunn', label: t('assets.districts.la.hollabrunn'), group: 'la' },
       { value: 'horn', label: t('assets.districts.la.horn'), group: 'la' },
       { value: 'krems-an-der-donau', label: t('assets.districts.la.krems-an-der-donau'), group: 'la' },
-      { value: 'kloserneuburg', label: t('assets.districts.la.kloserneuburg'), group: 'la' },
+      { value: 'klosterneuburg', label: t('assets.districts.la.klosterneuburg'), group: 'la' },
       { value: 'lilienfeld', label: t('assets.districts.la.lilienfeld'), group: 'la' },
       { value: 'melk', label: t('assets.districts.la.melk'), group: 'la' },
       { value: 'mistelbach', label: t('assets.districts.la.mistelbach'), group: 'la' },
