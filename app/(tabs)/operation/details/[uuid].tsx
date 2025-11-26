@@ -116,6 +116,26 @@ export default function OperationDetailScreen() {
     }).start();
   }
 
+  function getAnonymizedUnitDate(dateString: string | undefined): string {
+    if(!dateString) return t('common.unknown');
+
+    const date = new Date(dateString);
+    var newDateString = date.toLocaleDateString('de-DE', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+      
+    if (operation.system.serviceOrigin === ServiceOriginEnum.LA_WASTL_PUB) {
+      newDateString = newDateString.slice(0, -1) + 'x';
+      return newDateString;
+    } else {
+      return newDateString;
+    }
+  }
+
   return (
     <>
       <Stack.Screen options={{
@@ -318,19 +338,19 @@ export default function OperationDetailScreen() {
                               }}>
                                 <View style={styles.extendedInformationLine}>
                                   <ThemedText style={styles.extendedInformationLineDescription}>{t('operation.details.unit.alarmed')}</ThemedText>
-                                  <ThemedText>{ fd.alarmTime ? getDate(fd.alarmTime) : '---' }</ThemedText>
+                                  <ThemedText>{ fd.alarmTime ? getAnonymizedUnitDate(fd.alarmTime) : '---' }</ThemedText>
                                 </View>
                                 <View style={styles.extendedInformationLine}>
                                   <ThemedText style={styles.extendedInformationLineDescription}>{t('operation.details.unit.disposition')}</ThemedText>
-                                  <ThemedText>{ fd.dispoTime ? getDate(fd.dispoTime) : '---' }</ThemedText>
+                                  <ThemedText>{ fd.dispoTime ? getAnonymizedUnitDate(fd.dispoTime) : '---' }</ThemedText>
                                 </View>
                                 <View style={styles.extendedInformationLine}>
                                   <ThemedText style={styles.extendedInformationLineDescription}>{t('operation.details.unit.out')}</ThemedText>
-                                  <ThemedText>{ fd.outTime ? getDate(fd.outTime) : '---' }</ThemedText>
+                                  <ThemedText>{ fd.outTime ? getAnonymizedUnitDate(fd.outTime) : '---' }</ThemedText>
                                 </View>
                                 <View style={styles.extendedInformationLine}>
                                   <ThemedText style={styles.extendedInformationLineDescription}>{t('operation.details.unit.in')}</ThemedText>
-                                  <ThemedText>{ fd.inTime ? getDate(fd.inTime) : '---' }</ThemedText>
+                                  <ThemedText>{ fd.inTime ? getAnonymizedUnitDate(fd.inTime) : '---' }</ThemedText>
                                 </View>
                             </View>
                           </Animated.View>
@@ -416,19 +436,19 @@ export default function OperationDetailScreen() {
                               }}>
                                 <View style={styles.extendedInformationLine}>
                                   <ThemedText style={styles.extendedInformationLineDescription}>{t('operation.details.unit.alarmed')}</ThemedText>
-                                  <ThemedText>{ fd.alarmTime ? getDate(fd.alarmTime) : '---' }</ThemedText>
+                                  <ThemedText>{ fd.alarmTime ? getAnonymizedUnitDate(fd.alarmTime) : '---' }</ThemedText>
                                 </View>
                                 <View style={styles.extendedInformationLine}>
                                   <ThemedText style={styles.extendedInformationLineDescription}>{t('operation.details.unit.disposition')}</ThemedText>
-                                  <ThemedText>{ fd.dispoTime ? getDate(fd.dispoTime) : '---' }</ThemedText>
+                                  <ThemedText>{ fd.dispoTime ? getAnonymizedUnitDate(fd.dispoTime) : '---' }</ThemedText>
                                 </View>
                                 <View style={styles.extendedInformationLine}>
                                   <ThemedText style={styles.extendedInformationLineDescription}>{t('operation.details.unit.out')}</ThemedText>
-                                  <ThemedText>{ fd.outTime ? getDate(fd.outTime) : '---' }</ThemedText>
+                                  <ThemedText>{ fd.outTime ? getAnonymizedUnitDate(fd.outTime) : '---' }</ThemedText>
                                 </View>
                                 <View style={styles.extendedInformationLine}>
                                   <ThemedText style={styles.extendedInformationLineDescription}>{t('operation.details.unit.in')}</ThemedText>
-                                  <ThemedText>{ fd.inTime ? getDate(fd.inTime) : '---' }</ThemedText>
+                                  <ThemedText>{ fd.inTime ? getAnonymizedUnitDate(fd.inTime) : '---' }</ThemedText>
                                 </View>
                             </View>
                           </Animated.View>
@@ -567,6 +587,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    position: 'relative',
   },
   extendedInformationLineDescription: {
     opacity: 0.5,
