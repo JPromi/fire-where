@@ -50,23 +50,43 @@ export default function OperationSelectDistrict() {
       // districts data processing
       const rawDistrictData = districtData.find(d => d.fdId === fs.id);
       if (rawDistrictData) {
-        const distList = rawDistrictData.districts.map(d => ({
-          id: d,
-          name: t(`assets.districts.${fs.id}.${d}`),
-        })).sort((a, b) => a.name.localeCompare(b.name));
 
-        setDistricts(distList);
+        let dist;
 
-        const dist = distList.find(d => d.id === districtId) || { id: districtId, name: '' };
-        setDistrict(dist);
+        if (districtId === 'all') {
+          const distAll = { id: 'all', name: t('operation.allOperations', { federalState: fs.name }) };
+          setDistrict(distAll);
+          setDistricts([distAll]);
+
+          dist = distAll;
+        } else {
+          const distList = rawDistrictData.districts.map(d => ({
+            id: d,
+            name: t(`assets.districts.${fs.id}.${d}`),
+          })).sort((a, b) => a.name.localeCompare(b.name));
+
+          setDistricts(distList);
+
+          dist = distList.find(d => d.id === districtId) || { id: districtId, name: '' };
+          setDistrict(dist);
+        }
 
         // fetch operations
-        OperationService.getOperationsByFsDistrict(fs.idLong, dist.id)
-          .then(setOperations)
-          .catch(console.error)
-          .finally(() => {
-            setLoading(false);
-          });
+        if (dist.id === 'all') {
+          OperationService.getOperationsByFs(fs.idLong)
+            .then(setOperations)
+            .catch(console.error)
+            .finally(() => {
+              setLoading(false);
+            });
+        } else {
+          OperationService.getOperationsByFsDistrict(fs.idLong, dist.id)
+            .then(setOperations)
+            .catch(console.error)
+            .finally(() => {
+              setLoading(false);
+            });
+        }
       } else {
         console.error(t('operation.noDistrictData', { federalState: fs.name }));
         setLoading(false);

@@ -124,6 +124,7 @@
   "operation": {
     "title": "Incidents",
     "noData": "No incidents found.",
+    "allOperations": "All incidents in {{federalState}}",
     "details": {
       "alarmed": "Alerted",
       "inOperationSince": "In operation since",

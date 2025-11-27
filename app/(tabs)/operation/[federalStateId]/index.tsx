@@ -74,6 +74,9 @@ export default function OperationSelectDistrict() {
         });
 
         districts.sort((a, b) => a.name.localeCompare(b.name));
+
+        // add "all districts" option at the beginning
+        districts.unshift({ id: 'all', name: t('operation.allOperations', { federalState: federalState?.name }) });
       }
     }
   }
