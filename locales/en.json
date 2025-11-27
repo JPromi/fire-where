@@ -102,10 +102,6 @@
       "UA_LFV_PUB": "LFV Upper Austria",
       "ST_LFV_PUB": "LFV Styria",
       "TYROL_LFS_APP": "Tyrol Incidents App"
-    },
-    "language": {
-      "de": "German",
-      "en": "English"
     }
   },
   "common": {
