@@ -10,6 +10,7 @@ export const CONFIG = {
       website: Constants.expoConfig?.extra?.infoDeveloperWebsite as string || null,
     },
     app: {
+      name: Constants.expoConfig?.extra?.infoAppName as string || null,
       feedbackEmail: Constants.expoConfig?.extra?.infoAppFeedbackEmail as string || null,
       repositoryName: Constants.expoConfig?.extra?.infoAppRepoName as string || null,
       repositoryUrl: Constants.expoConfig?.extra?.infoAppRepoUrl as string || null,

@@ -2,6 +2,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Colors } from "@/constants/Colors";
 import { CONFIG } from '@/constants/Config';
+import { title } from '@/functions/TitleFunction';
 import { useDynamicSide } from '@/hooks/useDynamicSide';
 import { settingsLocalService } from "@/services/local/SettingLocalService";
 import { SettingService } from "@/services/local/SettingService";
@@ -221,7 +222,7 @@ export default function SettingsScreen() {
 
   return (
     <>
-      <Stack.Screen options={{ title: t('settings.title') }} />
+      <Stack.Screen options={{ title: title(t('settings.title')) }} />
       <ThemedView style={styles.container}>
         {loading ? (
           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: dynamicSide.bottom + 50 }}>

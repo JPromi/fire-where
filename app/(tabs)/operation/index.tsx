@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react';
 import federStatesData from '@/assets/data/federal-states.json';
 import { SvgAtMap } from '@/components/assets/SvgAtMap';
 import { IconSymbol } from '@/components/ui/IconSymbol';
+import { title } from '@/functions/TitleFunction';
 import { useDynamicSide } from '@/hooks/useDynamicSide';
 import { LocationStatistic } from '@/models/LocationStatistic';
 import { OperationService } from '@/services/OperationService';
@@ -109,7 +110,7 @@ export default function OperationSelectFederalStateScreen() {
   if(loaded) {
     return (
       <>
-        <Stack.Screen options={{ title: t('operation.title') }} />
+        <Stack.Screen options={{ title: title(t('operation.title')) }} />
         <ThemedView style={styles.container}>
           { isMapView ? (
             <View style={[styles.contentMap, { paddingBottom: dynamicSide.bottom + 50, paddingLeft: dynamicSide.left, paddingRight: dynamicSide.right }]}>

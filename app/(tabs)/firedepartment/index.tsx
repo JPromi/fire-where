@@ -1,6 +1,7 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Colors } from "@/constants/Colors";
+import { title } from "@/functions/TitleFunction";
 import { useDynamicSide } from "@/hooks/useDynamicSide";
 import { Firedepartment } from "@/models/Firedepartment";
 import { FiredepartmentService } from "@/services/FiredeparmentService";
@@ -81,7 +82,7 @@ export default function FiredepartmentDetailScreen() {
     <>
       <Stack.Screen
         options={{
-          title: t('firedepartment.title'),
+          title: title(t('firedepartment.title')),
         }}/>
         <ThemedView style={styles.container}>
           <ScrollView style={{

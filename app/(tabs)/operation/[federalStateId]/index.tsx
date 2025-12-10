@@ -6,6 +6,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import { Colors } from "@/constants/Colors";
+import { title } from "@/functions/TitleFunction";
 import { useDynamicSide } from "@/hooks/useDynamicSide";
 import { FederalState } from "@/models/FederalState";
 import { LocationStatistic } from "@/models/LocationStatistic";
@@ -128,7 +129,7 @@ export default function OperationSelectDistrict() {
     return (
       <>
         <Stack.Screen options={{
-          title: federalState?.name,
+          title: title(federalState?.name),
           }} />
         <ThemedView style={[styles.container]}>
           {isMapView ? (

@@ -2,6 +2,7 @@ import { ThemedView } from "@/components/ThemedView";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import { TagChip } from "@/components/ui/TagChip";
 import { Colors } from "@/constants/Colors";
+import { title } from "@/functions/TitleFunction";
 import { useDynamicSide } from "@/hooks/useDynamicSide";
 import { Firedepartment } from "@/models/Firedepartment";
 import { FiredepartmentService } from "@/services/FiredeparmentService";
@@ -42,7 +43,7 @@ export default function FiredepartmentDetailScreen() {
     <>
       <Stack.Screen
         options={{
-          title: firedepartment.name || "",
+          title: title(firedepartment.name),
         }}/>
         <ThemedView style={styles.container}>
           <ScrollView style={[styles.containerScrollView]}>

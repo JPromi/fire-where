@@ -2,6 +2,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import { Colors } from "@/constants/Colors";
+import { title } from "@/functions/TitleFunction";
 import { useDynamicSide } from "@/hooks/useDynamicSide";
 import { SettingService } from "@/services/local/SettingService";
 import { Stack, useLocalSearchParams, useNavigationContainerRef, useRouter } from "expo-router";
@@ -176,7 +177,7 @@ export default function OperationDetailScreen() {
 
   return (
     <>
-      <Stack.Screen options={{ title: t(`settings.extended.${settingKey}.title`) }} />
+      <Stack.Screen options={{ title: title(t(`settings.extended.${settingKey}.title`)) }} />
       <ThemedView style={styles.container}>
         <ScrollView>
           <View style={[styles.contentList, { paddingBottom: dynamicSide.bottom + 50 + 10, paddingLeft: dynamicSide.left + 10, paddingRight: dynamicSide.right + 10 }]}>

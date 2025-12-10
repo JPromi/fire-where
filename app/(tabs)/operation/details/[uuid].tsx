@@ -7,6 +7,7 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import { OperationTypeView } from '@/components/ui/OperationTypeView';
 import { Colors } from "@/constants/Colors";
 import { ServiceOriginEnum } from "@/enums/ServiceOriginEnum";
+import { title } from '@/functions/TitleFunction';
 import { useDynamicSide } from '@/hooks/useDynamicSide';
 import { Operation } from "@/models/Operation";
 import { SettingService } from "@/services/local/SettingService";
@@ -139,7 +140,7 @@ export default function OperationDetailScreen() {
   return (
     <>
       <Stack.Screen options={{
-        title: operation.alarm?.message || t('common.unknown'),
+        title: title(operation.alarm?.message),
         }} />
       <ErrorMessage message={errorMessage.message}/>
       {!errorMessage.isNecessary && !errorMessage.message && (

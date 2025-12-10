@@ -4,6 +4,7 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from "@/components/ThemedView";
 import { OperationTypeView } from '@/components/ui/OperationTypeView';
 import { Colors } from '@/constants/Colors';
+import { title } from '@/functions/TitleFunction';
 import { useDynamicSide } from '@/hooks/useDynamicSide';
 import { FederalState } from '@/models/FederalState';
 import { Operation } from '@/models/Operation';
@@ -133,7 +134,7 @@ export default function OperationSelectDistrict() {
 
   return (
     <>
-      <Stack.Screen options={{ title: district.name }} />
+      <Stack.Screen options={{ title: title(district.name) }} />
       <ThemedView style={[styles.container]}>
         { loading ? (
           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: dynamicSide.bottom + 50 }}>
