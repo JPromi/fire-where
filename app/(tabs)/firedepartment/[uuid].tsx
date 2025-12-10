@@ -2,13 +2,14 @@ import { ThemedView } from "@/components/ThemedView";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import { TagChip } from "@/components/ui/TagChip";
 import { Colors } from "@/constants/Colors";
-import { title } from "@/functions/TitleFunction";
 import { useDynamicSide } from "@/hooks/useDynamicSide";
 import { Firedepartment } from "@/models/Firedepartment";
 import { FiredepartmentService } from "@/services/FiredeparmentService";
+import { title } from "@/utils/TitleFunction";
+import { useHeaderTitleOnFocus } from "@/utils/UseHeaderTitleOnFocus";
 import * as faBrand from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { Stack, useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Dimensions, Image, Linking, Platform, Pressable, ScrollView, StyleSheet, Text, useColorScheme, View } from "react-native";
@@ -23,6 +24,9 @@ export default function FiredepartmentDetailScreen() {
   const { t } = useTranslation();
 
   const [firedepartment, setFiredepartment] = useState<Firedepartment>({} as Firedepartment);
+
+  const pageTitle = title(firedepartment.name);
+  useHeaderTitleOnFocus(pageTitle);
 
   useEffect(() => {
       FiredepartmentService.getFiredepartmentByUuid(uuid)
@@ -41,10 +45,6 @@ export default function FiredepartmentDetailScreen() {
 
   return (
     <>
-      <Stack.Screen
-        options={{
-          title: title(firedepartment.name),
-        }}/>
         <ThemedView style={styles.container}>
           <ScrollView style={[styles.containerScrollView]}>
             {/* Header Image */}

@@ -1,11 +1,12 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Colors } from "@/constants/Colors";
-import { title } from "@/functions/TitleFunction";
 import { useDynamicSide } from "@/hooks/useDynamicSide";
 import { Firedepartment } from "@/models/Firedepartment";
 import { FiredepartmentService } from "@/services/FiredeparmentService";
-import { Stack, useRouter } from "expo-router";
+import { title } from "@/utils/TitleFunction";
+import { useHeaderTitleOnFocus } from "@/utils/UseHeaderTitleOnFocus";
+import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Platform, Pressable, ScrollView, StyleSheet, TextInput, useColorScheme, View } from "react-native";
@@ -20,6 +21,9 @@ export default function FiredepartmentDetailScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState("");
+
+  const pageTitle = title(t('firedepartment.title'));
+  useHeaderTitleOnFocus(pageTitle);
 
   useEffect(() => {
     if (!query) {
@@ -80,10 +84,6 @@ export default function FiredepartmentDetailScreen() {
 
   return (
     <>
-      <Stack.Screen
-        options={{
-          title: title(t('firedepartment.title')),
-        }}/>
         <ThemedView style={styles.container}>
           <ScrollView style={{
             flex: 1,

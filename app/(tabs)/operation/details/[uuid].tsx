@@ -7,12 +7,13 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import { OperationTypeView } from '@/components/ui/OperationTypeView';
 import { Colors } from "@/constants/Colors";
 import { ServiceOriginEnum } from "@/enums/ServiceOriginEnum";
-import { title } from '@/functions/TitleFunction';
 import { useDynamicSide } from '@/hooks/useDynamicSide';
 import { Operation } from "@/models/Operation";
 import { SettingService } from "@/services/local/SettingService";
 import { OperationService } from "@/services/OperationService";
-import { Stack, useLocalSearchParams } from "expo-router";
+import { title } from '@/utils/TitleFunction';
+import { useHeaderTitleOnFocus } from '@/utils/UseHeaderTitleOnFocus';
+import { useLocalSearchParams } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Animated, Dimensions, PixelRatio, Pressable, RefreshControl, ScrollView, StyleSheet, useColorScheme, View } from "react-native";
@@ -35,6 +36,9 @@ export default function OperationDetailScreen() {
   const [operation, setOperation] = useState<Operation>({} as Operation);
 
   const [errorMessage, setErrorMessage] = useState<{message: string | null, isNecessary: boolean}>({message: null, isNecessary: false});
+
+  const pageTitle = title(operation.alarm?.message);
+  useHeaderTitleOnFocus(pageTitle);
 
   useEffect(() => {
     OperationService.getOperation(uuid)
@@ -139,9 +143,6 @@ export default function OperationDetailScreen() {
 
   return (
     <>
-      <Stack.Screen options={{
-        title: title(operation.alarm?.message),
-        }} />
       <ErrorMessage message={errorMessage.message}/>
       {!errorMessage.isNecessary && !errorMessage.message && (
         <ThemedView style={[styles.container]}>

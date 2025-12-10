@@ -4,12 +4,13 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from "@/components/ThemedView";
 import { OperationTypeView } from '@/components/ui/OperationTypeView';
 import { Colors } from '@/constants/Colors';
-import { title } from '@/functions/TitleFunction';
 import { useDynamicSide } from '@/hooks/useDynamicSide';
 import { FederalState } from '@/models/FederalState';
 import { Operation } from '@/models/Operation';
 import { OperationService } from '@/services/OperationService';
-import { Stack, useLocalSearchParams, useRouter } from "expo-router";
+import { title } from '@/utils/TitleFunction';
+import { useHeaderTitleOnFocus } from '@/utils/UseHeaderTitleOnFocus';
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Pressable, RefreshControl, ScrollView, StyleSheet, useColorScheme, View } from "react-native";
@@ -27,6 +28,9 @@ export default function OperationSelectDistrict() {
   const [operations, setOperations] = useState<Operation[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  const pageTitle = title(district.name);
+  useHeaderTitleOnFocus(pageTitle);
 
 
   useEffect(() => {
@@ -134,7 +138,6 @@ export default function OperationSelectDistrict() {
 
   return (
     <>
-      <Stack.Screen options={{ title: title(district.name) }} />
       <ThemedView style={[styles.container]}>
         { loading ? (
           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: dynamicSide.bottom + 50 }}>

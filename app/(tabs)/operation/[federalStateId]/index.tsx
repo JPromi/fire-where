@@ -6,14 +6,15 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import { Colors } from "@/constants/Colors";
-import { title } from "@/functions/TitleFunction";
 import { useDynamicSide } from "@/hooks/useDynamicSide";
 import { FederalState } from "@/models/FederalState";
 import { LocationStatistic } from "@/models/LocationStatistic";
 import { OperationService } from "@/services/OperationService";
+import { title } from "@/utils/TitleFunction";
+import { useHeaderTitleOnFocus } from "@/utils/UseHeaderTitleOnFocus";
 import { BlurView } from "expo-blur";
-import { Stack, useLocalSearchParams, useRouter } from "expo-router";
-import { useEffect, useState } from "react";
+import { Stack, useFocusEffect, useLocalSearchParams, useNavigation, useRouter } from "expo-router";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Platform, Pressable, ScrollView, StyleSheet, Text, useColorScheme, View } from "react-native";
 
@@ -23,6 +24,7 @@ export default function OperationSelectDistrict() {
   const colorScheme = useColorScheme();
   const dynamicSide = useDynamicSide();
   const router = useRouter();
+  const navigation = useNavigation();
   const blurSupported = Platform.OS === 'ios' || (Platform.OS === 'android' && Platform.Version >= 31);
 
 
@@ -36,11 +38,22 @@ export default function OperationSelectDistrict() {
   var federalState: FederalState | null = federalStates.find(fs => fs.idLong === federalStateId) || null;
   const districts: { id: string, name: string }[] = [];
 
+  const pageTitle = title(federalState?.name);
+  useHeaderTitleOnFocus(pageTitle);
+
   loadFederalStatesFromData();
 
   useEffect(() => {
     getStatistic(federalStateId);
   }, [federalStateId]);
+
+  useFocusEffect(
+    useCallback(() => {
+      navigation.setOptions({
+        title: title(federalState?.name),
+      });
+    }, [navigation, federalState])
+  );
 
   function loadFederalStatesFromData() {
     const data: FederalState[] = federStatesData.map((fs) => ({
@@ -128,9 +141,6 @@ export default function OperationSelectDistrict() {
   if (loaded) {
     return (
       <>
-        <Stack.Screen options={{
-          title: title(federalState?.name),
-          }} />
         <ThemedView style={[styles.container]}>
           {isMapView ? (
             <View style={[styles.contentMap, { marginBottom: dynamicSide.bottom + 50, paddingLeft: dynamicSide.left, paddingRight: dynamicSide.right }]}>

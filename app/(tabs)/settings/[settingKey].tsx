@@ -2,10 +2,11 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import { Colors } from "@/constants/Colors";
-import { title } from "@/functions/TitleFunction";
 import { useDynamicSide } from "@/hooks/useDynamicSide";
 import { SettingService } from "@/services/local/SettingService";
-import { Stack, useLocalSearchParams, useNavigationContainerRef, useRouter } from "expo-router";
+import { title } from "@/utils/TitleFunction";
+import { useHeaderTitleOnFocus } from "@/utils/UseHeaderTitleOnFocus";
+import { useLocalSearchParams, useNavigationContainerRef, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, ScrollView, StyleSheet, useColorScheme, View } from "react-native";
@@ -26,6 +27,9 @@ export default function OperationDetailScreen() {
 
   const [ selectedData, setSelectedData ] = useState<string | boolean | null | undefined>(null);
   const [ dataSet, setDataSet ] = useState<DataSet[]>([]);
+
+  const pageTitle = title(t(`settings.extended.${settingKey}.title`));
+  useHeaderTitleOnFocus(pageTitle);
 
   const knownKeys = [
     'language',
@@ -177,7 +181,6 @@ export default function OperationDetailScreen() {
 
   return (
     <>
-      <Stack.Screen options={{ title: title(t(`settings.extended.${settingKey}.title`)) }} />
       <ThemedView style={styles.container}>
         <ScrollView>
           <View style={[styles.contentList, { paddingBottom: dynamicSide.bottom + 50 + 10, paddingLeft: dynamicSide.left + 10, paddingRight: dynamicSide.right + 10 }]}>
