@@ -74,6 +74,9 @@ export default function OperationSelectDistrict() {
         });
 
         districts.sort((a, b) => a.name.localeCompare(b.name));
+
+        // add "all districts" option at the beginning
+        districts.unshift({ id: 'all', name: t('operation.allOperations', { federalState: federalState?.name }) });
       }
     }
   }
@@ -101,6 +104,15 @@ export default function OperationSelectDistrict() {
 
     OperationService.getStatisticFromFederalStates(federalStateId)
       .then((data) => {
+        const dataAll: LocationStatistic = {
+          nameId: 'all',
+          countActive: data.reduce((sum, fs) => sum + fs.countActive, 0),
+          countFire: data.reduce((sum, fs) => sum + fs.countFire, 0),
+          countTechnical: data.reduce((sum, fs) => sum + fs.countTechnical, 0),
+          countAcid: data.reduce((sum, fs) => sum + fs.countAcid, 0),
+          countOther: data.reduce((sum, fs) => sum + fs.countOther, 0),
+        }
+        data.push(dataAll)
         setStatistic(data);
         setLoaded(true);
         setLastDataUpdate(new Date());

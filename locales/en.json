@@ -102,10 +102,6 @@
       "UA_LFV_PUB": "LFV Upper Austria",
       "ST_LFV_PUB": "LFV Styria",
       "TYROL_LFS_APP": "Tyrol Incidents App"
-    },
-    "language": {
-      "de": "German",
-      "en": "English"
     }
   },
   "common": {
@@ -124,6 +120,7 @@
   "operation": {
     "title": "Incidents",
     "noData": "No incidents found.",
+    "allOperations": "All incidents in {{federalState}}",
     "details": {
       "alarmed": "Alerted",
       "inOperationSince": "In operation since",

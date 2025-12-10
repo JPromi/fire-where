@@ -40,6 +40,7 @@ export default function OperationDetailScreen() {
     language: [
       { value: 'de', label: t('assets.language.de') },
       { value: 'en', label: t('assets.language.en') },
+      { value: 'hr', label: t('assets.language.hr') },
     ],
     jumpToFederalState: [
       { value: '', label: t('common.none') },
