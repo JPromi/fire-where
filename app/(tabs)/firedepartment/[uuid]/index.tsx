@@ -1,18 +1,21 @@
+import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { IconSymbol } from "@/components/ui/IconSymbol";
+import { OperationTypeView } from "@/components/ui/OperationTypeView";
 import { TagChip } from "@/components/ui/TagChip";
 import { Colors } from "@/constants/Colors";
 import { useDynamicSide } from "@/hooks/useDynamicSide";
 import { Firedepartment } from "@/models/Firedepartment";
+import { Operation } from "@/models/Operation";
 import { FiredepartmentService } from "@/services/FiredeparmentService";
 import { title } from "@/utils/TitleFunction";
 import { useHeaderTitleOnFocus } from "@/utils/UseHeaderTitleOnFocus";
 import * as faBrand from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Dimensions, Image, Linking, Platform, Pressable, ScrollView, StyleSheet, Text, useColorScheme, View } from "react-native";
+import { ActivityIndicator, Dimensions, Image, Linking, Platform, Pressable, RefreshControl, ScrollView, StyleSheet, Text, useColorScheme, View } from "react-native";
 import { SvgUri } from "react-native-svg";
 
 export default function FiredepartmentDetailScreen() {
@@ -22,31 +25,91 @@ export default function FiredepartmentDetailScreen() {
   const [loading, setLoading] = useState(true);
   const { uuid } = useLocalSearchParams<{ uuid: string }>();
   const { t } = useTranslation();
+  const [refreshing, setRefreshing] = useState(false);
+  const router = useRouter();
 
+  const [operations, setOperations] = useState<Operation[]>([]);
   const [firedepartment, setFiredepartment] = useState<Firedepartment>({} as Firedepartment);
 
-  const pageTitle = title(firedepartment.name);
+  const pageTitle = title(firedepartment.name ?? "...");
   useHeaderTitleOnFocus(pageTitle);
 
   useEffect(() => {
-      FiredepartmentService.getFiredepartmentByUuid(uuid)
-                .then(setFiredepartment)
-                .catch(error => {
-                  console.error(error);
-                  // setErrorMessage(
-                  //   {
-                  //     message: error.request.status === 404 ? t('common.error.notFound') : t('common.error.internalServerError'),
-                  //     isNecessary: true,
-                  //   }
-                  // );
-                })
-                .finally(() => setLoading(false));
+    setLoading(true);
+    FiredepartmentService.getFiredepartmentByUuid(uuid)
+      .then(setFiredepartment)
+      .then(() => {
+        loadActiveOperations();
+        setLoading(false);
+      }
+      )
+      .catch(error => {
+        console.error(error);
+        // setErrorMessage(
+        //   {
+        //     message: error.request.status === 404 ? t('common.error.notFound') : t('common.error.internalServerError'),
+        //     isNecessary: true,
+        //   }
+        // );
+      })
+      .finally(() => setLoading(false));
     }, [uuid]);
+
+  function loadActiveOperations(): void {
+    FiredepartmentService.getFiredepartmentOperations(uuid)
+      .then(setOperations)
+      .then(() => {
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
+
+  function getDate(dateString: string | undefined): string {
+    if(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('de-DE', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+    } else {
+      return t('common.unknown');
+    }
+  }
+    
+  function onRefresh() {
+    setRefreshing(true);
+    if (!uuid) return;
+
+    FiredepartmentService.getFiredepartmentByUuid(uuid)
+      .then(setFiredepartment)
+      .then(() => {
+        loadActiveOperations();
+      }
+      )
+      .catch(error => {
+      })
+      .finally(() => setRefreshing(false));
+  }
 
   return (
     <>
-        <ThemedView style={styles.container}>
-          <ScrollView style={[styles.containerScrollView]}>
+      <ThemedView style={styles.container}>
+        {loading ? (
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: dynamicSide.bottom + 50 }}>
+            <ActivityIndicator size="small" color={Colors[colorScheme ?? 'light'].tint} />
+          </View>
+        ) : (
+          <ScrollView
+            style={[styles.containerScrollView]}
+            contentContainerStyle={{ flexGrow: 1 }}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+            }>
             {/* Header Image */}
             <View
               style={{ 
@@ -152,7 +215,8 @@ export default function FiredepartmentDetailScreen() {
                     marginBottom: 0,
                   }}>
                     {firedepartment.isVolunteer && (<TagChip name={t("firedepartment.details.chip.volunteer")} icon={"heart.fill"} tagColor="#33C2CC"/>)}
-                    {true && (<TagChip name="Einsatzbereit" icon={"flame.fill"} tagColor="#13F24E"/>)}
+                    {operations.length === 0 && (<TagChip name="Einsatzbereit" icon={"flame.fill"} tagColor="#13F24E"/>)}
+                    {operations.length > 0 && (<TagChip name="Im Einsatz" icon={"flame.fill"} tagColor="#d42619"/>)}
                 </View>
 
                 {/* links */}
@@ -230,9 +294,141 @@ export default function FiredepartmentDetailScreen() {
                     ))}
                 </View>
               </View>
+
+              {/* Active Operations */}
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  width: '100%',
+                  marginTop: 48,
+                }}
+              >
+                <Text
+                  style={{
+                    fontWeight: '500',
+                    fontSize: 20,
+                    marginBottom: 10,
+                    color: Colors[colorScheme ?? 'light'].text,
+                  }}>Aktuelle Einsätze</Text>
+                {operations.map((op) => (
+                  <Pressable
+                    key={op.uuid}
+                    style={({ pressed }) => ({
+                      padding: 12,
+                      borderWidth: 1,
+                      borderRadius: 8,
+                      marginBottom: 12,
+                      borderColor: Colors[colorScheme ?? 'light'].border,
+                      opacity: pressed ? 0.7 : 1,
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      gap: 12,
+                    })}
+                    onPress={() => {
+                      // navigate to operation detail
+                      router.push({
+                        pathname: "/operation/details/[uuid]",
+                        params: { uuid: op.uuid }
+                      });
+                    }}
+                  >
+                      {/* Alarm Message */}
+                      <View
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'flex-start',
+                          flex: 1,
+                          overflow: 'hidden',
+                        }}>
+                        <ThemedText
+                          numberOfLines={1}
+                          ellipsizeMode="tail"
+                          style={{
+                            color: Colors[colorScheme ?? 'light'].text,
+                            fontWeight: 'bold',
+                            fontSize: 18,
+                            maxWidth: '100%',
+                            textAlign: 'left',
+                            }}>{op.alarm.message}</ThemedText>
+
+                        {/* additional informations */}
+                        <View
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'flex-end',
+                            gap: 12,
+                            maxWidth: '100%',
+                            overflow: 'hidden',
+                          }}>
+                          <ThemedText
+                            style={{
+                              color: Colors[colorScheme ?? 'light'].text,
+                              fontSize: 14,
+                              opacity: 0.5,
+                              lineHeight: 15,
+                              marginTop: 4,
+                              }}>{getDate(op.startTime)}</ThemedText>
+
+                          { op.address.location ? (                      
+                            <ThemedText
+                              numberOfLines={1}
+                              ellipsizeMode="tail"
+                              style={{
+                                color: Colors[colorScheme ?? 'light'].text,
+                                fontSize: 14,
+                                opacity: 0.5,
+                                lineHeight: 15,
+                                textOverflow: 'ellipsis',
+                                overflow: 'hidden',
+                                flex: 1,
+                              }}>{op.address.location}</ThemedText>
+                          ) : (null) }
+                        </View>
+                      </View>
+
+                      <OperationTypeView alarm={op.alarm} size="list" />
+                  </Pressable>
+                ))}
+                <Pressable
+                  style={({ pressed }) => ({
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginTop: 10,
+                    gap: 8,
+                    paddingVertical: 12,
+                    borderRadius: 8,
+                    opacity: pressed ? 0.7 : 1,
+                    backgroundColor: Colors[colorScheme ?? 'light'].linkBackground,
+                  })}
+                  onPress={() => {
+                    router.push({
+                      pathname: "/firedepartment/[uuid]/operation",
+                      params: { uuid: firedepartment.uuid }
+                    });
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: Colors[colorScheme ?? 'light'].linkForeground,
+                      fontSize: 16,
+                      fontWeight: '500',
+                      textAlign: 'center',
+                      userSelect: 'none',
+                    }}>Alle Einsätze</Text>
+                  <IconSymbol name="arrow.right" size={18} color={Colors[colorScheme ?? 'light'].linkForeground} />
+                </Pressable>
+              </View>
             </View>
           </ScrollView>
-        </ThemedView>
+        )}
+      </ThemedView>
     </>
   );
 }

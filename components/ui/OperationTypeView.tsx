@@ -28,7 +28,7 @@ export function OperationTypeView({
           backgroundColor: OperationVariablesService.getOperationTypeColor(alarm.type || '', colorScheme),
           width: size == 'list' ? 45 : 64,
           height: size == 'list' ? 45 : 64,
-          borderRadius: size == 'list' ? 3 : 8,
+          borderRadius: size == 'list' ? 4 : 8,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',

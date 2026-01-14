@@ -1,5 +1,6 @@
 import { CONFIG } from '@/constants/Config';
 import { Firedepartment } from '@/models/Firedepartment';
+import { Operation } from '@/models/Operation';
 import { Page } from '@/models/Page';
 import axios from 'axios';
 
@@ -17,6 +18,11 @@ export class FiredepartmentService {
         page,
       },
     });
+    return res.data;
+  }
+
+  static async getFiredepartmentOperations(uuid: string) {
+    const res = await axios.get<Operation[]>(`${CONFIG.api.baseUrl}/firedepartment/${uuid}/active-operations`);
     return res.data;
   }
 }
