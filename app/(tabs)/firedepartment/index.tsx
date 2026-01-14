@@ -9,7 +9,7 @@ import { useHeaderTitleOnFocus } from "@/utils/UseHeaderTitleOnFocus";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ActivityIndicator, Platform, Pressable, ScrollView, StyleSheet, TextInput, useColorScheme, View } from "react-native";
+import { ActivityIndicator, FlatList, Platform, Pressable, StyleSheet, TextInput, useColorScheme, View } from "react-native";
 
 export default function FiredepartmentDetailScreen() {
   const dynamicSide = useDynamicSide();
@@ -85,13 +85,13 @@ export default function FiredepartmentDetailScreen() {
   return (
     <>
         <ThemedView style={styles.container}>
-          <ScrollView style={{
+          {/* <ScrollView style={{
             flex: 1,
             paddingLeft: dynamicSide.left,
             paddingRight: dynamicSide.right,
             display: 'flex',
           }}
-          contentContainerStyle={{ flexGrow: 1 }}>
+          contentContainerStyle={{ flexGrow: 1 }}> */}
             <View style={[styles.contentList, { flex: 1 }]}>
               {/* Search */}
               <View
@@ -107,6 +107,7 @@ export default function FiredepartmentDetailScreen() {
                 <TextInput
                   placeholder={t('firedepartment.search.placeholder')}
                   onChangeText={searchChange}
+                  blurOnSubmit={false}
                   style={
                     {
                       color: Colors[colorScheme ?? 'light'].text,
@@ -132,12 +133,16 @@ export default function FiredepartmentDetailScreen() {
                   </ThemedText>
                 </View>
               ) : (
-                <View style={{ flex: 1, marginBottom: dynamicSide.bottom + 50 }}>
-                  {firedepartments.map((fd) => (
-                    <Pressable
-                      key={fd.uuid}
-                      onPress={() => openFd(fd.uuid)}
-                      style={({ pressed }) => ({
+                <FlatList
+                  contentContainerStyle={{ flex: 1, marginBottom: dynamicSide.bottom + 50 }}
+                  data={firedepartments}
+                  keyboardShouldPersistTaps="handled"
+                  keyExtractor={(item) => item.uuid}
+                  renderItem={({ item: fd }) => (
+                  <Pressable
+                    key={fd.uuid}
+                    onPress={() => openFd(fd.uuid)}
+                    style={({ pressed }) => ({
                         padding: 12,
                         borderBottomWidth: 1,
                         borderColor: Colors[colorScheme ?? 'light'].border,
@@ -174,12 +179,11 @@ export default function FiredepartmentDetailScreen() {
                         </View>
                       ) }
                     </Pressable>
-                  ))}
-                </View>
+                  )} />
               )}
 
             </View>
-          </ScrollView>
+          {/* </ScrollView> */}
         </ThemedView>
     </>
   );
