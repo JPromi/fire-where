@@ -63,6 +63,7 @@
     "@react-native-community/cli": "latest",
     "@types/react": "~19.1.10",
     "@types/react-native-global-props": "^1.1.6",
+    "baseline-browser-mapping": "^2.9.14",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~10.0.0",
     "react-native-svg-transformer": "^1.5.1",
