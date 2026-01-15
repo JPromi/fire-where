@@ -53,7 +53,7 @@ export default function FiredepartmentDetailScreen() {
     if (fd.nameId) {
       router.push(`/firedepartment/${fd.nameId}`);
     } else if (fd.uuid) {
-      router.push(`/firedepartment/uuid/${fd.uuid}`);
+      router.push(`/firedepartment/${fd.uuid}`);
     }
   }
 
