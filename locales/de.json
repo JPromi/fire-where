@@ -171,7 +171,28 @@
     },
     "details": {
       "chip": {
-        "volunteer": "Freiwillig"
+        "volunteer": "Freiwillig",
+        "ready": "Einsatzbereit",
+        "inOperation": "im Einsatz"
+      },
+      "operationsOverview": {
+        "currentOperations": "Aktuelle Einsätze",
+        "allOperations": "Alle Einsätze"
+      },
+      "operations": {
+        "title": "Einsätze",
+        "filter": {
+          "title": "Filter",
+          "date": {
+            "label": "Datum",
+            "start": "Start",
+            "end": "Ende"
+          },
+          "buttons": {
+            "load": "Laden",
+            "reset": "Reset"
+          }
+        }
       }
     }
   },

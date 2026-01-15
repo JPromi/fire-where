@@ -37,7 +37,7 @@ export default function FiredepartmentOperationScreen() {
     operationType: undefined,
   });
   
-  const pageTitle = title("Einsätze"); // ToDo: Translate
+  const pageTitle = title(t('firedepartment.details.operations.title'));
   
   useHeaderTitleOnFocus(pageTitle);
 
@@ -129,7 +129,7 @@ export default function FiredepartmentOperationScreen() {
             onPress={toggleOptions}
           >
             <IconSymbol name="line.horizontal.3.decrease" color={Colors[colorScheme ?? 'light'].textSub} size={24} />
-            <Text style={{ color: Colors[colorScheme ?? 'light'].textSub, fontSize: 16, marginLeft: 8, userSelect: 'none' }}>Filter</Text>
+            <Text style={{ color: Colors[colorScheme ?? 'light'].textSub, fontSize: 16, marginLeft: 8, userSelect: 'none' }}>{t('firedepartment.details.operations.filter.title')}</Text>
           </Pressable>
           <Animated.View
             style={{
@@ -139,10 +139,10 @@ export default function FiredepartmentOperationScreen() {
           >
             <View style={{ padding: 12, height: optionsHeightMax }}>
               
-              <ThemedText type="subtitle">Datum</ThemedText>
+              <ThemedText type="subtitle">{t('firedepartment.details.operations.filter.date.label')}</ThemedText>
               <View style={[styles.filterGroup, { flexDirection: 'row', gap: 12 }]}>
                 <View style={[styles.filterGroupField, { flex: 1 }]}>
-                  <ThemedText>Von:</ThemedText>
+                  <ThemedText>{t('firedepartment.details.operations.filter.date.start')}</ThemedText>
 
                   <DatePickerField
                     style={{ width: '100%', marginTop: 4 }}
@@ -158,7 +158,7 @@ export default function FiredepartmentOperationScreen() {
                 </View>
 
                 <View style={[styles.filterGroupField, { flex: 1 }]}>
-                  <ThemedText>Bis:</ThemedText>
+                  <ThemedText>{t('firedepartment.details.operations.filter.date.end')}</ThemedText>
 
                   <DatePickerField
                     style={{ width: '100%', marginTop: 4 }}
@@ -195,7 +195,7 @@ export default function FiredepartmentOperationScreen() {
                     setFilter({ dateStart: undefined, dateEnd: undefined, operationType: undefined });
                     loadOperations();
                   }}>
-                  <ThemedText style={{ color: Colors[colorScheme ?? 'light'].textSub }}>Reset</ThemedText>
+                  <ThemedText style={{ color: Colors[colorScheme ?? 'light'].textSub }}>{t('firedepartment.details.operations.filter.buttons.reset')}</ThemedText>
                 </Pressable>
 
                 <Pressable
@@ -211,7 +211,7 @@ export default function FiredepartmentOperationScreen() {
                   onPress={() => {
                     loadOperations();
                   }}>
-                  <ThemedText style={{ color: Colors[colorScheme ?? 'light'].linkForeground }}>Laden</ThemedText>
+                  <ThemedText style={{ color: Colors[colorScheme ?? 'light'].linkForeground }}>{t('firedepartment.details.operations.filter.buttons.load')}</ThemedText>
                 </Pressable>
               </View>
 

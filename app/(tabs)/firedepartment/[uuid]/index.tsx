@@ -215,8 +215,8 @@ export default function FiredepartmentDetailScreen() {
                     marginBottom: 0,
                   }}>
                     {firedepartment.isVolunteer && (<TagChip name={t("firedepartment.details.chip.volunteer")} icon={"heart.fill"} tagColor="#33C2CC"/>)}
-                    {operations.length === 0 && (<TagChip name="Einsatzbereit" icon={"flame.fill"} tagColor="#13F24E"/>)}
-                    {operations.length > 0 && (<TagChip name="Im Einsatz" icon={"flame.fill"} tagColor="#d42619"/>)}
+                    {operations.length === 0 && (<TagChip name={t("firedepartment.details.chip.ready")} icon={"flame.fill"} tagColor="#13F24E"/>)}
+                    {operations.length > 0 && (<TagChip name={t("firedepartment.details.chip.inOperation")} icon={"flame.fill"} tagColor="#d42619"/>)}
                 </View>
 
                 {/* links */}
@@ -310,7 +310,7 @@ export default function FiredepartmentDetailScreen() {
                     fontSize: 20,
                     marginBottom: 10,
                     color: Colors[colorScheme ?? 'light'].text,
-                  }}>Aktuelle Einsätze</Text>
+                  }}>{t('firedepartment.details.operationsOverview.currentOperations')}</Text>
                 {operations.map((op) => (
                   <Pressable
                     key={op.uuid}
@@ -421,7 +421,7 @@ export default function FiredepartmentDetailScreen() {
                       fontWeight: '500',
                       textAlign: 'center',
                       userSelect: 'none',
-                    }}>Alle Einsätze</Text>
+                    }}>{t('firedepartment.details.operationsOverview.allOperations')}</Text>
                   <IconSymbol name="arrow.right" size={18} color={Colors[colorScheme ?? 'light'].linkForeground} />
                 </Pressable>
               </View>
