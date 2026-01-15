@@ -49,12 +49,12 @@ export default function FiredepartmentDetailScreen() {
     setQuery(text);
   }
 
-  function openFd(uuid: string) {
-    if (!uuid) return;
-    router.push({
-        pathname: "/firedepartment/[uuid]",
-        params: { uuid: uuid },
-      });
+  function openFd(fd: Firedepartment) {
+    if (fd.nameId) {
+      router.push(`/firedepartment/${fd.nameId}`);
+    } else if (fd.uuid) {
+      router.push(`/firedepartment/uuid/${fd.uuid}`);
+    }
   }
 
   function getFederalStateName(fsName: string) : string{
@@ -141,7 +141,7 @@ export default function FiredepartmentDetailScreen() {
                   renderItem={({ item: fd }) => (
                   <Pressable
                     key={fd.uuid}
-                    onPress={() => openFd(fd.uuid)}
+                    onPress={() => openFd(fd)}
                     style={({ pressed }) => ({
                         padding: 12,
                         borderBottomWidth: 1,
