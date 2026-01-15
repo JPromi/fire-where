@@ -7,6 +7,7 @@ export default ({ config }) => ({
     apiBaseUrl: process.env.API_BASE_URL,
     
     // App Information
+    infoAppWebUrl: process.env.INFO_APP_WEB_URL,
     infoAppName: process.env.INFO_APP_NAME,
     infoDeveloperName: process.env.INFO_DEVELOPER_NAME,
     infoDeveloperWebsite: process.env.INFO_DEVELOPER_WEBSITE,
