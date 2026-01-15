@@ -4,6 +4,7 @@ import { IconSymbol } from "@/components/ui/IconSymbol";
 import { OperationTypeView } from "@/components/ui/OperationTypeView";
 import { TagChip } from "@/components/ui/TagChip";
 import { Colors } from "@/constants/Colors";
+import { CONFIG } from "@/constants/Config";
 import { useDynamicSide } from "@/hooks/useDynamicSide";
 import { Firedepartment } from "@/models/Firedepartment";
 import { Operation } from "@/models/Operation";
@@ -15,7 +16,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ActivityIndicator, Dimensions, Image, Linking, Platform, Pressable, RefreshControl, ScrollView, StyleSheet, Text, useColorScheme, View } from "react-native";
+import { ActivityIndicator, Dimensions, Image, Linking, Platform, Pressable, RefreshControl, ScrollView, Share, StyleSheet, Text, useColorScheme, View } from "react-native";
 import { SvgUri } from "react-native-svg";
 
 export default function FiredepartmentDetailScreen() {
@@ -94,6 +95,25 @@ export default function FiredepartmentDetailScreen() {
       .catch(error => {
       })
       .finally(() => setRefreshing(false));
+  }
+
+  function shareFiredepartment() {
+    if (CONFIG.informations.app.webUrl === null) return;
+
+    let shareUrl = '';
+    if (firedepartment.nameId) {
+      shareUrl = `${CONFIG.informations.app.webUrl}/firedepartment/${firedepartment.nameId}`;
+    } else {
+      shareUrl = `${CONFIG.informations.app.webUrl}/firedepartment/${firedepartment.uuid}`;
+    }
+
+    Share.share({
+      url: shareUrl
+    });
+  }
+
+  function browserSupportsShare() {
+    return typeof navigator !== 'undefined' && typeof navigator.share === 'function';
   }
 
   return (
@@ -178,6 +198,27 @@ export default function FiredepartmentDetailScreen() {
                     )}
                   </View>
                 )) : null }
+
+                {/* share button */}
+                {CONFIG.informations.app.webUrl !== null && browserSupportsShare() && (
+                  <Pressable
+                    style={{
+                      position: 'absolute',
+                      bottom: 10,
+                      right: 10,
+                      backgroundColor: Colors[colorScheme ?? 'light'].background,
+                      width: 40,
+                      height: 40,
+                      borderRadius: 20,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      opacity: 0.7,
+                    }}
+                    onPress={shareFiredepartment}>
+                      <IconSymbol name="square.and.arrow.up" color={Colors[colorScheme ?? 'light'].text} size={24}/>
+                  </Pressable>
+                )}
             </View>
 
             {/* content */}
