@@ -21,6 +21,17 @@ export default function RootLayout() {
       setCustomText({
         style: { fontFamily: 'Montserrat' },
       });
+
+      // set fontFamily for web
+      if (typeof document !== 'undefined') {
+        const style = document.createElement('style');
+        style.innerHTML = `
+          * {
+            font-family: 'Montserrat', sans-serif !important;
+          }
+        `;
+        document.head.appendChild(style);
+      }
     }
   }, [loaded]);
 

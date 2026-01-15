@@ -56,7 +56,7 @@ export default function FiredepartmentDetailScreen() {
     }, [uuid]);
 
   function loadActiveOperations(): void {
-    FiredepartmentService.getFiredepartmentOperations(uuid)
+    FiredepartmentService.getFiredepartmentActiveOperations(uuid)
       .then(setOperations)
       .then(() => {
         setLoading(false);

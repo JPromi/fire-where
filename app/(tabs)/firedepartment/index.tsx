@@ -107,7 +107,7 @@ export default function FiredepartmentDetailScreen() {
                 <TextInput
                   placeholder={t('firedepartment.search.placeholder')}
                   onChangeText={searchChange}
-                  blurOnSubmit={false}
+                  returnKeyType="search"
                   style={
                     {
                       color: Colors[colorScheme ?? 'light'].text,
@@ -134,10 +134,10 @@ export default function FiredepartmentDetailScreen() {
                 </View>
               ) : (
                 <FlatList
-                  contentContainerStyle={{ flex: 1, marginBottom: dynamicSide.bottom + 50 }}
                   data={firedepartments}
                   keyboardShouldPersistTaps="handled"
                   keyExtractor={(item) => item.uuid}
+                  ListFooterComponent={<View style={{ height: dynamicSide.bottom + 50 }} />}
                   renderItem={({ item: fd }) => (
                   <Pressable
                     key={fd.uuid}

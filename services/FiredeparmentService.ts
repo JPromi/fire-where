@@ -21,8 +21,26 @@ export class FiredepartmentService {
     return res.data;
   }
 
-  static async getFiredepartmentOperations(uuid: string) {
-    const res = await axios.get<Operation[]>(`${CONFIG.api.baseUrl}/firedepartment/${uuid}/active-operations`);
+  static async getFiredepartmentActiveOperations(firedepartmentUuid: string) {
+    const res = await axios.get<Operation[]>(`${CONFIG.api.baseUrl}/firedepartment/${firedepartmentUuid}/active-operations`);
+    return res.data;
+  }
+
+  static async getFiredepartmentOperations(firedepartmentUuid: string, size: number = 20, page: number = 0, dateStart?: Date, dateEnd?: Date, operationType?: string) {
+    const params = new URLSearchParams();
+    params.append('size', size.toString());
+    params.append('page', page.toString());
+    if (dateStart) {
+      params.append('dateStart', dateStart.toISOString());
+    }
+    if (dateEnd) {
+      params.append('dateEnd', dateEnd.toISOString());
+    }
+    if (operationType) {
+      params.append('operationType', operationType);
+    }
+
+    const res = await axios.get<Page<Operation>>(`${CONFIG.api.baseUrl}/firedepartment/${firedepartmentUuid}/operations?${params.toString()}`);
     return res.data;
   }
 }
