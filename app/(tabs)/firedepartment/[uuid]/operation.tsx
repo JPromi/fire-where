@@ -194,6 +194,7 @@ export default function FiredepartmentOperationScreen() {
                   onPress={() => {
                     setFilter({ dateStart: undefined, dateEnd: undefined, operationType: undefined });
                     loadOperations();
+                    toggleOptions();
                   }}>
                   <ThemedText style={{ color: Colors[colorScheme ?? 'light'].textSub }}>{t('firedepartment.details.operations.filter.buttons.reset')}</ThemedText>
                 </Pressable>
@@ -210,6 +211,7 @@ export default function FiredepartmentOperationScreen() {
                   }}
                   onPress={() => {
                     loadOperations();
+                    toggleOptions();
                   }}>
                   <ThemedText style={{ color: Colors[colorScheme ?? 'light'].linkForeground }}>{t('firedepartment.details.operations.filter.buttons.load')}</ThemedText>
                 </Pressable>
