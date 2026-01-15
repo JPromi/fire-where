@@ -4,6 +4,7 @@ import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import 'react-native-reanimated';
 
+import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useEffect } from 'react';
 import { setCustomText } from 'react-native-global-props';
@@ -28,6 +29,11 @@ export default function RootLayout() {
         style.innerHTML = `
           * {
             font-family: 'Montserrat', sans-serif !important;
+          }
+
+          html, body {
+            scrollbar-color: ${Colors[colorScheme ?? 'light'].backgroundForground} transparent;
+            scrollbar-width: thin;
           }
         `;
         document.head.appendChild(style);
