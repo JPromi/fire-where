@@ -112,7 +112,8 @@ export default function FiredepartmentDetailScreen() {
     });
   }
 
-  function browserSupportsShare() {
+  function supportsShare() {
+    if (Platform.OS !== 'web') return true;
     return typeof navigator !== 'undefined' && typeof navigator.share === 'function';
   }
 
@@ -125,8 +126,7 @@ export default function FiredepartmentDetailScreen() {
           </View>
         ) : (
           <ScrollView
-            style={[styles.containerScrollView]}
-            contentContainerStyle={{ flexGrow: 1 }}
+            contentContainerStyle={[styles.containerScrollView, { flexGrow: 1, marginBottom: dynamicSide.bottom + 50 }]}
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
             }>
@@ -200,7 +200,7 @@ export default function FiredepartmentDetailScreen() {
                 )) : null }
 
                 {/* share button */}
-                {CONFIG.informations.app.webUrl !== null && browserSupportsShare() && (
+                {CONFIG.informations.app.webUrl !== null && supportsShare() && (
                   <Pressable
                     style={{
                       position: 'absolute',
