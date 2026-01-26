@@ -106,10 +106,21 @@ export default function OperationSelectDistrict() {
     setRefreshing(true);
     if (!federalState) return;
 
-    OperationService.getOperationsByFsDistrict(federalState.idLong || '', district.id)
-      .then(setOperations)
-      .catch(console.error)
-      .finally(() => setRefreshing(false));
+    if (district.id === 'all') {
+      OperationService.getOperationsByFs(federalState.idLong || '')
+        .then(setOperations)
+        .catch(console.error)
+        .finally(() => {
+          setRefreshing(false);
+        });
+    } else {
+      OperationService.getOperationsByFsDistrict(federalState.idLong || '', district.id)
+        .then(setOperations)
+        .catch(console.error)
+        .finally(() => {
+          setRefreshing(false);
+        });
+    }
   }
 
   function handlePress(operationUuid: string) {
