@@ -100,15 +100,8 @@ export default function FiredepartmentDetailScreen() {
   function shareFiredepartment() {
     if (CONFIG.informations.app.webUrl === null) return;
 
-    let shareUrl = '';
-    if (firedepartment.nameId) {
-      shareUrl = `${CONFIG.informations.app.webUrl}/firedepartment/${firedepartment.nameId}`;
-    } else {
-      shareUrl = `${CONFIG.informations.app.webUrl}/firedepartment/${firedepartment.uuid}`;
-    }
-
     Share.share({
-      url: shareUrl
+      url: `${CONFIG.informations.app.webUrl}/firedepartment/${firedepartment.nameId ?? firedepartment.uuid}`
     });
   }
 
