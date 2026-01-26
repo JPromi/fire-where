@@ -4,7 +4,9 @@ import { IconSymbol } from "@/components/ui/IconSymbol";
 import { Colors } from "@/constants/Colors";
 import { useDynamicSide } from "@/hooks/useDynamicSide";
 import { SettingService } from "@/services/local/SettingService";
-import { Stack, useLocalSearchParams, useNavigationContainerRef, useRouter } from "expo-router";
+import { title } from "@/utils/TitleFunction";
+import { useHeaderTitleOnFocus } from "@/utils/UseHeaderTitleOnFocus";
+import { useLocalSearchParams, useNavigationContainerRef, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, ScrollView, StyleSheet, useColorScheme, View } from "react-native";
@@ -26,6 +28,9 @@ export default function OperationDetailScreen() {
   const [ selectedData, setSelectedData ] = useState<string | boolean | null | undefined>(null);
   const [ dataSet, setDataSet ] = useState<DataSet[]>([]);
 
+  const pageTitle = title(t(`settings.extended.${settingKey}.title`));
+  useHeaderTitleOnFocus(pageTitle);
+
   const knownKeys = [
     'language',
     'jumpToFederalState',
@@ -40,6 +45,7 @@ export default function OperationDetailScreen() {
     language: [
       { value: 'de', label: t('assets.language.de') },
       { value: 'en', label: t('assets.language.en') },
+      { value: 'hr', label: t('assets.language.hr') },
     ],
     jumpToFederalState: [
       { value: '', label: t('common.none') },
@@ -68,21 +74,22 @@ export default function OperationDetailScreen() {
       { value: 'gmuend', label: t('assets.districts.la.gmuend'), group: 'la' },
       { value: 'hollabrunn', label: t('assets.districts.la.hollabrunn'), group: 'la' },
       { value: 'horn', label: t('assets.districts.la.horn'), group: 'la' },
+      { value: 'korneuburg', label: t('assets.districts.la.korneuburg'), group: 'la' },
+      { value: 'krems', label: t('assets.districts.la.krems'), group: 'la' },
       { value: 'krems-an-der-donau', label: t('assets.districts.la.krems-an-der-donau'), group: 'la' },
-      { value: 'kloserneuburg', label: t('assets.districts.la.kloserneuburg'), group: 'la' },
       { value: 'lilienfeld', label: t('assets.districts.la.lilienfeld'), group: 'la' },
       { value: 'melk', label: t('assets.districts.la.melk'), group: 'la' },
       { value: 'mistelbach', label: t('assets.districts.la.mistelbach'), group: 'la' },
       { value: 'moedling', label: t('assets.districts.la.moedling'), group: 'la' },
       { value: 'neunkirchen', label: t('assets.districts.la.neunkirchen'), group: 'la' },
-      { value: 'purkersdorf', label: t('assets.districts.la.purkersdorf'), group: 'la' },
       { value: 'scheibbs', label: t('assets.districts.la.scheibbs'), group: 'la' },
-      { value: 'schwechat', label: t('assets.districts.la.schwechat'), group: 'la' },
       { value: 'st-poelten', label: t('assets.districts.la.st-poelten'), group: 'la' },
-      { value: 'stockerau', label: t('assets.districts.la.stockerau'), group: 'la' },
+      { value: 'st-poelten-land', label: t('assets.districts.la.st-poelten-land'), group: 'la' },
       { value: 'tulln', label: t('assets.districts.la.tulln'), group: 'la' },
       { value: 'waidhofen-an-der-thaya', label: t('assets.districts.la.waidhofen-an-der-thaya'), group: 'la' },
+      { value: 'waidhofen-an-der-ybbs', label: t('assets.districts.la.waidhofen-an-der-ybbs'), group: 'la' },
       { value: 'wr-neustadt', label: t('assets.districts.la.wr-neustadt'), group: 'la' },
+      { value: 'wr-neustadt-land', label: t('assets.districts.la.wr-neustadt-land'), group: 'la' },
       { value: 'zwettl', label: t('assets.districts.la.zwettl'), group: 'la' },
 
       { value: 'braunau', label: t('assets.districts.ua.braunau'), group: 'ua' },
@@ -175,7 +182,6 @@ export default function OperationDetailScreen() {
 
   return (
     <>
-      <Stack.Screen options={{ title: t(`settings.extended.${settingKey}.title`) }} />
       <ThemedView style={styles.container}>
         <ScrollView>
           <View style={[styles.contentList, { paddingBottom: dynamicSide.bottom + 50 + 10, paddingLeft: dynamicSide.left + 10, paddingRight: dynamicSide.right + 10 }]}>

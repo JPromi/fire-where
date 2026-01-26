@@ -1,5 +1,6 @@
 export type Firedepartment = {
     uuid: string;
+    nameId: string | null;
     name: string | null;
     atFireDepartmentId: string | null;
     isVolunteer: boolean;

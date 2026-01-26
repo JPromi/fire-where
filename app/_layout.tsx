@@ -4,6 +4,7 @@ import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import 'react-native-reanimated';
 
+import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useEffect } from 'react';
 import { setCustomText } from 'react-native-global-props';
@@ -21,6 +22,22 @@ export default function RootLayout() {
       setCustomText({
         style: { fontFamily: 'Montserrat' },
       });
+
+      // set fontFamily for web
+      if (typeof document !== 'undefined') {
+        const style = document.createElement('style');
+        style.innerHTML = `
+          * {
+            font-family: 'Montserrat', sans-serif !important;
+          }
+
+          html, body {
+            scrollbar-color: ${Colors[colorScheme ?? 'light'].backgroundForground} transparent;
+            scrollbar-width: thin;
+          }
+        `;
+        document.head.appendChild(style);
+      }
     }
   }, [loaded]);
 

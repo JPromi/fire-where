@@ -3,7 +3,6 @@
     "name": "Fire Where",
     "slug": "fire-where",
     "version": "1.0.2",
-    "icon": "./assets/images/icon.png",
     "scheme": "firewhere",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -11,6 +10,8 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.jpromi.firePoint",
+      "buildNumber": "1",
+      "icon": "./assets/images/icon.png",
       "infoPlist": {
         "LSApplicationQueriesSchemes": [
           "https",
@@ -19,12 +20,9 @@
       }
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
       "edgeToEdgeEnabled": true,
-      "package": "com.jpromi.firePoint"
+      "package": "com.jpromi.firePoint",
+      "versionCode": 6
     },
     "web": {
       "bundler": "metro",
@@ -38,8 +36,7 @@
         {
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "resizeMode": "contain"
         }
       ],
       "expo-font",

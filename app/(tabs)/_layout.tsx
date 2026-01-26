@@ -48,6 +48,10 @@ export default function TabLayout() {
     });
   }, []);
 
+  const isEmbedded =
+    Platform.OS === "web" &&
+    new URLSearchParams(window.location.search).get("embedded") === "true";
+
   return (
     <Tabs
       screenOptions={{
@@ -66,6 +70,7 @@ export default function TabLayout() {
             position: 'absolute',
             height: 50 + marginBottom,
             backgroundColor: Colors[colorScheme ?? 'light'].backgroundForground,
+            display: isEmbedded ? 'none' : 'flex',
           },
           default: {
             position: 'absolute',

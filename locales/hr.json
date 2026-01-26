@@ -1,0 +1,210 @@
+{
+  "assets": {
+    "federalStates": {
+      "la": "Donja Austrija",
+      "ua": "Gornja Austrija",
+      "st": "Štajerska",
+      "bl": "Gradišće",
+      "vi": "Beč",
+      "ca": "Koruška",
+      "sb": "Salzburg",
+      "ty": "Tirol",
+      "vb": "Vorarlberg"
+    },
+    "districts": {
+      "bl": {
+        "eisenstadt": "Eisenstadt",
+        "rust": "Rust",
+        "eisenstadt-umgebung": "Eisenstadt-okolina",
+        "guessing": "Güssing",
+        "jennersdorf": "Jennersdorf",
+        "mattersburg": "Mattersburg",
+        "neusiedl-am-see": "Neusiedl am See",
+        "oberpullendorf": "Oberpullendorf",
+        "oberwart": "Oberwart"
+      },
+      "la": {
+        "amstetten": "Amstetten",
+        "baden": "Baden",
+        "bruck-an-der-leitha": "Bruck an der Leithi",
+        "gaenserndorf": "Gänserndorf",
+        "gmuend": "Gmünd",
+        "hollabrunn": "Hollabrunn",
+        "horn": "Horn",
+        "korneuburg": "Korneuburg",
+        "krems": "Krems",
+        "krems-an-der-donau": "Krems na Dunavu",
+        "lilienfeld": "Lilienfeld",
+        "melk": "Melk",
+        "mistelbach": "Mistelbach",
+        "moedling": "Mödling",
+        "neunkirchen": "Neunkirchen",
+        "scheibbs": "Scheibbs",
+        "st-poelten": "St. Pölten",
+        "st-poelten-land": "St. Pölten okolica",
+        "tulln": "Tulln",
+        "waidhofen-an-der-thaya": "Waidhofen an der Thayi",
+        "waidhofen-an-der-ybbs": "Waidhofen an der Ybbsu",
+        "wr-neustadt": "Wiener Neustadt",
+        "wr-neustadt-land": "Wiener Neustadt okolina",
+        "zwettl": "Zwettl"
+      },
+      "ua": {
+        "braunau": "Braunau",
+        "eferding": "Eferding",
+        "freistadt": "Freistadt",
+        "gmunden": "Gmunden",
+        "grieskirchen": "Grieskirchen",
+        "kirchdorf": "Kirchdorf",
+        "linz": "Linz",
+        "linz-land": "Linz okolina",
+        "perg": "Perg",
+        "ried": "Ried",
+        "rohrbach": "Rohrbach",
+        "schaerding": "Schärding",
+        "steyr": "Steyr",
+        "steyr-land": "Steyr okolina",
+        "urfahr-umgebung": "Urfahr okolina",
+        "voecklabruck": "Vöcklabruck",
+        "wels": "Wels",
+        "wels-land": "Wels okolina"
+      },
+      "st": {
+        "bruck-muerzzuschlag": "Bruck-Mürzzuschlag",
+        "deutschlandsberg": "Deutschlandsberg",
+        "fuerstenfeld": "Fürstenfeld",
+        "graz": "Graz",
+        "graz-umgebung": "Graz okolina",
+        "leibnitz": "Leibnitz",
+        "leoben": "Leoben",
+        "liezen": "Liezen",
+        "murau": "Murau",
+        "murtal": "Murtal",
+        "suedost-steiermark": "Jugoistočna Štajerska",
+        "voitsberg": "Voitsberg",
+        "weiz": "Weiz"
+      },
+      "ty": {
+        "imst": "Imst",
+        "innsbruck": "Innsbruck grad",
+        "innsbruck-land": "Innsbruck okolina",
+        "kitzbuehel": "Kitzbühel",
+        "kufstein": "Kufstein",
+        "landeck": "Landeck",
+        "lienz": "Lienz",
+        "reutte": "Reutte",
+        "schwaz": "Schwaz"
+      }
+    },
+    "serviceOrigin": {
+      "BL_LSZ_PUB": "LSZ Gradišće",
+      "LA_WASTL_PUB": "WASTL Donja Austrija",
+      "UA_LFV_PUB": "LFV Gornja Austrija",
+      "ST_LFV_PUB": "LFV Štajerska",
+      "TYROL_LFS_APP": "Aplikacija Tirol - intervencije"
+    }
+  },
+  "common": {
+    "back": "Natrag",
+    "unknown": "Nepoznato",
+    "none": "Nema",
+    "error": {
+      "notFound": "Nije pronađeno",
+      "internalServerError": "Došlo je do pogreške prilikom zahtjeva"
+    },
+    "time": {
+      "hours": "Sati",
+      "minutes": "Minute"
+    }
+  },
+  "operation": {
+    "title": "Intervencije",
+    "noData": "Nema pronađenih intervencija.",
+    "allOperations": "Sve intervencije u {{federalState}}",
+    "details": {
+      "alarmed": "Alarmiranje",
+      "inOperationSince": "U intervenciji od",
+      "operationDuration": "Trajanje intervencije",
+      "unit": {
+        "alarmed": "Alarmirano",
+        "disposition": "Dispozicija",
+        "out": "Izrađen",
+        "in": "Vraćen",
+        "placeholderUnit": "Vozilo",
+        "placeholderFiredepartment": "Vatrogasno društvo"
+      },
+      "nerdInformation": {
+        "system": {
+          "title": "Informacije o sustavu",
+          "dataOrigin": "Izvor podataka",
+          "firstSeen": "Prvo zabilježeno",
+          "lastUpdate": "Posljednja aktualizacija",
+          "lastSeen": "Posljednja zabilježba"
+        },
+        "id": {
+          "title": "ID-ovi",
+          "uuid": "UUID",
+          "upperAustriaId": "ID Gornje Austrije",
+          "tyrolEventId": "Tirol događaj ID",
+          "burgenlandId": "ID Gradišća",
+          "styriaId": "Štajerska ID",
+          "lowerAustriaWastlPubId": "Donja Austrija WASTL Pub ID",
+          "lowerAustriaSysId": "Donja Austrija sistemski ID",
+          "lowerAustriaId": "Donja Austrija ID"
+        }
+      }
+    }
+  },
+  "firedepartment": {
+    "title": "Vatrogasci",
+    "search": {
+      "placeholder": "Traži vatrogasce...",
+      "error": {
+        "noResults": "Nijedno vatrogasno društvo nije pronađeno.",
+        "noQuery": "Unesite pojam za pretragu."
+      }
+    },
+    "details": {
+      "chip": {
+        "volunteer": "Dobrovoljno"
+      }
+    }
+  },
+  "settings": {
+    "title": "Postavke",
+    "group": {
+      "general": {
+        "title": "Općenito",
+        "language": "Jezik",
+        "nerdMode": "Način za developere"
+      },
+      "operations": {
+        "title": "Intervencije"
+      },
+      "software": {
+        "title": "Softver",
+        "developer": "Programer",
+        "feedback": "Povratne informacije",
+        "repository": "Repozitorij",
+        "buildVersion": "Verzija izgradnje"
+      },
+      "informations": {
+        "title": "Informacije",
+        "imprint": "Impresum",
+        "legal": "Privatnost",
+        "websiteValue": "Web stranica"
+      }
+    },
+    "extended": {
+      "language": {
+        "title": "Jezik"
+      },
+      "jumpToFederalState": {
+        "title": "Skok na saveznu državu"
+      },
+      "jumpToDistrict": {
+        "title": "Skok na okrug"
+      }
+    }
+  }
+}

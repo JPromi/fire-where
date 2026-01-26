@@ -22,6 +22,9 @@ export const Colors = {
     error: '#eb2323',
     errorText: '#FFFFFF',
 
+    linkBackground: '#ebf5fa',
+    linkForeground: '#0a7ea4',
+
     mapColorNoActivity: '#b3b4b5',
     border: '#F0F1F3',
 
@@ -48,6 +51,9 @@ export const Colors = {
     tabIconSelected: tintColorDark,
     error: '#eb2323',
     errorText: '#ECEDEE',
+
+    linkBackground: '#1f2629',
+    linkForeground: '#4badd6',
 
     mapColorNoActivity: '#2C2F32',
     border: '#202325',

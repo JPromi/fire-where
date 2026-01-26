@@ -10,9 +10,11 @@ import { useDynamicSide } from "@/hooks/useDynamicSide";
 import { FederalState } from "@/models/FederalState";
 import { LocationStatistic } from "@/models/LocationStatistic";
 import { OperationService } from "@/services/OperationService";
+import { title } from "@/utils/TitleFunction";
+import { useHeaderTitleOnFocus } from "@/utils/UseHeaderTitleOnFocus";
 import { BlurView } from "expo-blur";
-import { Stack, useLocalSearchParams, useRouter } from "expo-router";
-import { useEffect, useState } from "react";
+import { Stack, useFocusEffect, useLocalSearchParams, useNavigation, useRouter } from "expo-router";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Platform, Pressable, ScrollView, StyleSheet, Text, useColorScheme, View } from "react-native";
 
@@ -22,6 +24,7 @@ export default function OperationSelectDistrict() {
   const colorScheme = useColorScheme();
   const dynamicSide = useDynamicSide();
   const router = useRouter();
+  const navigation = useNavigation();
   const blurSupported = Platform.OS === 'ios' || (Platform.OS === 'android' && Platform.Version >= 31);
 
 
@@ -35,11 +38,22 @@ export default function OperationSelectDistrict() {
   var federalState: FederalState | null = federalStates.find(fs => fs.idLong === federalStateId) || null;
   const districts: { id: string, name: string }[] = [];
 
+  const pageTitle = title(federalState?.name);
+  useHeaderTitleOnFocus(pageTitle);
+
   loadFederalStatesFromData();
 
   useEffect(() => {
     getStatistic(federalStateId);
   }, [federalStateId]);
+
+  useFocusEffect(
+    useCallback(() => {
+      navigation.setOptions({
+        title: title(federalState?.name),
+      });
+    }, [navigation, federalState])
+  );
 
   function loadFederalStatesFromData() {
     const data: FederalState[] = federStatesData.map((fs) => ({
@@ -74,6 +88,9 @@ export default function OperationSelectDistrict() {
         });
 
         districts.sort((a, b) => a.name.localeCompare(b.name));
+
+        // add "all districts" option at the beginning
+        districts.unshift({ id: 'all', name: t('operation.allOperations', { federalState: federalState?.name }) });
       }
     }
   }
@@ -101,6 +118,15 @@ export default function OperationSelectDistrict() {
 
     OperationService.getStatisticFromFederalStates(federalStateId)
       .then((data) => {
+        const dataAll: LocationStatistic = {
+          nameId: 'all',
+          countActive: data.reduce((sum, fs) => sum + fs.countActive, 0),
+          countFire: data.reduce((sum, fs) => sum + fs.countFire, 0),
+          countTechnical: data.reduce((sum, fs) => sum + fs.countTechnical, 0),
+          countAcid: data.reduce((sum, fs) => sum + fs.countAcid, 0),
+          countOther: data.reduce((sum, fs) => sum + fs.countOther, 0),
+        }
+        data.push(dataAll)
         setStatistic(data);
         setLoaded(true);
         setLastDataUpdate(new Date());
@@ -115,9 +141,6 @@ export default function OperationSelectDistrict() {
   if (loaded) {
     return (
       <>
-        <Stack.Screen options={{
-          title: federalState?.name,
-          }} />
         <ThemedView style={[styles.container]}>
           {isMapView ? (
             <View style={[styles.contentMap, { marginBottom: dynamicSide.bottom + 50, paddingLeft: dynamicSide.left, paddingRight: dynamicSide.right }]}>
@@ -153,7 +176,7 @@ export default function OperationSelectDistrict() {
               </Pressable>
             </View>
           ) : (
-            <ScrollView>
+            <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
               <View style={[styles.contentList, { marginBottom: dynamicSide.bottom + 50, paddingLeft: dynamicSide.left, paddingRight: dynamicSide.right }]}>
                 {districts.map((fs) => (
                   <Pressable

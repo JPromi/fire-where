@@ -1,4 +1,3 @@
-import buildInfo from '@/assets/build-info.json';
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Colors } from "@/constants/Colors";
@@ -6,7 +5,10 @@ import { CONFIG } from '@/constants/Config';
 import { useDynamicSide } from '@/hooks/useDynamicSide';
 import { settingsLocalService } from "@/services/local/SettingLocalService";
 import { SettingService } from "@/services/local/SettingService";
-import { Stack, useRouter } from "expo-router";
+import { title } from '@/utils/TitleFunction';
+import { useHeaderTitleOnFocus } from "@/utils/UseHeaderTitleOnFocus";
+import Constants from 'expo-constants';
+import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Linking, Pressable, ScrollView, StyleSheet, Switch, useColorScheme, View } from "react-native";
@@ -34,6 +36,8 @@ export default function SettingsScreen() {
   const router = useRouter();
   const dynamicSide = useDynamicSide();
   const [loading, setLoading] = useState(true);
+  const pageTitle = title(t('settings.title'));
+  useHeaderTitleOnFocus(pageTitle);
 
   const [settings, setSettings] = useState<SettingsGroup[]>([
     {
@@ -102,20 +106,8 @@ export default function SettingsScreen() {
           key: 'version',
           name: t('settings.group.software.buildVersion'),
           type: 'text',
-          valueExtra: buildInfo.buildVersion || 'undefined',
-        },
-        {
-          key: 'buildDate',
-          name: t('settings.group.software.buildDate'),
-          type: 'text',
-          valueExtra: new Date(buildInfo.buildDate).toLocaleDateString('de-DE', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-          }),
-        },
+          valueExtra: `${Constants.manifest?.version}` + (Constants.manifest?.buildNumber ? ` (${Constants.manifest?.buildNumber})` : ''),
+        }
       ]
     },
     {
@@ -233,7 +225,6 @@ export default function SettingsScreen() {
 
   return (
     <>
-      <Stack.Screen options={{ title: t('settings.title') }} />
       <ThemedView style={styles.container}>
         {loading ? (
           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: dynamicSide.bottom + 50 }}>

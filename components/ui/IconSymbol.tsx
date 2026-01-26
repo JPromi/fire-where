@@ -21,7 +21,9 @@ type IconSymbolName =
   | 'xmark'
   | 'heart.fill'
   | 'flame.fill'
-  | 'globe';
+  | 'globe'
+  | 'line.horizontal.3.decrease'
+  | 'square.and.arrow.up';
 
 const ICONS: Record<IconSymbolName, any> = {
   'house.fill': fa.faHouse,
@@ -43,6 +45,8 @@ const ICONS: Record<IconSymbolName, any> = {
   'heart.fill': fa.faHeart,
   'flame.fill': fa.faFire,
   'globe': fa.faGlobe,
+  'line.horizontal.3.decrease': fa.faFilter,
+  'square.and.arrow.up': fa.faShareAlt,
 };
 
 export function IconSymbol({

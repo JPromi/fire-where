@@ -15,6 +15,8 @@ import { useDynamicSide } from '@/hooks/useDynamicSide';
 import { LocationStatistic } from '@/models/LocationStatistic';
 import { OperationService } from '@/services/OperationService';
 import { ServiceService } from '@/services/ServiceService';
+import { title } from '@/utils/TitleFunction';
+import { useHeaderTitleOnFocus } from '@/utils/UseHeaderTitleOnFocus';
 import { BlurView } from 'expo-blur';
 import { useTranslation } from 'react-i18next';
 
@@ -31,6 +33,9 @@ export default function OperationSelectFederalStateScreen() {
   const [loaded, setLoaded] = useState(false);
 
   const [lastDataUpdate, setLastDataUpdate] = useState<Date | null>(null);
+
+  const pageTitle = title(t('operation.title'));
+  useHeaderTitleOnFocus(pageTitle);
 
   useEffect(() => {
     setLoaded(false);
@@ -109,7 +114,6 @@ export default function OperationSelectFederalStateScreen() {
   if(loaded) {
     return (
       <>
-        <Stack.Screen options={{ title: t('operation.title') }} />
         <ThemedView style={styles.container}>
           { isMapView ? (
             <View style={[styles.contentMap, { paddingBottom: dynamicSide.bottom + 50, paddingLeft: dynamicSide.left, paddingRight: dynamicSide.right }]}>
@@ -151,7 +155,8 @@ export default function OperationSelectFederalStateScreen() {
                   getStatistic();
                 }}/>
               }
-              style={{ paddingLeft: dynamicSide.left, paddingRight: dynamicSide.right }}>
+              style={{ paddingLeft: dynamicSide.left, paddingRight: dynamicSide.right }}
+              contentContainerStyle={{ flexGrow: 1 }}>
               <View style={[styles.contentList, { marginBottom: dynamicSide.bottom + 50, paddingLeft: dynamicSide.left, paddingRight: dynamicSide.right }]}>
                 {federalStates.map((fs) => (
                   <Pressable

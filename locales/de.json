@@ -31,21 +31,22 @@
         "gmuend": "Gmünd",
         "hollabrunn": "Hollabrunn",
         "horn": "Horn",
+        "korneuburg": "Korneuburg",
+        "krems": "Krems",
         "krems-an-der-donau": "Krems an der Donau",
-        "kloserneuburg": "Kloserneuburg",
         "lilienfeld": "Lilienfeld",
         "melk": "Melk",
         "mistelbach": "Mistelbach",
         "moedling": "Mödling",
         "neunkirchen": "Neunkirchen",
-        "purkersdorf": "Purkersdorf",
         "scheibbs": "Scheibbs",
-        "schwechat": "Schwechat",
         "st-poelten": "St. Pölten",
-        "stockerau": "Stockerau",
+        "st-poelten-land": "St. Pölten Land",
         "tulln": "Tulln",
         "waidhofen-an-der-thaya": "Waidhofen an der Thaya",
+        "waidhofen-an-der-ybbs": "Waidhofen an der Ybbs",
         "wr-neustadt": "Wr. Neustadt",
+        "wr-neustadt-land": "Wr. Neustadt Land",
         "zwettl": "Zwettl"
       },
       "ua": {
@@ -56,7 +57,7 @@
         "grieskirchen": "Grieskirchen",
         "kirchdorf": "Kirchdorf",
         "linz": "Linz",
-        "linz-land": "LinzLand",
+        "linz-land": "Linz Land",
         "perg": "Perg",
         "ried": "Ried",
         "rohrbach": "Rohrbach",
@@ -104,7 +105,8 @@
     },
     "language": {
       "de": "Deutsch",
-      "en": "Englisch"
+      "en": "English",
+      "hr": "Hrvatski"
     }
   },
   "common": {
@@ -123,6 +125,7 @@
   "operation": {
     "title": "Einsätze",
     "noData": "Keine Einsätze gefunden.",
+    "allOperations": "Alle Einsätze in {{federalState}}",
     "details": {
       "alarmed": "Alarmierung",
       "inOperationSince": "Im Einsatz seit",
@@ -158,7 +161,40 @@
     }
   },
   "firedepartment": {
-    "title": "Feuerwehren"
+    "title": "Feuerwehr",
+    "search": {
+      "placeholder": "Feuerwehr suchen...",
+      "error": {
+        "noResults": "Keine Feuerwehren gefunden.",
+        "noQuery": "Bitte Suchbegriff eingeben."
+      }
+    },
+    "details": {
+      "chip": {
+        "volunteer": "Freiwillig",
+        "ready": "Einsatzbereit",
+        "inOperation": "im Einsatz"
+      },
+      "operationsOverview": {
+        "currentOperations": "Aktuelle Einsätze",
+        "allOperations": "Alle Einsätze"
+      },
+      "operations": {
+        "title": "Einsätze",
+        "filter": {
+          "title": "Filter",
+          "date": {
+            "label": "Datum",
+            "start": "Start",
+            "end": "Ende"
+          },
+          "buttons": {
+            "load": "Laden",
+            "reset": "Reset"
+          }
+        }
+      }
+    }
   },
   "settings": {
     "title": "Einstellungen",
@@ -166,7 +202,7 @@
       "general": {
         "title": "Allgemein",
         "language": "Sprache",
-        "nerdMode": "Nerd-Modus"
+        "nerdMode": "Entwicklermodus"
       },
       "operations": {
         "title": "Einsätze"
@@ -176,8 +212,7 @@
         "developer": "Entwickler",
         "feedback": "Feedback",
         "repository": "Repository",
-        "buildVersion": "Build Version",
-        "buildDate": "Build Datum"
+        "buildVersion": "Build Version"
       },
       "informations": {
         "title": "Informationen",
