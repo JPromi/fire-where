@@ -96,7 +96,8 @@ export default function FiredepartmentDetailScreen() {
               {/* Search */}
               <View
                 style={{
-                  padding: 10,
+                  paddingHorizontal: 10,
+                  paddingVertical: Platform.OS === 'android' ? 0 : 10,
                   marginVertical: 20,
                   marginHorizontal: 12,
                   backgroundColor: Colors[colorScheme ?? 'light'].backgroundForground,
