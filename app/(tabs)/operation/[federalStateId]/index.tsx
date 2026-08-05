@@ -4,6 +4,7 @@ import IconAtMap from "@/assets/icons/map-at.svg";
 import { SvgAtFederalStateMap } from "@/components/assets/SvgAtFederalStateMap";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { uiError } from "@/components/ui/ErrorMessage";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import { Colors } from "@/constants/Colors";
 import { useDynamicSide } from "@/hooks/useDynamicSide";
@@ -130,6 +131,11 @@ export default function OperationSelectDistrict() {
         setStatistic(data);
         setLoaded(true);
         setLastDataUpdate(new Date());
+      })
+      .catch((error) => {
+        console.error('Error fetching statistic:', error);
+        uiError(error.status === 404 ? t('common.error.notFound') : t('common.error.internalServerError'));
+        setLoaded(true);
       });
   }
 

@@ -10,12 +10,13 @@ export class FiredepartmentService {
     return res.data;
   }
 
-  static async searchFiredepartments(q: string, limit: number = 20, page: number = 0) {
+  static async searchFiredepartments(q?: string, limit: number = 20, page: number = 0, uuids?: string[]) {
     const res = await axios.get<Page<Firedepartment>>(`${CONFIG.api.baseUrl}/firedepartment/list`, {
       params: {
         q,
         limit,
         page,
+        uuids: uuids ? uuids.join(',') : undefined,
       },
     });
     return res.data;

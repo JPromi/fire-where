@@ -28,6 +28,8 @@ export const Colors = {
     mapColorNoActivity: '#b3b4b5',
     border: '#F0F1F3',
 
+    favourite: '#eba834',
+
     opFire: '#ff0c0c',
     opFireText: opTextDark,
     opTechnical: '#0077ff',
@@ -57,6 +59,8 @@ export const Colors = {
 
     mapColorNoActivity: '#2C2F32',
     border: '#202325',
+
+    favourite: '#eba834',
 
     opFire: '#ff0c0c',
     opFireText: opTextDark,

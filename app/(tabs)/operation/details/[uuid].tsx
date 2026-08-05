@@ -2,7 +2,7 @@ import Firedepartment from '@/assets/icons/firedepartment.svg';
 import Firetruck from '@/assets/icons/firetruck.svg';
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { ErrorMessage } from '@/components/ui/ErrorMessage';
+import { uiError } from '@/components/ui/ErrorMessage';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { OperationTypeView } from '@/components/ui/OperationTypeView';
 import { Colors } from "@/constants/Colors";
@@ -33,11 +33,11 @@ export default function OperationDetailScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [expandedItems, setExpandedItems] = useState<{ [key: number]: boolean }>({});
 
-  const [operation, setOperation] = useState<Operation>({} as Operation);
+  const [operation, setOperation] = useState<Operation | undefined>(undefined);
 
-  const [errorMessage, setErrorMessage] = useState<{message: string | null, isNecessary: boolean}>({message: null, isNecessary: false});
+  const [hasNecessaryError, setHasNecessaryError] = useState(false);
 
-  const pageTitle = title(operation.alarm?.message);
+  const pageTitle = title(operation?.alarm?.message);
   useHeaderTitleOnFocus(pageTitle);
 
   useEffect(() => {
@@ -45,12 +45,8 @@ export default function OperationDetailScreen() {
               .then(setOperation)
               .catch(error => {
                 console.error(error);
-                setErrorMessage(
-                  {
-                    message: error.request.status === 404 ? t('common.error.notFound') : t('common.error.internalServerError'),
-                    isNecessary: true,
-                  }
-                );
+                uiError(error.request.status === 404 ? t('common.error.notFound') : t('common.error.internalServerError'));
+                setHasNecessaryError(true);
               })
               .finally(() => setLoading(false));
 
@@ -66,7 +62,7 @@ export default function OperationDetailScreen() {
   }, [uuid, t]);
 
   useEffect(() => {
-    const count = (operation.firedepartments?.length || 0) + (operation.units?.length || 0);
+    const count = (operation?.firedepartments?.length || 0) + (operation?.units?.length || 0);
     animationValues.current = Array.from({ length: count }, () => new Animated.Value(0));
   }, [operation]);
   
@@ -143,8 +139,7 @@ export default function OperationDetailScreen() {
 
   return (
     <>
-      <ErrorMessage message={errorMessage.message}/>
-      {!errorMessage.isNecessary && !errorMessage.message && (
+      {operation ? (
         <ThemedView style={[styles.container]}>
           { loading ? (
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: dynamicSide.bottom + 50 }}>
@@ -575,6 +570,13 @@ export default function OperationDetailScreen() {
             </ScrollView>
           )}
         </ThemedView>
+      ) : (
+        <>
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: dynamicSide.bottom + 50, gap: 10 }}>
+            {/* TODO: Icon */}
+            <Text style={{ color: Colors[colorScheme ?? 'light'].text, fontSize: 16 }}>{t('common.customError.operationNotFound')}</Text>
+          </View>
+        </>
       )}
     </>
   )

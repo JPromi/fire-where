@@ -1,13 +1,15 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { IconSymbol } from "@/components/ui/IconSymbol";
 import { Colors } from "@/constants/Colors";
 import { useDynamicSide } from "@/hooks/useDynamicSide";
 import { Firedepartment } from "@/models/Firedepartment";
 import { FiredepartmentService } from "@/services/FiredeparmentService";
+import { FavouritesService } from "@/services/local/FavouritesService";
 import { title } from "@/utils/TitleFunction";
 import { useHeaderTitleOnFocus } from "@/utils/UseHeaderTitleOnFocus";
-import { useRouter } from "expo-router";
-import { useEffect, useState } from "react";
+import { useFocusEffect, useRouter } from "expo-router";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, FlatList, Platform, Pressable, StyleSheet, TextInput, useColorScheme, View } from "react-native";
 
@@ -18,6 +20,8 @@ export default function FiredepartmentDetailScreen() {
   const { t } = useTranslation();
 
   const [firedepartments, setFiredepartments] = useState<Firedepartment[]>([]);
+  const [favourites, setFavourites] = useState<Firedepartment[]>([]);
+  const [favouriteIds, setFavouriteIds] = useState<string[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState("");
@@ -26,9 +30,10 @@ export default function FiredepartmentDetailScreen() {
   useHeaderTitleOnFocus(pageTitle);
 
   useEffect(() => {
+    // getFavourites();
     if (!query) {
       setLoading(false);
-      setFiredepartments([]);
+      setFiredepartments(favourites);
       return;
     }
 
@@ -44,6 +49,12 @@ export default function FiredepartmentDetailScreen() {
 
     return () => clearTimeout(t);
   }, [query]);
+
+  useFocusEffect(
+    useCallback(() => {
+      getFavourites(query.length === 0);
+    }, [query])
+  );
 
   function searchChange(text: string) {
     setQuery(text);
@@ -80,6 +91,31 @@ export default function FiredepartmentDetailScreen() {
       default:
         return fsName;
     }
+  }
+
+  function getFavourites(replaceResults: boolean = false) {
+    FavouritesService.getFavouriteIds()
+      .then(
+        (favs) => {
+          setFavouriteIds(favs);
+          if (favs.length > 0) {
+            FiredepartmentService.searchFiredepartments(undefined, 36, 0, favs)
+              .then((res) => {
+                setFavourites(res.content);
+                if (replaceResults) {
+                  setFiredepartments(res.content);
+                }
+              });
+          }
+        }
+      )
+      .catch(error => {
+        console.error("Error retrieving favourites:", error);
+      });
+  }
+
+  function isFavourite(fd: Firedepartment): boolean {
+    return favouriteIds.includes(fd.uuid);
   }
 
   return (
@@ -149,36 +185,59 @@ export default function FiredepartmentDetailScreen() {
                         borderColor: Colors[colorScheme ?? 'light'].border,
                         opacity: pressed ? 0.7 : 1,
                         display: 'flex',
-                        flexDirection: 'column',
+                        flexDirection: 'row',
                         justifyContent: 'space-between',
                       })}>
-                      {/* Name */}
-                      <ThemedText
-                        numberOfLines={1}
-                        ellipsizeMode="tail"
-                        style={{
-                          color: Colors[colorScheme ?? 'light'].text,
-                          fontWeight: 'bold',
-                          fontSize: 18,
-                          maxWidth: '100%',
-                          textAlign: 'left',
-                          }}>{fd.name}</ThemedText>
+                      <View style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'space-between',
+                          flex: 1,
+                        }}>
+                        {/* Name */}
+                        <ThemedText
+                          numberOfLines={1}
+                          ellipsizeMode="tail"
+                          style={{
+                            color: Colors[colorScheme ?? 'light'].text,
+                            fontWeight: 'bold',
+                            fontSize: 18,
+                            maxWidth: '100%',
+                            textAlign: 'left',
+                            }}>{fd.name}</ThemedText>
 
-                      {/* Sub */}
-                      { fd.address.federalState && (
-                        <View>
-                          <ThemedText
-                            numberOfLines={1}
-                            ellipsizeMode="tail"
-                            style={{
-                                color: Colors[colorScheme ?? 'light'].text,
-                                fontSize: 14,
-                                opacity: 0.5,
-                                lineHeight: 15,
-                                marginTop: 4,
-                              }}>{getFederalStateName(fd.address.federalState)}</ThemedText>
-                        </View>
-                      ) }
+                        {/* Sub */}
+                        { fd.address.federalState && (
+                          <View>
+                            <ThemedText
+                              numberOfLines={1}
+                              ellipsizeMode="tail"
+                              style={{
+                                  color: Colors[colorScheme ?? 'light'].text,
+                                  fontSize: 14,
+                                  opacity: 0.5,
+                                  lineHeight: 15,
+                                  marginTop: 4,
+                                }}>{getFederalStateName(fd.address.federalState)}</ThemedText>
+                          </View>
+                          ) }
+                      </View>
+
+                      <>
+                        { isFavourite(fd) && (
+                          <View style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            marginLeft: 10,
+                          }}>
+                            <IconSymbol
+                              name="star"
+                              size={25}
+                              color={Colors[colorScheme ?? 'light'].favourite} />
+                          </View>
+                        )}
+                      </>
                     </Pressable>
                   )} />
               )}

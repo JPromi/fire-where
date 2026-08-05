@@ -2,6 +2,7 @@ import districtData from '@/assets/data/districts.json';
 import federStatesData from '@/assets/data/federal-states.json';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from "@/components/ThemedView";
+import { uiError } from '@/components/ui/ErrorMessage';
 import { OperationTypeView } from '@/components/ui/OperationTypeView';
 import { Colors } from '@/constants/Colors';
 import { useDynamicSide } from '@/hooks/useDynamicSide';
@@ -87,7 +88,10 @@ export default function OperationSelectDistrict() {
         } else {
           OperationService.getOperationsByFsDistrict(fs.idLong, dist.id)
             .then(setOperations)
-            .catch(console.error)
+            .catch((error) => {
+              console.error('Error fetching operations:', error);
+              uiError(error.status === 404 ? t('common.error.notFound') : t('common.error.internalServerError'));
+            })
             .finally(() => {
               setLoading(false);
             });

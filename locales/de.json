@@ -117,6 +117,11 @@
       "notFound": "Nicht gefunden",
       "internalServerError": "Es ist ein Fehler bei der Anfrage aufgetreten"
     },
+    "customError": {
+      "firedepartmentNotFound": "Die Feuerwehr wurde nicht gefunden.",
+      "operationNotFound": "Der Einsatz wurde nicht gefunden.",
+      "maxFavouritesReached": "Das Limit von {{max}} Favouriten wurde erreicht. Bitte entferne zuerst eine Feuerwehr aus den Favoriten."
+    },
     "time": {
       "hours": "Stunden",
       "minutes": "Minuten"

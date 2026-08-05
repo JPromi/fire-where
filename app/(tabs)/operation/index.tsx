@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 
 import federStatesData from '@/assets/data/federal-states.json';
 import { SvgAtMap } from '@/components/assets/SvgAtMap';
+import { uiError } from '@/components/ui/ErrorMessage';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { useDynamicSide } from '@/hooks/useDynamicSide';
 import { LocationStatistic } from '@/models/LocationStatistic';
@@ -103,6 +104,11 @@ export default function OperationSelectFederalStateScreen() {
         setStatistic(data);
         setLoaded(true);
         setLastDataUpdate(new Date());
+      })
+      .catch((error) => {
+        console.error('Error fetching statistic:', error);
+        uiError(t('common.error.internalServerError'));
+        setLoaded(true);
       });
   }
 
