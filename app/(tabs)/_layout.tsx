@@ -12,7 +12,7 @@ import { useDynamicBottom } from '@/hooks/useDynamicBottom';
 import i18n from '@/i18n';
 import { settingsLocalService } from '@/services/local/SettingLocalService';
 import { SettingService } from '@/services/local/SettingService';
-import { CommonActions } from '@react-navigation/native';
+import { CommonActions } from 'expo-router/react-navigation';
 import { useTranslation } from 'react-i18next';
 
 export default function TabLayout() {
