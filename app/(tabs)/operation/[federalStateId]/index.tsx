@@ -56,6 +56,12 @@ export default function OperationSelectDistrict() {
     }, [navigation, federalState])
   );
 
+  useFocusEffect(
+    useCallback(() => {
+      getStatistic(federalStateId);
+    }, [federalStateId])
+  );
+
   function loadFederalStatesFromData() {
     const data: FederalState[] = federStatesData.map((fs) => ({
       id: fs.id,

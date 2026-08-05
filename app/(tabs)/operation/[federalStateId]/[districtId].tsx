@@ -11,8 +11,8 @@ import { Operation } from '@/models/Operation';
 import { OperationService } from '@/services/OperationService';
 import { title } from '@/utils/TitleFunction';
 import { useHeaderTitleOnFocus } from '@/utils/UseHeaderTitleOnFocus';
-import { useLocalSearchParams, useRouter } from "expo-router";
-import { useEffect, useState } from "react";
+import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Pressable, RefreshControl, ScrollView, StyleSheet, useColorScheme, View } from "react-native";
 
@@ -53,58 +53,70 @@ export default function OperationSelectDistrict() {
     setFederalState(fs);
 
     if (fs) {
-      // districts data processing
-      const rawDistrictData = districtData.find(d => d.fdId === fs.id);
-      if (rawDistrictData) {
-
-        let dist;
-
-        if (districtId === 'all') {
-          const distAll = { id: 'all', name: t('operation.allOperations', { federalState: fs.name }) };
-          setDistrict(distAll);
-          setDistricts([distAll]);
-
-          dist = distAll;
-        } else {
-          const distList = rawDistrictData.districts.map(d => ({
-            id: d,
-            name: t(`assets.districts.${fs.id}.${d}`),
-          })).sort((a, b) => a.name.localeCompare(b.name));
-
-          setDistricts(distList);
-
-          dist = distList.find(d => d.id === districtId) || { id: districtId, name: '' };
-          setDistrict(dist);
-        }
-
-        // fetch operations
-        if (dist.id === 'all') {
-          OperationService.getOperationsByFs(fs.idLong)
-            .then(setOperations)
-            .catch(console.error)
-            .finally(() => {
-              setLoading(false);
-            });
-        } else {
-          OperationService.getOperationsByFsDistrict(fs.idLong, dist.id)
-            .then(setOperations)
-            .catch((error) => {
-              console.error('Error fetching operations:', error);
-              uiError(error.status === 404 ? t('common.error.notFound') : t('common.error.internalServerError'));
-            })
-            .finally(() => {
-              setLoading(false);
-            });
-        }
-      } else {
-        console.error(t('operation.noDistrictData', { federalState: fs.name }));
-        setLoading(false);
-      }
+      getOperations(fs.id, fs.idLong, fs.name, districtId);
     } else {
       console.error(t('operation.noFederalStateData', { federalStateId }));
       setLoading(false);
     }
   }, [federalStateId, districtId, t]);
+
+  useFocusEffect(
+    useCallback(() => {
+      if (federalState) {
+        getOperations(federalState.id, federalState.idLong || '', federalState.name, districtId);
+      }
+    }, [federalState, districtId])
+  );
+
+  function getOperations(fsId: string, fsIdLong: string, fsName: string, dist?: string) {
+    // districts data processing
+    const rawDistrictData = districtData.find(d => d.fdId === fsId);
+    if (rawDistrictData) {
+
+      let dist;
+
+      if (districtId === 'all') {
+        const distAll = { id: 'all', name: t('operation.allOperations', { federalState: fsName }) };
+        setDistrict(distAll);
+        setDistricts([distAll]);
+
+        dist = distAll;
+      } else {
+        const distList = rawDistrictData.districts.map(d => ({
+          id: d,
+          name: t(`assets.districts.${fsId}.${d}`),
+        })).sort((a, b) => a.name.localeCompare(b.name));
+
+        setDistricts(distList);
+
+        dist = distList.find(d => d.id === districtId) || { id: districtId, name: '' };
+        setDistrict(dist);
+      }
+
+      // fetch operations
+      if (dist.id === 'all') {
+        OperationService.getOperationsByFs(fsIdLong)
+          .then(setOperations)
+          .catch(console.error)
+          .finally(() => {
+            setLoading(false);
+          });
+      } else {
+        OperationService.getOperationsByFsDistrict(fsIdLong, dist.id)
+          .then(setOperations)
+          .catch((error) => {
+            console.error('Error fetching operations:', error);
+            uiError(error.status === 404 ? t('common.error.notFound') : t('common.error.internalServerError'));
+          })
+          .finally(() => {
+            setLoading(false);
+          });
+      }
+    } else {
+      console.error(t('operation.noDistrictData', { federalState: fsName }));
+      setLoading(false);
+    }
+  }
 
   function onRefresh() {
     setRefreshing(true);

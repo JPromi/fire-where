@@ -1,4 +1,4 @@
-import { Stack, useRouter } from 'expo-router';
+import { Stack, useFocusEffect, useRouter } from 'expo-router';
 import { ActivityIndicator, Platform, Pressable, RefreshControl, ScrollView, StyleSheet, Text, useColorScheme, View } from 'react-native';
 
 import IconAtMap from '@/assets/icons/map-at.svg';
@@ -6,7 +6,7 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
 import { FederalState } from '@/models/FederalState';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import federStatesData from '@/assets/data/federal-states.json';
 import { SvgAtMap } from '@/components/assets/SvgAtMap';
@@ -42,6 +42,12 @@ export default function OperationSelectFederalStateScreen() {
     setLoaded(false);
     setFederalStatesFromData();
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      setFederalStatesFromData();
+    }, [])
+  );
 
   function setFederalStatesFromData() {
     const data: FederalState[] = federStatesData.map((fs) => ({
