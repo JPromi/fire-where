@@ -94,6 +94,56 @@
         "lienz": "Lienz",
         "reutte": "Reutte",
         "schwaz": "Schwaz"
+      },
+      "ca": {
+        "klagenfurt": "Klagenfurt City",
+        "klagenfurt-land": "Klagenfurt District",
+        "spittal-an-der-drau": "Spittal an der Drau",
+        "villach": "Villach City",
+        "villach-land": "Villach District",
+        "feldkirchen": "Feldkirchen",
+        "hermagor": "Hermagor",
+        "voelkermarkt": "Völkermarkt",
+        "waiern": "Wolfsberg"
+      },
+      "sb": {
+        "salzburg": "Salzburg City",
+        "hallein": "Hallein",
+        "salzburg-umgebung": "Salzburg Surroundings",
+        "sankt-johan-im-pongau": "St. Johann im Pongau",
+        "tamsweg": "Tamsweg",
+        "zell-am-see": "Zell am See"
+      },
+      "vb": {
+        "bludenz": "Bludenz",
+        "dornbirn": "Dornbirn",
+        "feldkirch": "Feldkirch",
+        "bregenz": "Bregenz"
+      },
+      "vi": {
+        "innere-stadt": "Inner City",
+        "leopoldstadt": "Leopoldstadt",
+        "landstrasse": "Landstraße",
+        "wieden": "Wieden",
+        "margareten": "Margareten",
+        "mariahilf": "Mariahilf",
+        "neubau": "Neubau",
+        "josefstadt": "Josefstadt",
+        "alsergrund": "Alsergrund",
+        "favoriten": "Favoriten",
+        "simmering": "Simmering",
+        "meidling": "Meidling",
+        "hietzing": "Hietzing",
+        "penzing": "Penzing",
+        "rudolfsheim-fuenfhaus": "Rudolfsheim-Fünfhaus",
+        "ottakring": "Ottakring",
+        "hernals": "Hernals",
+        "waehring": "Währing",
+        "doebling": "Döbling",
+        "brigittenau": "Brigittenau",
+        "floridsdorf": "Floridsdorf",
+        "donaustadt": "Donaustadt",
+        "liesing": "Liesing"
       }
     },
     "serviceOrigin": {
