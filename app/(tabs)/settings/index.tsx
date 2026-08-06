@@ -39,127 +39,127 @@ export default function SettingsScreen() {
   const pageTitle = title(t('settings.title'));
   useHeaderTitleOnFocus(pageTitle);
 
-  const [settings, setSettings] = useState<SettingsGroup[]>([
-    {
-      groupName: t('settings.group.general.title'),
-      items: [
-        {
-          key: 'language',
-          name: t('settings.group.general.language'),
-          type: 'extra',
-          valueExtra: 'de',
-          valueTranslationKey: 'assets.language',
-        },
-        {
-          key: 'nerdMode',
-          name: t('settings.group.general.nerdMode'),
-          type: 'switch',
-          valueSwitch: false,
-        },
-      ],
-    },
-    {
-      groupName: t('settings.group.operations.title'),
-      items: [
-        {
-          key: 'jumpToFederalState',
-          name: t('settings.extended.jumpToFederalState.title'),
-          type: 'extra',
-          valueExtra: '',
-          valueTranslationKey: 'assets.federalStates',
-        },
-        {
-          key: 'jumpToDistrict',
-          name: t('settings.extended.jumpToDistrict.title'),
-          type: 'extra',
-          valueExtra: '',
-          showIfKeyIsset: 'jumpToFederalState',
-          valueTranslationKey: '',
-        }
-      ]
-    },
-    {
-      groupName: t('settings.group.software.title'),
-      items: [
-        {
-          key: 'developer',
-          name: t('settings.group.software.developer'),
-          type: 'link',
-          valueExtra: CONFIG.informations.developer.name,
-          valueLink: CONFIG.informations.developer.website
-        },
-        {
-          key: 'feedback',
-          name: t('settings.group.software.feedback'),
-          type: 'link',
-          valueExtra: CONFIG.informations.app.feedbackEmail,
-          valueLink: 'mailto:' + CONFIG.informations.app.feedbackEmail
-        },
-        {
-          key: 'repository',
-          name: t('settings.group.software.repository'),
-          type: 'link',
-          valueExtra: CONFIG.informations.app.repositoryName,
-          valueLink: CONFIG.informations.app.repositoryUrl
-        },
-        {
-          key: 'version',
-          name: t('settings.group.software.buildVersion'),
-          type: 'text',
-          valueExtra: `${Constants.manifest?.version}` + (Constants.manifest?.buildNumber ? ` (${Constants.manifest?.buildNumber})` : ''),
-        }
-      ]
-    },
-    {
-      groupName: t('settings.group.informations.title'),
-      items: [
-        {
-          key: 'imprint',
-          name: t('settings.group.informations.imprint'),
-          valueExtra: t('settings.group.informations.websiteValue'),
-          type: 'link',
-          valueLink: CONFIG.informations.app.imprint,
-        },
-        {
-          key: 'legal',
-          name: t('settings.group.informations.legal'),
-          type: 'link',
-          valueExtra: t('settings.group.informations.websiteValue'),
-          valueLink: CONFIG.informations.app.legal,
-        },
-      ]
-    }
-  ]);
-  
-  useEffect(() => {
-    loadSettings();
-
-    const unsubscribe = settingsLocalService.subscribe(() => {
-      const updatedSettings = [...settings];
-      for (const group of updatedSettings) {
-        for (const item of group.items) {
-          const value = settingsLocalService.get(item.key);
-          if (value !== undefined) {
-            if (item.type === 'switch') {
-              item.valueSwitch = value as boolean;
-            } else if (item.type === 'extra') {
-              item.valueExtra = value as string;
-            }
+  function createSettings(): SettingsGroup[] {
+    return [
+      {
+        groupName: t('settings.group.general.title'),
+        items: [
+          {
+            key: 'language',
+            name: t('settings.group.general.language'),
+            type: 'extra',
+            valueExtra: 'de',
+            valueTranslationKey: 'assets.language',
+          },
+          {
+            key: 'nerdMode',
+            name: t('settings.group.general.nerdMode'),
+            type: 'switch',
+            valueSwitch: false,
+          },
+        ],
+      },
+      {
+        groupName: t('settings.group.operations.title'),
+        items: [
+          {
+            key: 'jumpToFederalState',
+            name: t('settings.extended.jumpToFederalState.title'),
+            type: 'extra',
+            valueExtra: '',
+            valueTranslationKey: 'assets.federalStates',
+          },
+          {
+            key: 'jumpToDistrict',
+            name: t('settings.extended.jumpToDistrict.title'),
+            type: 'extra',
+            valueExtra: '',
+            showIfKeyIsset: 'jumpToFederalState',
+            valueTranslationKey: '',
           }
-        }
+        ]
+      },
+      {
+        groupName: t('settings.group.software.title'),
+        items: [
+          {
+            key: 'developer',
+            name: t('settings.group.software.developer'),
+            type: 'link',
+            valueExtra: CONFIG.informations.developer.name,
+            valueLink: CONFIG.informations.developer.website
+          },
+          {
+            key: 'feedback',
+            name: t('settings.group.software.feedback'),
+            type: 'link',
+            valueExtra: CONFIG.informations.app.feedbackEmail,
+            valueLink: 'mailto:' + CONFIG.informations.app.feedbackEmail
+          },
+          {
+            key: 'repository',
+            name: t('settings.group.software.repository'),
+            type: 'link',
+            valueExtra: CONFIG.informations.app.repositoryName,
+            valueLink: CONFIG.informations.app.repositoryUrl
+          },
+          {
+            key: 'version',
+            name: t('settings.group.software.buildVersion'),
+            type: 'text',
+            valueExtra: `${Constants.manifest?.version}` + (Constants.manifest?.buildNumber ? ` (${Constants.manifest?.buildNumber})` : ''),
+          }
+        ]
+      },
+      {
+        groupName: t('settings.group.informations.title'),
+        items: [
+          {
+            key: 'imprint',
+            name: t('settings.group.informations.imprint'),
+            valueExtra: t('settings.group.informations.websiteValue'),
+            type: 'link',
+            valueLink: CONFIG.informations.app.imprint,
+          },
+          {
+            key: 'legal',
+            name: t('settings.group.informations.legal'),
+            valueExtra: t('settings.group.informations.websiteValue'),
+            type: 'link',
+            valueLink: CONFIG.informations.app.legal,
+          },
+        ]
       }
-      setRuntimeSettings();
-      setSettings(updatedSettings);
-    });
+    ];
+  }
 
-    return () => {
-      unsubscribe();
-    };
-  }, []);
+  function mergeSettingValues(nextSettings: SettingsGroup[], currentSettings: SettingsGroup[]): SettingsGroup[] {
+    const currentItems = currentSettings.flatMap(group => group.items);
 
-  const loadSettings = async () => {
+    return nextSettings.map(group => ({
+      ...group,
+      items: group.items.map(item => {
+        const currentItem = currentItems.find(current => current.key === item.key);
+        if (!currentItem) return item;
+
+        if (item.type === 'switch') {
+          return { ...item, valueSwitch: currentItem.valueSwitch };
+        }
+
+        if (item.type === 'extra') {
+          return { ...item, valueExtra: currentItem.valueExtra };
+        }
+
+        return item;
+      }),
+    }));
+  }
+
+  const [settings, setSettings] = useState<SettingsGroup[]>(() => createSettings());
+  
+  async function loadSettings() {
     setLoading(true);
-    const updatedSettings = [...settings];
+    const updatedSettings = createSettings();
 
     for (const group of updatedSettings) {
       for (const item of group.items) {
@@ -174,17 +174,22 @@ export default function SettingsScreen() {
       }
     }
 
-    setRuntimeSettings();
+    const runtimeSettings = setRuntimeSettings(updatedSettings);
     setLoading(false);
 
-    setSettings(updatedSettings);
-  };
+    setSettings(runtimeSettings);
+  }
 
-  function setRuntimeSettings() {
+  function setRuntimeSettings(settingsToUpdate: SettingsGroup[]): SettingsGroup[] {
+    const updatedSettings = settingsToUpdate.map(group => ({
+      ...group,
+      items: group.items.map(item => ({ ...item })),
+    }));
+
     // set valueTranslationkey for jumpToDistrict
-    const jumpToDistrictItem = settings.flatMap(group => group.items).find(item => item.key === 'jumpToDistrict');
+    const jumpToDistrictItem = updatedSettings.flatMap(group => group.items).find(item => item.key === 'jumpToDistrict');
     if (jumpToDistrictItem) {
-      const jumpToFederalStateItem = settings.flatMap(group => group.items).find(item => item.key === 'jumpToFederalState');
+      const jumpToFederalStateItem = updatedSettings.flatMap(group => group.items).find(item => item.key === 'jumpToFederalState');
       if (jumpToFederalStateItem && jumpToFederalStateItem.valueExtra) {
         jumpToDistrictItem.valueTranslationKey = `assets.districts.${jumpToFederalStateItem.valueExtra}`;
       } else {
@@ -192,7 +197,35 @@ export default function SettingsScreen() {
       }
     }
 
+    return updatedSettings;
   }
+
+  useEffect(() => {
+    loadSettings();
+
+    const unsubscribe = settingsLocalService.subscribe(() => {
+      setSettings((currentSettings) => {
+        const updatedSettings = mergeSettingValues(createSettings(), currentSettings);
+        for (const group of updatedSettings) {
+          for (const item of group.items) {
+            const value = settingsLocalService.get(item.key);
+            if (value !== undefined) {
+              if (item.type === 'switch') {
+                item.valueSwitch = value === true || value === 'true';
+              } else if (item.type === 'extra') {
+                item.valueExtra = value as string;
+              }
+            }
+          }
+        }
+        return setRuntimeSettings(updatedSettings);
+      });
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   function updateSetting(settingKey: string, selectedData: string | boolean | null) {
     SettingService.setByKey(settingKey, selectedData);
@@ -223,6 +256,8 @@ export default function SettingsScreen() {
     }
   }
 
+  const displaySettings = setRuntimeSettings(mergeSettingValues(createSettings(), settings));
+
   return (
     <>
       <ThemedView style={styles.container}>
@@ -233,7 +268,7 @@ export default function SettingsScreen() {
         ) : (
           <ScrollView>
             <View style={[styles.contentList, { paddingBottom: dynamicSide.bottom + 50, paddingLeft: dynamicSide.left, paddingRight: dynamicSide.right }]}>
-              {settings.map((group, index) => (
+              {displaySettings.map((group, index) => (
                 <View
                   key={index}
                   style={{

@@ -19,7 +19,7 @@ type DataSet = {
 
 export default function OperationDetailScreen() {
   const colorScheme = useColorScheme();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { settingKey } = useLocalSearchParams<{ settingKey: string }>();
   const dynamicSide = useDynamicSide();
   const router = useRouter();
@@ -138,8 +138,8 @@ export default function OperationDetailScreen() {
     };
   }, [settingKey]);
 
-  function updateSetting(settingKey: string, selectedData: string | boolean | null) {
-    var toResetKey: string | undefined = undefined;
+  async function updateSetting(settingKey: string, selectedData: string | boolean | null) {
+    let toResetKey: string | undefined = undefined;
     for (const [key, value] of Object.entries(hasGroup)) {
       if (value === settingKey) {
         toResetKey = key;
@@ -149,10 +149,13 @@ export default function OperationDetailScreen() {
 
     // reset dependent setting if exists
     if (toResetKey) {
-      SettingService.setByKey(toResetKey, '');
+      await SettingService.setByKey(toResetKey, '');
     }
 
-    SettingService.setByKey(settingKey, selectedData);
+    await SettingService.setByKey(settingKey, selectedData);
+    if (settingKey === 'language' && typeof selectedData === 'string') {
+      await i18n.changeLanguage(selectedData);
+    }
     setSelectedData(selectedData);
     
     if (navRef.isReady()) {
@@ -207,7 +210,7 @@ export default function OperationDetailScreen() {
                     borderTopColor: Colors[colorScheme ?? 'light'].backgroundForgroundBorder,
                   }}>
                   <ThemedText>{item.label}</ThemedText>
-                  { selectedData == item.value &&
+                  { selectedData === item.value &&
                     <IconSymbol name="checkmark" size={18} color={Colors[colorScheme ?? 'light'].text} />
                   }
                 </Pressable>
