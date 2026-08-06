@@ -67,7 +67,10 @@
     "eslint": "^9.25.0",
     "eslint-config-expo": "~57.0.1",
     "react-native-svg-transformer": "^1.5.1",
-    "typescript": "~6.0.3"
+    "typescript": "~5.9.3"
   },
-  "private": true
+  "private": true,
+  "allowScripts": {
+    "unrs-resolver@1.11.1": true
+  }
 }
