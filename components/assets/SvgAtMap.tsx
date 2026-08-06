@@ -44,8 +44,9 @@ export function SvgAtMap({activeFs = [], statistic = [], onSelect}: SvgAtMapProp
 
     if (Platform.OS === 'web') {
       return {
-        onPress: handler,
-      };
+        onPress: null,
+        onClick: handler,
+      } as any;
     }
 
     return {

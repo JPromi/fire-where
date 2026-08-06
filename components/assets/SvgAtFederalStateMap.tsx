@@ -34,8 +34,9 @@ export function SvgAtFederalStateMap({federalState, onSelect, statistic = []}: S
 
     if (Platform.OS === 'web') {
       return {
-        onPress: handler,
-      };
+        onPress: null,
+        onClick: handler,
+      } as any;
     }
 
     return {
