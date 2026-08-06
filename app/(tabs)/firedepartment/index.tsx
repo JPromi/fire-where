@@ -118,6 +118,10 @@ export default function FiredepartmentDetailScreen() {
               setFiredepartments(res.content);
             }
           });
+        } else {
+          if (replaceResults) {
+            setFiredepartments([]);
+          }
         }
       })
       .catch((error) => {
