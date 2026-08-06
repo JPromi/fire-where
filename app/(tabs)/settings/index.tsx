@@ -426,6 +426,9 @@ export default function SettingsScreen() {
                                 item.function();
                               }
                             }}
+                            style={{
+                              flex: 1,
+                            }}
                           >
                             <ThemedText
                               style={{
