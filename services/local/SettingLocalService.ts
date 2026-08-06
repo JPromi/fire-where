@@ -9,12 +9,17 @@ class SettingsLocalService {
   }
 
   set(key: string, value: SettingValue) {
-    this.settings[key] = value ?? '';
+    this.settings[key] = value ?? "";
     this.notify();
   }
 
   getAll(): Record<string, SettingValue> {
     return { ...this.settings };
+  }
+
+  clearAll() {
+    this.settings = {};
+    this.notify();
   }
 
   subscribe(callback: () => void) {

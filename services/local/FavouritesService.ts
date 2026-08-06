@@ -24,7 +24,7 @@ export class FavouritesService {
     if (!favourites.includes(uuid)) {
       await AsyncStorage.setItem(
         FAVOURITES_KEY,
-        JSON.stringify([...favourites, uuid])
+        JSON.stringify([...favourites, uuid]),
       );
     }
   }
@@ -34,8 +34,12 @@ export class FavouritesService {
 
     await AsyncStorage.setItem(
       FAVOURITES_KEY,
-      JSON.stringify(favourites.filter(id => id !== uuid))
+      JSON.stringify(favourites.filter((id) => id !== uuid)),
     );
+  }
+
+  static async clearAllFavourites(): Promise<void> {
+    await AsyncStorage.removeItem(FAVOURITES_KEY);
   }
 
   static async countFavourites(): Promise<number> {

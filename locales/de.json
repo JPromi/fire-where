@@ -161,6 +161,9 @@
   },
   "common": {
     "back": "Zurück",
+    "yes": "Ja",
+    "no": "Nein",
+    "confirmAction": "Möchtest du diese Aktion wirklich ausführen?",
     "unknown": "Unbekannt",
     "none": "Keine",
     "error": {
@@ -257,7 +260,8 @@
       "general": {
         "title": "Allgemein",
         "language": "Sprache",
-        "nerdMode": "Entwicklermodus"
+        "nerdMode": "Entwicklermodus",
+        "clearAllData": "Alle Daten löschen"
       },
       "operations": {
         "title": "Einsätze"

@@ -156,6 +156,9 @@
   },
   "common": {
     "back": "Natrag",
+    "yes": "Da",
+    "no": "Ne",
+    "confirmAction": "Jeste li sigurni da želite izvršiti ovu radnju?",
     "unknown": "Nepoznato",
     "none": "Nema",
     "error": {
@@ -226,7 +229,8 @@
       "general": {
         "title": "Općenito",
         "language": "Jezik",
-        "nerdMode": "Način za developere"
+        "nerdMode": "Način za developere",
+        "clearAllData": "Izbriši sve podatke"
       },
       "operations": {
         "title": "Intervencije"

@@ -156,6 +156,9 @@
   },
   "common": {
     "back": "Back",
+    "yes": "Yes",
+    "no": "No",
+    "confirmAction": "Are you sure you want to perform this action?",
     "unknown": "Unknown",
     "none": "None",
     "error": {
@@ -247,7 +250,8 @@
       "general": {
         "title": "General",
         "language": "Language",
-        "nerdMode": "Developer Mode"
+        "nerdMode": "Developer Mode",
+        "clearAllData": "Delete all data"
       },
       "operations": {
           "title": "Operations"

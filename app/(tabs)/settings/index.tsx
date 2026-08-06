@@ -1,34 +1,46 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Colors } from "@/constants/Colors";
-import { CONFIG } from '@/constants/Config';
-import { useDynamicSide } from '@/hooks/useDynamicSide';
+import { CONFIG } from "@/constants/Config";
+import { useDynamicSide } from "@/hooks/useDynamicSide";
+import { FavouritesService } from "@/services/local/FavouritesService";
 import { settingsLocalService } from "@/services/local/SettingLocalService";
 import { SettingService } from "@/services/local/SettingService";
-import { title } from '@/utils/TitleFunction';
+import { title } from "@/utils/TitleFunction";
 import { useHeaderTitleOnFocus } from "@/utils/UseHeaderTitleOnFocus";
-import Constants from 'expo-constants';
+import Constants from "expo-constants";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ActivityIndicator, Linking, Pressable, ScrollView, StyleSheet, Switch, useColorScheme, View } from "react-native";
-
+import {
+  ActivityIndicator,
+  Alert,
+  Linking,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Switch,
+  useColorScheme,
+  View,
+} from "react-native";
 
 type SettingsItem = {
   key: string;
   name: string;
-  type: 'extra' | 'switch' | 'text' | 'link';
+  type: "extra" | "switch" | "text" | "link" | "function" | "ask";
   valueSwitch?: boolean;
   valueExtra?: string;
   valueLink?: string;
+  function?: () => void | Promise<void>;
   showIfKeyIsset?: string;
   valueTranslationKey?: string;
-}
+};
 
 type SettingsGroup = {
   groupName: string;
   items: SettingsItem[];
-}
+};
 
 export default function SettingsScreen() {
   const colorScheme = useColorScheme();
@@ -36,117 +48,132 @@ export default function SettingsScreen() {
   const router = useRouter();
   const dynamicSide = useDynamicSide();
   const [loading, setLoading] = useState(true);
-  const pageTitle = title(t('settings.title'));
+  const pageTitle = title(t("settings.title"));
   useHeaderTitleOnFocus(pageTitle);
 
   function createSettings(): SettingsGroup[] {
     return [
       {
-        groupName: t('settings.group.general.title'),
+        groupName: t("settings.group.general.title"),
         items: [
           {
-            key: 'language',
-            name: t('settings.group.general.language'),
-            type: 'extra',
-            valueExtra: 'de',
-            valueTranslationKey: 'assets.language',
+            key: "language",
+            name: t("settings.group.general.language"),
+            type: "extra",
+            valueExtra: "de",
+            valueTranslationKey: "assets.language",
           },
           {
-            key: 'nerdMode',
-            name: t('settings.group.general.nerdMode'),
-            type: 'switch',
+            key: "nerdMode",
+            name: t("settings.group.general.nerdMode"),
+            type: "switch",
             valueSwitch: false,
+          },
+          {
+            key: "clearAllData",
+            name: t("settings.group.general.clearAllData"),
+            type: "ask",
+            function: clearAllData,
           },
         ],
       },
       {
-        groupName: t('settings.group.operations.title'),
+        groupName: t("settings.group.operations.title"),
         items: [
           {
-            key: 'jumpToFederalState',
-            name: t('settings.extended.jumpToFederalState.title'),
-            type: 'extra',
-            valueExtra: '',
-            valueTranslationKey: 'assets.federalStates',
+            key: "jumpToFederalState",
+            name: t("settings.extended.jumpToFederalState.title"),
+            type: "extra",
+            valueExtra: "",
+            valueTranslationKey: "assets.federalStates",
           },
           {
-            key: 'jumpToDistrict',
-            name: t('settings.extended.jumpToDistrict.title'),
-            type: 'extra',
-            valueExtra: '',
-            showIfKeyIsset: 'jumpToFederalState',
-            valueTranslationKey: '',
-          }
-        ]
+            key: "jumpToDistrict",
+            name: t("settings.extended.jumpToDistrict.title"),
+            type: "extra",
+            valueExtra: "",
+            showIfKeyIsset: "jumpToFederalState",
+            valueTranslationKey: "",
+          },
+        ],
       },
       {
-        groupName: t('settings.group.software.title'),
+        groupName: t("settings.group.software.title"),
         items: [
           {
-            key: 'developer',
-            name: t('settings.group.software.developer'),
-            type: 'link',
+            key: "developer",
+            name: t("settings.group.software.developer"),
+            type: "link",
             valueExtra: CONFIG.informations.developer.name,
-            valueLink: CONFIG.informations.developer.website
+            valueLink: CONFIG.informations.developer.website,
           },
           {
-            key: 'feedback',
-            name: t('settings.group.software.feedback'),
-            type: 'link',
+            key: "feedback",
+            name: t("settings.group.software.feedback"),
+            type: "link",
             valueExtra: CONFIG.informations.app.feedbackEmail,
-            valueLink: 'mailto:' + CONFIG.informations.app.feedbackEmail
+            valueLink: "mailto:" + CONFIG.informations.app.feedbackEmail,
           },
           {
-            key: 'repository',
-            name: t('settings.group.software.repository'),
-            type: 'link',
+            key: "repository",
+            name: t("settings.group.software.repository"),
+            type: "link",
             valueExtra: CONFIG.informations.app.repositoryName,
-            valueLink: CONFIG.informations.app.repositoryUrl
+            valueLink: CONFIG.informations.app.repositoryUrl,
           },
           {
-            key: 'version',
-            name: t('settings.group.software.buildVersion'),
-            type: 'text',
-            valueExtra: `${Constants.manifest?.version}` + (Constants.manifest?.buildNumber ? ` (${Constants.manifest?.buildNumber})` : ''),
-          }
-        ]
+            key: "version",
+            name: t("settings.group.software.buildVersion"),
+            type: "text",
+            valueExtra:
+              `${Constants.manifest?.version}` +
+              (Constants.manifest?.buildNumber
+                ? ` (${Constants.manifest?.buildNumber})`
+                : ""),
+          },
+        ],
       },
       {
-        groupName: t('settings.group.informations.title'),
+        groupName: t("settings.group.informations.title"),
         items: [
           {
-            key: 'imprint',
-            name: t('settings.group.informations.imprint'),
-            valueExtra: t('settings.group.informations.websiteValue'),
-            type: 'link',
+            key: "imprint",
+            name: t("settings.group.informations.imprint"),
+            valueExtra: t("settings.group.informations.websiteValue"),
+            type: "link",
             valueLink: CONFIG.informations.app.imprint,
           },
           {
-            key: 'legal',
-            name: t('settings.group.informations.legal'),
-            valueExtra: t('settings.group.informations.websiteValue'),
-            type: 'link',
+            key: "legal",
+            name: t("settings.group.informations.legal"),
+            valueExtra: t("settings.group.informations.websiteValue"),
+            type: "link",
             valueLink: CONFIG.informations.app.legal,
           },
-        ]
-      }
+        ],
+      },
     ];
   }
 
-  function mergeSettingValues(nextSettings: SettingsGroup[], currentSettings: SettingsGroup[]): SettingsGroup[] {
-    const currentItems = currentSettings.flatMap(group => group.items);
+  function mergeSettingValues(
+    nextSettings: SettingsGroup[],
+    currentSettings: SettingsGroup[],
+  ): SettingsGroup[] {
+    const currentItems = currentSettings.flatMap((group) => group.items);
 
-    return nextSettings.map(group => ({
+    return nextSettings.map((group) => ({
       ...group,
-      items: group.items.map(item => {
-        const currentItem = currentItems.find(current => current.key === item.key);
+      items: group.items.map((item) => {
+        const currentItem = currentItems.find(
+          (current) => current.key === item.key,
+        );
         if (!currentItem) return item;
 
-        if (item.type === 'switch') {
+        if (item.type === "switch") {
           return { ...item, valueSwitch: currentItem.valueSwitch };
         }
 
-        if (item.type === 'extra') {
+        if (item.type === "extra") {
           return { ...item, valueExtra: currentItem.valueExtra };
         }
 
@@ -155,8 +182,10 @@ export default function SettingsScreen() {
     }));
   }
 
-  const [settings, setSettings] = useState<SettingsGroup[]>(() => createSettings());
-  
+  const [settings, setSettings] = useState<SettingsGroup[]>(() =>
+    createSettings(),
+  );
+
   async function loadSettings() {
     setLoading(true);
     const updatedSettings = createSettings();
@@ -165,9 +194,9 @@ export default function SettingsScreen() {
       for (const item of group.items) {
         const value = await SettingService.getByKey(item.key);
         if (value !== undefined) {
-          if (item.type === 'switch') {
+          if (item.type === "switch") {
             item.valueSwitch = value as boolean;
-          } else if (item.type === 'extra') {
+          } else if (item.type === "extra") {
             item.valueExtra = value as string;
           }
         }
@@ -180,20 +209,26 @@ export default function SettingsScreen() {
     setSettings(runtimeSettings);
   }
 
-  function setRuntimeSettings(settingsToUpdate: SettingsGroup[]): SettingsGroup[] {
-    const updatedSettings = settingsToUpdate.map(group => ({
+  function setRuntimeSettings(
+    settingsToUpdate: SettingsGroup[],
+  ): SettingsGroup[] {
+    const updatedSettings = settingsToUpdate.map((group) => ({
       ...group,
-      items: group.items.map(item => ({ ...item })),
+      items: group.items.map((item) => ({ ...item })),
     }));
 
     // set valueTranslationkey for jumpToDistrict
-    const jumpToDistrictItem = updatedSettings.flatMap(group => group.items).find(item => item.key === 'jumpToDistrict');
+    const jumpToDistrictItem = updatedSettings
+      .flatMap((group) => group.items)
+      .find((item) => item.key === "jumpToDistrict");
     if (jumpToDistrictItem) {
-      const jumpToFederalStateItem = updatedSettings.flatMap(group => group.items).find(item => item.key === 'jumpToFederalState');
+      const jumpToFederalStateItem = updatedSettings
+        .flatMap((group) => group.items)
+        .find((item) => item.key === "jumpToFederalState");
       if (jumpToFederalStateItem && jumpToFederalStateItem.valueExtra) {
         jumpToDistrictItem.valueTranslationKey = `assets.districts.${jumpToFederalStateItem.valueExtra}`;
       } else {
-        jumpToDistrictItem.valueTranslationKey = '';
+        jumpToDistrictItem.valueTranslationKey = "";
       }
     }
 
@@ -205,14 +240,17 @@ export default function SettingsScreen() {
 
     const unsubscribe = settingsLocalService.subscribe(() => {
       setSettings((currentSettings) => {
-        const updatedSettings = mergeSettingValues(createSettings(), currentSettings);
+        const updatedSettings = mergeSettingValues(
+          createSettings(),
+          currentSettings,
+        );
         for (const group of updatedSettings) {
           for (const item of group.items) {
             const value = settingsLocalService.get(item.key);
             if (value !== undefined) {
-              if (item.type === 'switch') {
-                item.valueSwitch = value === true || value === 'true';
-              } else if (item.type === 'extra') {
+              if (item.type === "switch") {
+                item.valueSwitch = value === true || value === "true";
+              } else if (item.type === "extra") {
                 item.valueExtra = value as string;
               }
             }
@@ -227,12 +265,21 @@ export default function SettingsScreen() {
     };
   }, []);
 
-  function updateSetting(settingKey: string, selectedData: string | boolean | null) {
+  function updateSetting(
+    settingKey: string,
+    selectedData: string | boolean | null,
+  ) {
     SettingService.setByKey(settingKey, selectedData);
     const updatedSettings = settings.map((group) => ({
       ...group,
       items: group.items.map((item) =>
-        item.key === settingKey ? { ...item, valueSwitch: selectedData as boolean, valueExtra: selectedData as string } : item
+        item.key === settingKey
+          ? {
+              ...item,
+              valueSwitch: selectedData as boolean,
+              valueExtra: selectedData as string,
+            }
+          : item,
       ),
     }));
 
@@ -245,7 +292,9 @@ export default function SettingsScreen() {
 
   function isItemDisabled(item: SettingsItem): boolean {
     if (item.showIfKeyIsset) {
-      const relatedItem = settings.flatMap(group => group.items).find(i => i.key === item.showIfKeyIsset);
+      const relatedItem = settings
+        .flatMap((group) => group.items)
+        .find((i) => i.key === item.showIfKeyIsset);
       if (relatedItem && (relatedItem.valueExtra || relatedItem.valueSwitch)) {
         return false;
       } else {
@@ -256,117 +305,236 @@ export default function SettingsScreen() {
     }
   }
 
-  const displaySettings = setRuntimeSettings(mergeSettingValues(createSettings(), settings));
+  // data
+  async function clearAllData() {
+    await SettingService.clearAll();
+    await loadSettings();
+    await FavouritesService.clearAllFavourites();
+  }
+
+  function confirmAndRun(item: SettingsItem) {
+    if (!item.function) return;
+
+    const message = t("common.confirmAction");
+
+    if (Platform.OS === "web") {
+      // ToDo: Build a custom modal for web
+      if (window.confirm(`${item.name}\n\n${message}`)) {
+        item.function();
+      }
+      return;
+    }
+
+    Alert.alert(item.name, message, [
+      {
+        text: t("common.no"),
+        style: "cancel",
+      },
+      {
+        text: t("common.yes"),
+        style: "default",
+        onPress: item.function,
+      },
+    ]);
+  }
+
+  const displaySettings = setRuntimeSettings(
+    mergeSettingValues(createSettings(), settings),
+  );
 
   return (
     <>
       <ThemedView style={styles.container}>
         {loading ? (
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: dynamicSide.bottom + 50 }}>
-            <ActivityIndicator size="large" color={Colors[colorScheme ?? 'light'].tint} />
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              marginBottom: dynamicSide.bottom + 50,
+            }}
+          >
+            <ActivityIndicator
+              size="large"
+              color={Colors[colorScheme ?? "light"].tint}
+            />
           </View>
         ) : (
           <ScrollView>
-            <View style={[styles.contentList, { paddingBottom: dynamicSide.bottom + 50, paddingLeft: dynamicSide.left, paddingRight: dynamicSide.right }]}>
+            <View
+              style={[
+                styles.contentList,
+                {
+                  paddingBottom: dynamicSide.bottom + 50,
+                  paddingLeft: dynamicSide.left,
+                  paddingRight: dynamicSide.right,
+                },
+              ]}
+            >
               {displaySettings.map((group, index) => (
                 <View
                   key={index}
                   style={{
                     marginBottom: 20,
-                    padding: 10
-                  }}>
-
-                    <ThemedText style={{
+                    padding: 10,
+                  }}
+                >
+                  <ThemedText
+                    style={{
                       fontSize: 15,
-                      fontWeight: 'light',
+                      fontWeight: "light",
                       marginBottom: 5,
                       marginLeft: 15,
-                      color: Colors[colorScheme ?? 'light'].text,
-                      opacity: 0.5
-                    }}>{group.groupName}</ThemedText>
+                      color: Colors[colorScheme ?? "light"].text,
+                      opacity: 0.5,
+                    }}
+                  >
+                    {group.groupName}
+                  </ThemedText>
 
-                    <View
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        backgroundColor: Colors[colorScheme ?? 'light'].backgroundForground,
-                        paddingHorizontal: 15,
-                        borderRadius: 10,
-                      }}>
-                        {group.items.map((item, itemIndex) => (
-                          <View
-                            key={itemIndex}
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      backgroundColor:
+                        Colors[colorScheme ?? "light"].backgroundForground,
+                      paddingHorizontal: 15,
+                      borderRadius: 10,
+                    }}
+                  >
+                    {group.items.map((item, itemIndex) => (
+                      <View
+                        key={itemIndex}
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          height: 48,
+                          borderTopWidth: itemIndex === 0 ? 0 : 1,
+                          borderTopColor:
+                            Colors[colorScheme ?? "light"]
+                              .backgroundForgroundBorder,
+                        }}
+                      >
+                        {item.type === "function" || item.type === "ask" ? (
+                          <Pressable
+                            onPress={() => {
+                              if (item.type === "ask") {
+                                confirmAndRun(item);
+                              } else if (item.function) {
+                                item.function();
+                              }
+                            }}
+                          >
+                            <ThemedText
+                              style={{
+                                fontSize: 16,
+                                color: Colors[colorScheme ?? "light"].text,
+                              }}
+                            >
+                              {item.name}
+                            </ThemedText>
+                          </Pressable>
+                        ) : (
+                          <ThemedText
                             style={{
-                              display: 'flex',
-                              flexDirection: 'row',
-                              justifyContent: 'space-between',
-                              alignItems: 'center',
-                              height: 48,
-                              borderTopWidth: itemIndex === 0 ? 0 : 1,
-                              borderTopColor: Colors[colorScheme ?? 'light'].backgroundForgroundBorder,
-                            }}>
-                            <ThemedText style={{
                               fontSize: 16,
-                              color: Colors[colorScheme ?? 'light'].text,
+                              color: Colors[colorScheme ?? "light"].text,
                               opacity: isItemDisabled(item) ? 0.5 : 1,
-                            }}>{item.name}</ThemedText>
-                            {item.type === 'switch' && (
-                              <Switch
-                                value={item.valueSwitch}
-                                onValueChange={(value) => {
-                                  updateSetting(item.key, value);
-                                }}
-                                style={{
-                                  marginVertical: 'auto'
-                                }}
-                              />
-                            )}
-                            {item.type === 'extra' && (
-                              <Pressable onPress={() => {
-                                if(isItemDisabled(item)) {
-                                  return;
-                                }
+                            }}
+                          >
+                            {item.name}
+                          </ThemedText>
+                        )}
+                        {item.type === "switch" && (
+                          <Switch
+                            value={item.valueSwitch}
+                            onValueChange={(value) => {
+                              updateSetting(item.key, value);
+                            }}
+                            style={{
+                              marginVertical: "auto",
+                            }}
+                          />
+                        )}
+                        {item.type === "extra" && (
+                          <Pressable
+                            onPress={() => {
+                              if (isItemDisabled(item)) {
+                                return;
+                              }
 
-                                router.push(
-                                  {
-                                    pathname: `/settings/[settingKey]`,
-                                    params: {
-                                      settingKey: item.key,
-                                    },
-                                  }
-                                );
-                              }}>
-                                <ThemedText style={{
-                                  fontSize: 16,
-                                  color: Colors[colorScheme ?? 'light'].textSub,
-                                }}>{item.valueExtra || item.valueExtra != '' ? (item.valueTranslationKey ? t(`${item.valueTranslationKey}.${item.valueExtra}`) : item.valueExtra) : t('common.none')}</ThemedText>
-                              </Pressable>
-                            )}
-                            {item.type === 'text' && (
-                              <View>
-                                <ThemedText style={{
-                                  fontSize: 16,
-                                  color: Colors[colorScheme ?? 'light'].textSub,
-                                }}>{item.valueExtra || item.valueExtra != '' ? (item.valueTranslationKey ? t(`${item.valueTranslationKey}.${item.valueExtra}`) : item.valueExtra) : t('common.none')}</ThemedText>
-                              </View>
-                            )}
-                            {item.type === 'link' && (
-                              <Pressable onPress={() => {
-                                if (item.valueLink) {
-                                  Linking.openURL(item.valueLink);
-                                }
-                              }}>
-                                <ThemedText style={{
-                                  fontSize: 16,
-                                  color: Colors[colorScheme ?? 'light'].textSub,
-                                  textDecorationLine: 'underline',
-                                }}>{item.valueExtra || item.valueExtra != '' ? (item.valueTranslationKey ? t(`${item.valueTranslationKey}.${item.valueExtra}`) : item.valueExtra) : t('common.none')}</ThemedText>
-                              </Pressable>
-                            )}
+                              router.push({
+                                pathname: `/settings/[settingKey]`,
+                                params: {
+                                  settingKey: item.key,
+                                },
+                              });
+                            }}
+                          >
+                            <ThemedText
+                              style={{
+                                fontSize: 16,
+                                color: Colors[colorScheme ?? "light"].textSub,
+                              }}
+                            >
+                              {item.valueExtra || item.valueExtra != ""
+                                ? item.valueTranslationKey
+                                  ? t(
+                                      `${item.valueTranslationKey}.${item.valueExtra}`,
+                                    )
+                                  : item.valueExtra
+                                : t("common.none")}
+                            </ThemedText>
+                          </Pressable>
+                        )}
+                        {item.type === "text" && (
+                          <View>
+                            <ThemedText
+                              style={{
+                                fontSize: 16,
+                                color: Colors[colorScheme ?? "light"].textSub,
+                              }}
+                            >
+                              {item.valueExtra || item.valueExtra != ""
+                                ? item.valueTranslationKey
+                                  ? t(
+                                      `${item.valueTranslationKey}.${item.valueExtra}`,
+                                    )
+                                  : item.valueExtra
+                                : t("common.none")}
+                            </ThemedText>
                           </View>
-                        ))}
-                    </View>
-
+                        )}
+                        {item.type === "link" && (
+                          <Pressable
+                            onPress={() => {
+                              if (item.valueLink) {
+                                Linking.openURL(item.valueLink);
+                              }
+                            }}
+                          >
+                            <ThemedText
+                              style={{
+                                fontSize: 16,
+                                color: Colors[colorScheme ?? "light"].textSub,
+                                textDecorationLine: "underline",
+                              }}
+                            >
+                              {item.valueExtra || item.valueExtra != ""
+                                ? item.valueTranslationKey
+                                  ? t(
+                                      `${item.valueTranslationKey}.${item.valueExtra}`,
+                                    )
+                                  : item.valueExtra
+                                : t("common.none")}
+                            </ThemedText>
+                          </Pressable>
+                        )}
+                      </View>
+                    ))}
+                  </View>
                 </View>
               ))}
             </View>
@@ -374,7 +542,7 @@ export default function SettingsScreen() {
         )}
       </ThemedView>
     </>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -382,8 +550,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentList: {
-    width: '100%',
+    width: "100%",
     maxWidth: 1000,
-    marginHorizontal: 'auto',
+    marginHorizontal: "auto",
   },
 });
