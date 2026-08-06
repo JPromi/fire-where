@@ -1,6 +1,5 @@
-import { BlurView } from "expo-blur";
 import { PropsWithChildren } from "react";
-import { StyleProp, ViewStyle } from "react-native";
+import { StyleProp, View, ViewStyle } from "react-native";
 
 type LiquidGlassViewProps = PropsWithChildren<{
   style?: StyleProp<ViewStyle>;
@@ -11,15 +10,19 @@ type LiquidGlassViewProps = PropsWithChildren<{
 export function LiquidGlassView({
   children,
   style,
-  colorScheme,
+  tintColor,
 }: LiquidGlassViewProps) {
   return (
-    <BlurView
-      intensity={100}
-      style={style}
-      tint={colorScheme === "dark" ? "dark" : "light"}
+    <View
+      style={[
+        {
+          backdropFilter: "blur(10px)",
+          backgroundColor: tintColor,
+        },
+        style,
+      ]}
     >
       {children}
-    </BlurView>
+    </View>
   );
 }
