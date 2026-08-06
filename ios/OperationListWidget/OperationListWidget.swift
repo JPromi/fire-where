@@ -83,6 +83,8 @@ struct OperationListWidgetEntryView : View {
       mediumWidget
     case .systemLarge:
       largeWidget
+    case .systemExtraLarge:
+      extraLargeWidget
     default:
       smallWidget
     }
@@ -236,7 +238,80 @@ struct OperationListWidgetEntryView : View {
     .frame(maxHeight: .infinity, alignment: .top)
     
   }
+  
+  var extraLargeWidget: some View {
+    VStack(spacing: 16) {
       
+      /// Counter
+      Link(destination: locationLink) {
+        HStack(alignment: .center, spacing: 4) {
+          /// Title
+          VStack(alignment: .leading, spacing: 0) {
+            Text(LocalizedStringResource("operation.active"))
+              .font(.caption2)
+              .fontWeight(.light)
+              .foregroundStyle(.secondary)
+            
+            Text(
+              entry.configuration.federalState == .none ?
+              LocalizedStringResource("country.at")
+              :
+                FederalState.caseDisplayRepresentations[entry.configuration.federalState]?
+                .title
+              ?? LocalizedStringResource(stringLiteral: "")
+            )
+            .font(.headline)
+            .fontWeight(.semibold)
+          }
+          .frame(maxWidth: .infinity, alignment: .topLeading)
+          
+          Spacer()
+          
+          /// Counter
+          Text("\(entry.operations.count)")
+            .font(.system(size: 48, weight: .bold, design: .default))
+            .monospacedDigit()
+            .opacity(0.9)
+            .frame(width: 100, alignment: .center)
+        }
+        .frame(height: 50, alignment: .center)
+
+      }
+      
+      Divider()
+      
+      // Operations
+      let operations = Array(entry.operations.prefix(16))
+      let columns = operations.chunked(into: 8)
+
+      HStack(alignment: .top, spacing: 10) {
+        ForEach(Array(columns.enumerated()), id: \.offset) { _, column in
+          VStack(alignment: .leading, spacing: 10) {
+            ForEach(column, id: \.id) { operation in
+              Link(
+                destination: URL(
+                  string: "firepoint://operation/details/\(operation.uuid)"
+                )!
+              ) {
+                HStack(spacing: 6) {
+                  operationTypeBox(alarm: operation.alarm)
+
+                  Text(operation.alarm.message ?? "")
+                    .font(.system(size: 14))
+                    .lineLimit(1)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+              }
+            }
+          }
+          .frame(maxWidth: .infinity, alignment: .topLeading)
+        }
+      }
+      .frame(maxHeight: .infinity, alignment: .top)
+    }
+  }
+
 }
 
 @ViewBuilder
@@ -313,3 +388,4 @@ extension ConfigurationAppIntent {
 } timeline: {
   SimpleEntry(date: .now, configuration: .test, operations: [])
 }
+
