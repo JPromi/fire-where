@@ -11,8 +11,8 @@ import { Operation } from '@/models/Operation';
 import { OperationService } from '@/services/OperationService';
 import { title } from '@/utils/TitleFunction';
 import { useHeaderTitleOnFocus } from '@/utils/UseHeaderTitleOnFocus';
-import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
-import { useCallback, useEffect, useState } from "react";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Pressable, RefreshControl, ScrollView, StyleSheet, useColorScheme, View } from "react-native";
 
@@ -58,15 +58,7 @@ export default function OperationSelectDistrict() {
       console.error(t('operation.noFederalStateData', { federalStateId }));
       setLoading(false);
     }
-  }, [federalStateId, districtId, t]);
-
-  useFocusEffect(
-    useCallback(() => {
-      if (federalState) {
-        getOperations(federalState.id, federalState.idLong || '', federalState.name, districtId);
-      }
-    }, [federalState, districtId])
-  );
+  }, [districtId]);
 
   function getOperations(fsId: string, fsIdLong: string, fsName: string, dist?: string) {
     // districts data processing
