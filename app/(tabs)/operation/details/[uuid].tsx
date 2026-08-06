@@ -35,21 +35,11 @@ export default function OperationDetailScreen() {
 
   const [operation, setOperation] = useState<Operation | undefined>(undefined);
 
-  const [hasNecessaryError, setHasNecessaryError] = useState(false);
-
   const pageTitle = title(operation?.alarm?.message);
   useHeaderTitleOnFocus(pageTitle);
 
   useEffect(() => {
-    OperationService.getOperation(uuid)
-              .then(setOperation)
-              .catch(error => {
-                console.error(error);
-                uiError(error.request.status === 404 ? t('common.error.notFound') : t('common.error.internalServerError'));
-                setHasNecessaryError(true);
-              })
-              .finally(() => setLoading(false));
-
+    getOperation(uuid);
     // Load nerd mode setting
     SettingService.getByKey('nerdMode')
       .then((value) => {
@@ -59,21 +49,29 @@ export default function OperationDetailScreen() {
           setNerdMode(false);
         }
       });
-  }, [uuid, t]);
+  }, [uuid]);
 
   useEffect(() => {
     const count = (operation?.firedepartments?.length || 0) + (operation?.units?.length || 0);
     animationValues.current = Array.from({ length: count }, () => new Animated.Value(0));
   }, [operation]);
+
+  function getOperation(uuid: string) {
+    setLoading(true);
+    OperationService.getOperation(uuid)
+              .then(setOperation)
+              .catch(error => {
+                console.error(error);
+                uiError(error.request.status === 404 ? t('common.error.notFound') : t('common.error.internalServerError'));
+              })
+              .finally(() => setLoading(false));
+  }
   
   function onRefresh() {
     setRefreshing(true);
     if (!uuid) return;
 
-    OperationService.getOperation(uuid)
-      .then(setOperation)
-      .catch(console.error)
-      .finally(() => setRefreshing(false));
+    getOperation(uuid);
   }
 
   function getDate(dateString: string | undefined): string {
@@ -572,10 +570,10 @@ export default function OperationDetailScreen() {
         </ThemedView>
       ) : (
         <>
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: dynamicSide.bottom + 50, gap: 10 }}>
+          <ThemedView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: dynamicSide.bottom + 50, gap: 10 }}>
             {/* TODO: Icon */}
-            <Text style={{ color: Colors[colorScheme ?? 'light'].text, fontSize: 16 }}>{t('common.customError.operationNotFound')}</Text>
-          </View>
+            <ThemedText style={{ color: Colors[colorScheme ?? 'light'].text, fontSize: 16 }}>{t('common.customError.operationNotFound')}</ThemedText>
+          </ThemedView>
         </>
       )}
     </>
