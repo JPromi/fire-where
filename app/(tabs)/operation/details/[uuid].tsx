@@ -21,6 +21,7 @@ import {
   Animated,
   Dimensions,
   PixelRatio,
+  Platform,
   Pressable,
   RefreshControl,
   ScrollView,
@@ -191,7 +192,10 @@ export default function OperationDetailScreen() {
             <View
               style={{
                 padding: 20,
-                paddingBottom: dynamicSide.bottom + 20 + 50,
+                paddingBottom:
+                  Platform.OS === "ios"
+                    ? dynamicSide.bottom + 20
+                    : dynamicSide.bottom + 20 + 50,
               }}
             >
               {/* Top Informations */}
