@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">
+  <g
+    transform="translate(7 7) scale(0.68)"
+    fill="none"
+    stroke="#000"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="3"
+  >
+    <polyline points="37.504 14.796 37.504 37.5 7.5 37.5 7.5 20.625"/>
+    <line x1="3.75" y1="14.796" x2="41.25" y2="7.296"/>
+    <rect x="13.125" y="26.038" width="11.25" height="11.454"/>
+  </g>
+</svg>
