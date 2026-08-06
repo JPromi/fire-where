@@ -65,7 +65,12 @@ struct SimpleEntry: TimelineEntry {
 struct OperationListWidgetEntryView : View {
   
   @Environment(\.widgetFamily) var family
+  @Environment(\.widgetRenderingMode) private var renderingMode
   var entry: Provider.Entry
+  
+  private var isMonochrome: Bool {
+    renderingMode == .accented
+  }
   
   var locationLink: URL {
     if entry.configuration.federalState != .none {
@@ -165,7 +170,7 @@ struct OperationListWidgetEntryView : View {
         ForEach(entry.operations.prefix(4), id: \.id) { operation in
           Link(destination: URL(string: "firepoint://operation/details/\(operation.uuid)")!) {
             HStack(spacing: 6) {
-              operationTypeBox(alarm: operation.alarm)
+              operationTypeBox(alarm: operation.alarm, isMonochrome: isMonochrome)
               Text(operation.alarm.message ?? "")
                 .font(.system(size: 14, weight: .regular, design: .default))
                 .lineLimit(1)
@@ -223,7 +228,7 @@ struct OperationListWidgetEntryView : View {
         ForEach(entry.operations.prefix(7), id: \.id) { operation in
           Link(destination: URL(string: "firepoint://operation/details/\(operation.uuid)")!) {
             HStack(spacing: 6) {
-              operationTypeBox(alarm: operation.alarm)
+              operationTypeBox(alarm: operation.alarm, isMonochrome: isMonochrome)
               Text(operation.alarm.message ?? "")
                 .font(.system(size: 14, weight: .regular, design: .default))
                 .lineLimit(1)
@@ -294,7 +299,7 @@ struct OperationListWidgetEntryView : View {
                 )!
               ) {
                 HStack(spacing: 6) {
-                  operationTypeBox(alarm: operation.alarm)
+                  operationTypeBox(alarm: operation.alarm, isMonochrome: isMonochrome)
 
                   Text(operation.alarm.message ?? "")
                     .font(.system(size: 14))
@@ -315,7 +320,7 @@ struct OperationListWidgetEntryView : View {
 }
 
 @ViewBuilder
-func operationTypeBox(alarm: Alarm) -> some View {
+func operationTypeBox(alarm: Alarm, isMonochrome: Bool = false) -> some View {
   let colorService = OperationColorService()
 
   let alarmText: String = {
@@ -344,6 +349,10 @@ func operationTypeBox(alarm: Alarm) -> some View {
       return 32
     }
   }()
+  
+  let backgroundColor: Color = isMonochrome
+    ? Color.clear
+    : colorService.background(alarm: alarm)
 
   VStack {
     Text(alarmText)
@@ -359,8 +368,14 @@ func operationTypeBox(alarm: Alarm) -> some View {
       .foregroundColor(colorService.text(alarm: alarm))
 
   }
-    .background(colorService.background(alarm: alarm))
-    .cornerRadius(4)
+  .background(backgroundColor)
+  .cornerRadius(4)
+  .overlay {
+    if isMonochrome {
+      RoundedRectangle(cornerRadius: 4)
+        .stroke(Color.primary, lineWidth: 1)
+    }
+  }
 }
 
 struct OperationListWidget: Widget {
