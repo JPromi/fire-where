@@ -22,13 +22,13 @@ import federStatesData from "@/assets/data/federal-states.json";
 import { SvgAtMap } from "@/components/assets/SvgAtMap";
 import { uiError } from "@/components/ui/ErrorMessage";
 import { IconSymbol } from "@/components/ui/IconSymbol";
+import { LiquidGlassView } from "@/components/ui/LiquidGlassView";
 import { useDynamicSide } from "@/hooks/useDynamicSide";
 import { LocationStatistic } from "@/models/LocationStatistic";
 import { OperationService } from "@/services/OperationService";
 import { ServiceService } from "@/services/ServiceService";
 import { title } from "@/utils/TitleFunction";
 import { useHeaderTitleOnFocus } from "@/utils/UseHeaderTitleOnFocus";
-import { BlurView } from "expo-blur";
 import { useTranslation } from "react-i18next";
 
 export default function OperationSelectFederalStateScreen() {
@@ -321,14 +321,18 @@ export default function OperationSelectFederalStateScreen() {
               },
             ]}
           >
-            <BlurView
+            <LiquidGlassView
               style={[
                 styles.buttonContainer,
                 {
-                  backgroundColor: Colors[colorScheme ?? "light"].tint + "15",
+                  backgroundColor:
+                    Platform.OS === "ios"
+                      ? "transparent"
+                      : Colors[colorScheme ?? "light"].tint + "15",
                 },
               ]}
-              tint={colorScheme === "dark" ? "dark" : "light"}
+              colorScheme={colorScheme === "dark" ? "dark" : "light"}
+              tintColor={Colors[colorScheme ?? "light"].tint + "15"}
             >
               <Pressable
                 style={[styles.button, { opacity: isMapView ? 0.75 : 0.32 }]}
@@ -353,7 +357,7 @@ export default function OperationSelectFederalStateScreen() {
                   color={colorScheme === "dark" ? "#fff" : "#000"}
                 />
               </Pressable>
-            </BlurView>
+            </LiquidGlassView>
           </View>
         </ThemedView>
       </>
@@ -396,6 +400,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     display: "flex",
     flexDirection: "row",
+    borderRadius: 10,
   },
   button: {
     width: 50,
