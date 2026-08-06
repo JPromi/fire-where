@@ -301,7 +301,7 @@ export default function OperationSelectFederalStateScreen() {
             </ScrollView>
           )}
 
-          <View
+          <LiquidGlassView
             style={[
               {
                 marginBottom: mapBottomSpacing,
@@ -309,56 +309,48 @@ export default function OperationSelectFederalStateScreen() {
                 bottom: 20,
                 right: 20,
                 zIndex: 2,
-                borderRadius: 10,
-                overflow: "hidden",
-                backgroundColor: blurSupported
-                  ? ""
-                  : Colors[colorScheme ?? "light"].backgroundForground,
+                backgroundColor:
+                  Platform.OS === "ios"
+                    ? "transparent"
+                    : Colors[colorScheme ?? "light"].tint + "15",
                 backdropFilter: blurSupported
                   ? "blur(10px) brightness(0.2)"
                   : "",
                 marginRight: dynamicSide.right,
+                borderRadius: Platform.OS === "ios" ? 20 : 10,
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
               },
             ]}
+            colorScheme={colorScheme === "dark" ? "dark" : "light"}
+            tintColor={Colors[colorScheme ?? "light"].tint + "15"}
           >
-            <LiquidGlassView
-              style={[
-                styles.buttonContainer,
-                {
-                  backgroundColor:
-                    Platform.OS === "ios"
-                      ? "transparent"
-                      : Colors[colorScheme ?? "light"].tint + "15",
-                },
-              ]}
-              colorScheme={colorScheme === "dark" ? "dark" : "light"}
-              tintColor={Colors[colorScheme ?? "light"].tint + "15"}
+            <Pressable
+              style={[styles.button, { opacity: isMapView ? 0.75 : 0.32 }]}
+              onPress={() => {
+                setView(true);
+              }}
             >
-              <Pressable
-                style={[styles.button, { opacity: isMapView ? 0.75 : 0.32 }]}
-                onPress={() => {
-                  setView(true);
-                }}
-              >
-                <IconAtMap
-                  style={[styles.buttonIcon]}
-                  color={colorScheme === "dark" ? "#fff" : "#000"}
-                />
-              </Pressable>
-              <Pressable
-                style={[styles.button, { opacity: !isMapView ? 0.75 : 0.32 }]}
-                onPress={() => {
-                  setView(false);
-                }}
-              >
-                <IconSymbol
-                  name="rectangle.grid.1x2"
-                  size={24}
-                  color={colorScheme === "dark" ? "#fff" : "#000"}
-                />
-              </Pressable>
-            </LiquidGlassView>
-          </View>
+              <IconAtMap
+                style={[styles.buttonIcon]}
+                color={colorScheme === "dark" ? "#fff" : "#000"}
+              />
+            </Pressable>
+            <Pressable
+              style={[styles.button, { opacity: !isMapView ? 0.75 : 0.32 }]}
+              onPress={() => {
+                setView(false);
+              }}
+            >
+              <IconSymbol
+                name="rectangle.grid.1x2"
+                size={24}
+                color={colorScheme === "dark" ? "#fff" : "#000"}
+              />
+            </Pressable>
+          </LiquidGlassView>
         </ThemedView>
       </>
     );
@@ -400,7 +392,6 @@ const styles = StyleSheet.create({
   buttonContainer: {
     display: "flex",
     flexDirection: "row",
-    borderRadius: 10,
   },
   button: {
     width: 50,
