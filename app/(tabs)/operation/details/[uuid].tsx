@@ -35,7 +35,7 @@ export default function OperationDetailScreen() {
 
   const [operation, setOperation] = useState<Operation | undefined>(undefined);
 
-  const pageTitle = title(operation?.alarm?.message);
+  const pageTitle = title(operation?.alarm?.message ?? '...');
   useHeaderTitleOnFocus(pageTitle);
 
   useEffect(() => {
