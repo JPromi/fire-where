@@ -338,8 +338,9 @@ export default function FiredepartmentOperationScreen() {
                 })}
                 onPress={() => {
                   router.push({
-                    pathname: "/operation/details/[uuid]",
-                    params: { uuid: op.uuid },
+                    pathname:
+                      "/firedepartment/operation-details/[operationUuid]",
+                    params: { operationUuid: op.uuid },
                   });
                 }}
               >
