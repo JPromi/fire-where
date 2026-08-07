@@ -8,7 +8,6 @@ import { settingsLocalService } from "@/services/local/SettingLocalService";
 import { SettingService } from "@/services/local/SettingService";
 import { title } from "@/utils/TitleFunction";
 import { useHeaderTitleOnFocus } from "@/utils/UseHeaderTitleOnFocus";
-import Constants from "expo-constants";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -24,6 +23,7 @@ import {
   useColorScheme,
   View,
 } from "react-native";
+import DeviceInfo from "react-native-device-info";
 
 type SettingsItem = {
   key: string;
@@ -126,9 +126,9 @@ export default function SettingsScreen() {
             name: t("settings.group.software.buildVersion"),
             type: "text",
             valueExtra:
-              `${Constants.manifest?.version}` +
-              (Constants.manifest?.buildNumber
-                ? ` (${Constants.manifest?.buildNumber})`
+              `${DeviceInfo.getVersion()}` +
+              (DeviceInfo.getBuildNumber()
+                ? ` (${DeviceInfo.getBuildNumber()})`
                 : ""),
           },
         ],
