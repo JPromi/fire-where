@@ -17,7 +17,7 @@ import { title } from "@/utils/TitleFunction";
 import { useHeaderTitleOnFocus } from "@/utils/UseHeaderTitleOnFocus";
 import * as faBrand from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -188,6 +188,27 @@ export default function FiredepartmentDetailScreen() {
 
   return (
     <>
+      <Stack.Screen
+        options={{
+          headerRight: () =>
+            supportsShare() ? (
+              <Pressable
+                accessibilityLabel="Platzhalter"
+                accessibilityRole="button"
+                hitSlop={10}
+                onPress={() => {
+                  shareFiredepartment();
+                }}
+              >
+                <IconSymbol
+                  name="square.and.arrow.up"
+                  size={22}
+                  color={Colors[colorScheme ?? "light"].tint}
+                />
+              </Pressable>
+            ) : undefined,
+        }}
+      />
       <ThemedView style={styles.container}>
         {loading ? (
           <View
@@ -312,43 +333,6 @@ export default function FiredepartmentDetailScreen() {
                     gap: 10,
                   }}
                 >
-                  {/* share button */}
-                  {CONFIG.informations.app.webUrl !== null &&
-                    supportsShare() && (
-                      <LiquidGlassView
-                        style={{
-                          backgroundColor:
-                            Platform.OS === "ios"
-                              ? "transparent"
-                              : Colors[colorScheme ?? "light"].tint + "15",
-                          width: 40,
-                          height: 40,
-                          borderRadius: 100,
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }}
-                        colorScheme={colorScheme === "dark" ? "dark" : "light"}
-                        tintColor={Colors[colorScheme ?? "light"].tint + "15"}
-                      >
-                        <Pressable
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                          }}
-                          onPress={shareFiredepartment}
-                        >
-                          <IconSymbol
-                            name="square.and.arrow.up"
-                            color={Colors[colorScheme ?? "light"].text}
-                            size={24}
-                          />
-                        </Pressable>
-                      </LiquidGlassView>
-                    )}
                   {/* favourite button */}
                   <LiquidGlassView
                     style={{
