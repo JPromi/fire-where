@@ -6,6 +6,7 @@ import { uiError } from "@/components/ui/ErrorMessage";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import { OperationTypeView } from "@/components/ui/OperationTypeView";
 import { Colors } from "@/constants/Colors";
+import { CONFIG } from "@/constants/Config";
 import { ServiceOriginEnum } from "@/enums/ServiceOriginEnum";
 import { useDynamicSide } from "@/hooks/useDynamicSide";
 import { Operation } from "@/models/Operation";
@@ -13,7 +14,7 @@ import { SettingService } from "@/services/local/SettingService";
 import { OperationService } from "@/services/OperationService";
 import { title } from "@/utils/TitleFunction";
 import { useHeaderTitleOnFocus } from "@/utils/UseHeaderTitleOnFocus";
-import { useLocalSearchParams } from "expo-router";
+import { Stack, useLocalSearchParams } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -25,6 +26,7 @@ import {
   Pressable,
   RefreshControl,
   ScrollView,
+  Share,
   StyleSheet,
   useColorScheme,
   View,
@@ -34,6 +36,7 @@ export default function OperationDetailScreen() {
   const { t } = useTranslation();
   const { uuid } = useLocalSearchParams<{ uuid: string }>();
   const colorScheme = useColorScheme();
+  const theme = colorScheme === "dark" ? "dark" : "light";
   const dynamicSide = useDynamicSide();
   const animationValues = useRef<Animated.Value[]>([]);
   const screenWidth = Dimensions.get("window").width;
@@ -161,8 +164,45 @@ export default function OperationDetailScreen() {
     }
   }
 
+  function shareFiredepartment() {
+    if (CONFIG.informations.app.webUrl === null) return;
+
+    Share.share({
+      url: `${CONFIG.informations.app.webUrl}/operation/details/${operation?.uuid}`,
+    });
+  }
+
+  function supportsShare() {
+    if (!CONFIG.informations.app.webUrl) return false;
+    if (Platform.OS !== "web") return true;
+    return (
+      typeof navigator !== "undefined" && typeof navigator.share === "function"
+    );
+  }
+
   return (
     <>
+      <Stack.Screen
+        options={{
+          headerRight: () =>
+            supportsShare() ? (
+              <Pressable
+                accessibilityLabel="Platzhalter"
+                accessibilityRole="button"
+                hitSlop={10}
+                onPress={() => {
+                  shareFiredepartment();
+                }}
+              >
+                <IconSymbol
+                  name="square.and.arrow.up"
+                  size={22}
+                  color={Colors[theme].tint}
+                />
+              </Pressable>
+            ) : undefined,
+        }}
+      />
       <ThemedView style={[styles.container]}>
         {loading ? (
           <View
