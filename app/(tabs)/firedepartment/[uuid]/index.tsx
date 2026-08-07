@@ -121,6 +121,7 @@ export default function FiredepartmentDetailScreen() {
   }
 
   function supportsShare() {
+    if (!CONFIG.informations.app.webUrl) return false;
     if (Platform.OS !== "web") return true;
     return (
       typeof navigator !== "undefined" && typeof navigator.share === "function"
