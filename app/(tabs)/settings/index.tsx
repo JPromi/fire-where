@@ -8,6 +8,7 @@ import { settingsLocalService } from "@/services/local/SettingLocalService";
 import { SettingService } from "@/services/local/SettingService";
 import { title } from "@/utils/TitleFunction";
 import { useHeaderTitleOnFocus } from "@/utils/UseHeaderTitleOnFocus";
+import Constants from "expo-constants";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -126,10 +127,8 @@ export default function SettingsScreen() {
             name: t("settings.group.software.buildVersion"),
             type: "text",
             valueExtra:
-              `${DeviceInfo.getVersion()}` +
-              (DeviceInfo.getBuildNumber()
-                ? ` (${DeviceInfo.getBuildNumber()})`
-                : ""),
+              `${Constants.expoConfig?.version}` +
+              (DeviceInfo.getBuildNumber() !== "unknown" ? ` (${DeviceInfo.getBuildNumber()})` : ""),
           },
         ],
       },
