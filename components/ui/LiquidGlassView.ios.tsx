@@ -1,12 +1,14 @@
 import { BlurView } from "expo-blur";
 import { GlassView, isLiquidGlassAvailable } from "expo-glass-effect";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, RefObject } from "react";
 import { StyleProp, ViewStyle } from "react-native";
+import type { View } from "react-native";
 
 type LiquidGlassViewProps = PropsWithChildren<{
   style?: StyleProp<ViewStyle>;
   tintColor?: string;
   colorScheme?: "light" | "dark";
+  blurTarget?: RefObject<View | null>;
 }>;
 
 export function LiquidGlassView({

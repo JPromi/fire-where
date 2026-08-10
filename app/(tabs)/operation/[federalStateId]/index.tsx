@@ -21,7 +21,8 @@ import {
   useNavigation,
   useRouter,
 } from "expo-router";
-import { useCallback, useEffect, useState } from "react";
+import { BlurTargetView } from "expo-blur";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   ActivityIndicator,
@@ -39,17 +40,15 @@ export default function OperationSelectDistrict() {
   const { federalStateId } = useLocalSearchParams<{ federalStateId: string }>();
   const colorScheme = useColorScheme();
   const dynamicSide = useDynamicSide();
+  const blurTargetRef = useRef<View | null>(null);
   const mapBottomSpacing =
     dynamicSide.bottom + (Platform.OS === "ios" ? 0 : 50);
   const router = useRouter();
   const navigation = useNavigation();
-  const blurSupported =
-    Platform.OS === "ios" ||
-    (Platform.OS === "android" && Platform.Version >= 31);
-
   const [isMapView, setIsMapView] = useState(true);
   const [statistic, setStatistic] = useState<LocationStatistic[]>([]);
   const [loaded, setLoaded] = useState(false);
+  const [blurTargetReady, setBlurTargetReady] = useState(false);
 
   const [lastDataUpdate, setLastDataUpdate] = useState<Date | null>(null);
 
@@ -176,6 +175,11 @@ export default function OperationSelectDistrict() {
     return (
       <>
         <ThemedView style={[styles.container]}>
+          <BlurTargetView
+            ref={blurTargetRef}
+            onLayout={() => setBlurTargetReady(true)}
+            style={styles.target}
+          >
           {isMapView ? (
             <View
               style={[
@@ -289,6 +293,7 @@ export default function OperationSelectDistrict() {
               </View>
             </ScrollView>
           )}
+          </BlurTargetView>
 
           <LiquidGlassView
             style={[
@@ -302,9 +307,6 @@ export default function OperationSelectDistrict() {
                   Platform.OS === "ios"
                     ? "transparent"
                     : Colors[colorScheme ?? "light"].tint + "15",
-                backdropFilter: blurSupported
-                  ? "blur(10px) brightness(0.2)"
-                  : "",
                 marginRight: dynamicSide.right,
                 borderRadius: Platform.OS === "ios" ? 20 : 10,
                 display: "flex",
@@ -315,6 +317,7 @@ export default function OperationSelectDistrict() {
             ]}
             colorScheme={colorScheme === "dark" ? "dark" : "light"}
             tintColor={Colors[colorScheme ?? "light"].tint + "15"}
+            blurTarget={blurTargetReady ? blurTargetRef : undefined}
           >
             <Pressable
               style={[styles.button, { opacity: isMapView ? 0.75 : 0.32 }]}
@@ -365,6 +368,9 @@ export default function OperationSelectDistrict() {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+  },
+  target: {
     flex: 1,
   },
   contentMap: {

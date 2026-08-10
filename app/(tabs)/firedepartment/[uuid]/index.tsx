@@ -18,7 +18,8 @@ import { useHeaderTitleOnFocus } from "@/utils/UseHeaderTitleOnFocus";
 import * as faBrand from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
-import { useEffect, useState } from "react";
+import { BlurTargetView } from "expo-blur";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   ActivityIndicator,
@@ -41,6 +42,7 @@ export default function FiredepartmentDetailScreen() {
   const dynamicSide = useDynamicSide();
   const screenWidth = Dimensions.get("window").width;
   const colorScheme = useColorScheme();
+  const blurTargetRef = useRef<View | null>(null);
   const [loading, setLoading] = useState(true);
   const { uuid } = useLocalSearchParams<{ uuid: string }>();
   const { t } = useTranslation();
@@ -53,6 +55,7 @@ export default function FiredepartmentDetailScreen() {
   >(undefined);
   const [isFavourite, setIsFavourite] = useState<boolean>(false);
   const [favouriteCount, setFavouriteCount] = useState<number>(0);
+  const [blurTargetReady, setBlurTargetReady] = useState(false);
   const pageTitle = title(firedepartment?.name ?? "...");
   useHeaderTitleOnFocus(pageTitle);
 
@@ -265,72 +268,78 @@ export default function FiredepartmentDetailScreen() {
                   justifyContent: "center",
                 }}
               >
-                <Image
-                  source={{ uri: firedepartment.banner ?? "" }}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                  }}
-                />
-                {firedepartment.logo ? (
-                  Platform.OS === "web" ? (
-                    <img
-                      src={firedepartment.logo ?? ""}
-                      style={{
-                        position: "absolute",
-                        minWidth: 100,
-                        height: "50%",
-                        left: "5%",
-                        objectFit: "contain",
-                        filter:
-                          "drop-shadow(0 0 10px " +
-                          (Colors[colorScheme ?? "light"].background + "88") +
-                          ")",
-                      }}
-                    />
-                  ) : (
-                    <View
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        position: "absolute",
-                        minWidth: "100%",
-                        height: "100%",
-                        shadowColor: Colors[colorScheme ?? "light"].background,
-                        shadowOffset: { width: 0, height: 0 },
-                        shadowOpacity: 0.75,
-                        shadowRadius: 10,
-                      }}
-                    >
-                      {firedepartment.logo.split(".").pop()?.toLowerCase() ===
-                      "svg" ? (
-                        <SvgUri
-                          uri={firedepartment.logo ?? ""}
-                          width={100}
-                          height="60%"
-                          style={{
-                            left: "5%",
-                          }}
-                          preserveAspectRatio="xMidYMid meet"
-                        />
-                      ) : (
-                        <Image
-                          source={{ uri: firedepartment.logo ?? "" }}
-                          style={{
-                            width: 100,
-                            height: "60%",
-                            left: "5%",
-                            objectFit: "contain",
-                          }}
-                        />
-                      )}
-                    </View>
-                  )
-                ) : null}
+                <BlurTargetView
+                  ref={blurTargetRef}
+                  onLayout={() => setBlurTargetReady(true)}
+                  style={StyleSheet.absoluteFill}
+                >
+                  <Image
+                    source={{ uri: firedepartment.banner ?? "" }}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                    }}
+                  />
+                  {firedepartment.logo ? (
+                    Platform.OS === "web" ? (
+                      <img
+                        src={firedepartment.logo ?? ""}
+                        style={{
+                          position: "absolute",
+                          minWidth: 100,
+                          height: "50%",
+                          left: "5%",
+                          objectFit: "contain",
+                          filter:
+                            "drop-shadow(0 0 10px " +
+                            (Colors[colorScheme ?? "light"].background + "88") +
+                            ")",
+                        }}
+                      />
+                    ) : (
+                      <View
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          position: "absolute",
+                          minWidth: "100%",
+                          height: "100%",
+                          shadowColor: Colors[colorScheme ?? "light"].background,
+                          shadowOffset: { width: 0, height: 0 },
+                          shadowOpacity: 0.75,
+                          shadowRadius: 10,
+                        }}
+                      >
+                        {firedepartment.logo.split(".").pop()?.toLowerCase() ===
+                        "svg" ? (
+                          <SvgUri
+                            uri={firedepartment.logo ?? ""}
+                            width={100}
+                            height="60%"
+                            style={{
+                              left: "5%",
+                            }}
+                            preserveAspectRatio="xMidYMid meet"
+                          />
+                        ) : (
+                          <Image
+                            source={{ uri: firedepartment.logo ?? "" }}
+                            style={{
+                              width: 100,
+                              height: "60%",
+                              left: "5%",
+                              objectFit: "contain",
+                            }}
+                          />
+                        )}
+                      </View>
+                    )
+                  ) : null}
+                </BlurTargetView>
 
                 {/* Buttons */}
                 <View
@@ -359,6 +368,7 @@ export default function FiredepartmentDetailScreen() {
                     }}
                     colorScheme={colorScheme === "dark" ? "dark" : "light"}
                     tintColor={Colors[colorScheme ?? "light"].tint + "15"}
+                    blurTarget={blurTargetReady ? blurTargetRef : undefined}
                   >
                     <Pressable
                       style={{

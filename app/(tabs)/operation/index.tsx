@@ -1,4 +1,5 @@
 import { Stack, useFocusEffect, useRouter } from "expo-router";
+import { BlurTargetView } from "expo-blur";
 import {
   ActivityIndicator,
   Platform,
@@ -16,7 +17,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Colors } from "@/constants/Colors";
 import { FederalState } from "@/models/FederalState";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import federStatesData from "@/assets/data/federal-states.json";
 import { SvgAtMap } from "@/components/assets/SvgAtMap";
@@ -36,16 +37,14 @@ export default function OperationSelectFederalStateScreen() {
   const { t } = useTranslation();
   const router = useRouter();
   const dynamicSide = useDynamicSide();
+  const blurTargetRef = useRef<View | null>(null);
   const mapBottomSpacing =
     dynamicSide.bottom + (Platform.OS === "ios" ? 0 : 50);
-  const blurSupported =
-    Platform.OS === "ios" ||
-    (Platform.OS === "android" && Platform.Version >= 31);
-
   const [isMapView, setIsMapView] = useState(true);
   const [statistic, setStatistic] = useState<LocationStatistic[]>([]);
   const [federalStates, setFederalStates] = useState<FederalState[]>([]);
   const [loaded, setLoaded] = useState(false);
+  const [blurTargetReady, setBlurTargetReady] = useState(false);
 
   const [lastDataUpdate, setLastDataUpdate] = useState<Date | null>(null);
 
@@ -142,6 +141,11 @@ export default function OperationSelectFederalStateScreen() {
     return (
       <>
         <ThemedView style={styles.container}>
+          <BlurTargetView
+            ref={blurTargetRef}
+            onLayout={() => setBlurTargetReady(true)}
+            style={styles.target}
+          >
           {isMapView ? (
             <View
               style={[
@@ -300,6 +304,7 @@ export default function OperationSelectFederalStateScreen() {
               </View>
             </ScrollView>
           )}
+          </BlurTargetView>
 
           <LiquidGlassView
             style={[
@@ -313,9 +318,6 @@ export default function OperationSelectFederalStateScreen() {
                   Platform.OS === "ios"
                     ? "transparent"
                     : Colors[colorScheme ?? "light"].tint + "15",
-                backdropFilter: blurSupported
-                  ? "blur(10px) brightness(0.2)"
-                  : "",
                 marginRight: dynamicSide.right,
                 borderRadius: Platform.OS === "ios" ? 20 : 10,
                 display: "flex",
@@ -326,6 +328,7 @@ export default function OperationSelectFederalStateScreen() {
             ]}
             colorScheme={colorScheme === "dark" ? "dark" : "light"}
             tintColor={Colors[colorScheme ?? "light"].tint + "15"}
+            blurTarget={blurTargetReady ? blurTargetRef : undefined}
           >
             <Pressable
               style={[styles.button, { opacity: isMapView ? 0.75 : 0.32 }]}
@@ -376,6 +379,9 @@ export default function OperationSelectFederalStateScreen() {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+  },
+  target: {
     flex: 1,
   },
   contentMap: {
