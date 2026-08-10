@@ -193,6 +193,16 @@ export default function OperationDetailScreen() {
                 onPress={() => {
                   shareFiredepartment();
                 }}
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginVertical: 6,
+                  marginHorizontal: 14,
+                  minHeight: 24,
+                  width: 24,
+                }}
               >
                 <IconSymbol
                   name="square.and.arrow.up"
