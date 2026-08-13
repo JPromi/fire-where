@@ -1,33 +1,50 @@
-import { CONFIG } from '@/constants/Config';
-import { LocationStatistic } from '@/models/LocationStatistic';
-import { Operation } from '@/models/Operation';
-import axios from 'axios';
+import { CONFIG } from "@/constants/Config";
+import { LocationStatistic } from "@/models/LocationStatistic";
+import { Operation } from "@/models/Operation";
+import { apiClient } from "./ApiClient";
 
 export class OperationService {
   static async getOperationsByFs(federalStateId: string) {
-    const res = await axios.get<Operation[]>(`${CONFIG.api.baseUrl}/operation/list/${federalStateId}`);
+    const res = await apiClient.get<Operation[]>(
+      `${CONFIG.api.baseUrl}/operation/list/${federalStateId}`,
+      {
+        headers: this.getCustomHeaders(),
+      },
+    );
     return Array.isArray(res.data) ? res.data : [];
   }
 
-  static async getOperationsByFsDistrict(federalStateId: string, districtId: string) {
-    const res = await axios.get<Operation[]>(`${CONFIG.api.baseUrl}/operation/list/${federalStateId}`, {
-      params: { district: districtId },
-    });
+  static async getOperationsByFsDistrict(
+    federalStateId: string,
+    districtId: string,
+  ) {
+    const res = await apiClient.get<Operation[]>(
+      `${CONFIG.api.baseUrl}/operation/list/${federalStateId}`,
+      {
+        params: { district: districtId },
+      },
+    );
     return Array.isArray(res.data) ? res.data : [];
   }
 
   static async getOperation(uuid: string) {
-    const res = await axios.get<Operation>(`${CONFIG.api.baseUrl}/operation/${uuid}`);
+    const res = await apiClient.get<Operation>(
+      `${CONFIG.api.baseUrl}/operation/${uuid}`,
+    );
     return res.data;
   }
 
   static async getStatistic() {
-    const res = await axios.get<LocationStatistic[]>(`${CONFIG.api.baseUrl}/operation/list/statistic`);
+    const res = await apiClient.get<LocationStatistic[]>(
+      `${CONFIG.api.baseUrl}/operation/list/statistic`,
+    );
     return res.data;
   }
 
   static async getStatisticFromFederalStates(federalState: string) {
-    const res = await axios.get<LocationStatistic[]>(`${CONFIG.api.baseUrl}/operation/list/${federalState}/statistic`);
+    const res = await apiClient.get<LocationStatistic[]>(
+      `${CONFIG.api.baseUrl}/operation/list/${federalState}/statistic`,
+    );
     return res.data;
   }
 }
