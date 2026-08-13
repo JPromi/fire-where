@@ -199,7 +199,7 @@ export default function OperationDetailScreen() {
                   alignItems: "center",
                   justifyContent: "center",
                   marginVertical: 6,
-                  marginHorizontal: 14,
+                  marginHorizontal: Platform.OS === "ios" ? undefined : 14,
                   minHeight: 24,
                   width: 24,
                 }}

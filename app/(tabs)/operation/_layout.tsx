@@ -1,5 +1,6 @@
 import { StackHeader } from '@/components/navigation/StackHeader';
 import { Stack } from 'expo-router';
+import { Platform } from 'react-native';
 
 const StackLayout = () => {
   return (
@@ -7,7 +8,10 @@ const StackLayout = () => {
       screenOptions={{
         animation: 'slide_from_right',
         animationDuration: 300,
-        header: (props) => <StackHeader {...props} />,
+        header:
+          Platform.OS === 'android'
+            ? (props) => <StackHeader {...props} />
+            : undefined,
       }}>
       <Stack.Screen
         name="index"

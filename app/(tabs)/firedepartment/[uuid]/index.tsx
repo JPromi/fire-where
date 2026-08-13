@@ -17,8 +17,8 @@ import { title } from "@/utils/TitleFunction";
 import { useHeaderTitleOnFocus } from "@/utils/UseHeaderTitleOnFocus";
 import * as faBrand from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { BlurTargetView } from "expo-blur";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -208,7 +208,7 @@ export default function FiredepartmentDetailScreen() {
                   alignItems: "center",
                   justifyContent: "center",
                   marginVertical: 6,
-                  marginHorizontal: 14,
+                  marginHorizontal: Platform.OS === "ios" ? undefined : 14,
                   minHeight: 24,
                   width: 24,
                 }}
@@ -308,7 +308,8 @@ export default function FiredepartmentDetailScreen() {
                           position: "absolute",
                           minWidth: "100%",
                           height: "100%",
-                          shadowColor: Colors[colorScheme ?? "light"].background,
+                          shadowColor:
+                            Colors[colorScheme ?? "light"].background,
                           shadowOffset: { width: 0, height: 0 },
                           shadowOpacity: 0.75,
                           shadowRadius: 10,
