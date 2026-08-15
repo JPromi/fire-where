@@ -188,6 +188,12 @@
       "alarmed": "Alarmierung",
       "inOperationSince": "Im Einsatz seit",
       "operationDuration": "Einsatzdauer",
+      "summary": {
+        "firedepartment_one": "{{count}} Feuerwehr",
+        "firedepartment_other": "{{count}} Feuerwehren",
+        "unit_one": "{{count}} Fahrzeug",
+        "unit_other": "{{count}} Fahrzeuge"
+      },
       "unit": {
         "alarmed": "Alarmiert",
         "disposition": "Disposition",

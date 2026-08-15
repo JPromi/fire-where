@@ -178,6 +178,12 @@
       "alarmed": "Alarmiranje",
       "inOperationSince": "U intervenciji od",
       "operationDuration": "Trajanje intervencije",
+      "summary": {
+        "firedepartment_one": "{{count}} Vatrogasno društvo",
+        "firedepartment_other": "{{count}} Vatrogasna društva",
+        "unit_one": "{{count}} Vozilo",
+        "unit_other": "{{count}} Vozila"
+      },
       "unit": {
         "alarmed": "Alarmirano",
         "disposition": "Dispozicija",

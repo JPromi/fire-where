@@ -24,7 +24,7 @@
         "oberwart": "Oberwart"
       },
       "la": {
-       "amstetten": "Amstetten",
+        "amstetten": "Amstetten",
         "baden": "Baden",
         "bruck-an-der-leitha": "Bruck an der Leitha",
         "gaenserndorf": "Gänserndorf",
@@ -178,6 +178,12 @@
       "alarmed": "Alerted",
       "inOperationSince": "In operation since",
       "operationDuration": "Operation duration",
+      "summary": {
+        "firedepartment_one": "{{count}} Fire Department",
+        "firedepartment_other": "{{count}} Fire Departments",
+        "unit_one": "{{count}} Vehicle",
+        "unit_other": "{{count}} Vehicles"
+      },
       "unit": {
         "alarmed": "Alerted",
         "disposition": "Dispatched",
@@ -215,7 +221,7 @@
       "error": {
         "noResults": "No fire departments found.",
         "noQuery": "Please enter a search term."
-        }
+      }
     },
     "details": {
       "chip": {
@@ -254,21 +260,21 @@
         "clearAllData": "Delete all data"
       },
       "operations": {
-          "title": "Operations"
-        },
-        "software": {
-          "title": "Software",
-          "developer": "Developer",
-          "feedback": "Feedback",
-          "repository": "Repository",
-          "buildVersion": "Build Version"
-        },
-        "informations": {
-          "title": "Information",
-          "imprint": "Imprint",
-          "legal": "Privacy Policy",
-          "websiteValue": "Website"
-        }
+        "title": "Operations"
+      },
+      "software": {
+        "title": "Software",
+        "developer": "Developer",
+        "feedback": "Feedback",
+        "repository": "Repository",
+        "buildVersion": "Build Version"
+      },
+      "informations": {
+        "title": "Information",
+        "imprint": "Imprint",
+        "legal": "Privacy Policy",
+        "websiteValue": "Website"
+      }
     },
     "extended": {
       "language": {

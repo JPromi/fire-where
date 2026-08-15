@@ -354,6 +354,85 @@ export default function OperationDetailScreen() {
                 </View>
               </View>
 
+              {/* Resource Sum */}
+              {operation.firedepartments?.length > 0 ||
+              operation.units?.length > 0 ? (
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    borderColor: Colors[colorScheme ?? "light"].border,
+                    borderWidth: 1,
+                    borderRadius: 8,
+                    padding: 12,
+                    marginBottom: 20,
+                    width: "100%",
+                    maxWidth: 1000,
+                    alignSelf: "center",
+                  }}
+                >
+                  {operation.firedepartments?.length > 0 && (
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        gap: 12,
+                        flex: 1,
+                      }}
+                    >
+                      <Firedepartment
+                        style={{
+                          width: 32,
+                          height: 32,
+                        }}
+                        color={Colors[colorScheme ?? "light"].text}
+                      />
+                      <ThemedText>
+                        {t("operation.details.summary.firedepartment", {
+                          count: operation.firedepartments.length,
+                        })}
+                      </ThemedText>
+                    </View>
+                  )}
+                  {operation.firedepartments?.length > 0 &&
+                    operation.units?.length > 0 && (
+                      <View
+                        style={{
+                          width: 1,
+                          backgroundColor:
+                            Colors[colorScheme ?? "light"].border,
+                          height: "100%",
+                          marginHorizontal: 12,
+                        }}
+                      />
+                    )}
+                  {operation.units?.length > 0 && (
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        gap: 12,
+                        flex: 1,
+                      }}
+                    >
+                      <Firetruck
+                        style={{
+                          width: 32,
+                          height: 32,
+                        }}
+                        color={Colors[colorScheme ?? "light"].text}
+                      />
+                      <ThemedText>
+                        {t("operation.details.summary.unit", {
+                          count: operation.units.length,
+                        })}
+                      </ThemedText>
+                    </View>
+                  )}
+                </View>
+              ) : null}
               {/* Units and Firedepartments */}
               <View
                 style={{
