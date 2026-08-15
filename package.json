@@ -27,7 +27,7 @@
     "ajv-keywords": "^3.5.2",
     "axios": "^1.10.0",
     "dotenv": "^17.4.2",
-    "expo": "^57.0.10",
+    "expo": "~57.0.12",
     "expo-blur": "~57.0.2",
     "expo-constants": "~57.0.9",
     "expo-font": "~57.0.1",
@@ -35,10 +35,10 @@
     "expo-haptics": "~57.0.1",
     "expo-image": "~57.0.2",
     "expo-linking": "~57.0.5",
-    "expo-router": "~57.0.10",
-    "expo-splash-screen": "~57.0.5",
+    "expo-router": "~57.0.12",
+    "expo-splash-screen": "~57.0.6",
     "expo-status-bar": "~57.0.1",
-    "expo-symbols": "~57.0.1",
+    "expo-symbols": "~57.0.2",
     "expo-system-ui": "~57.0.2",
     "expo-web-browser": "~57.0.2",
     "i18next": "^25.2.1",
@@ -69,7 +69,7 @@
     "eslint": "^9.25.0",
     "eslint-config-expo": "~57.0.1",
     "react-native-svg-transformer": "^1.5.1",
-    "typescript": "~5.9.3"
+    "typescript": "~6.0.3"
   },
   "private": true,
   "allowScripts": {

@@ -6,10 +6,7 @@ import { apiClient } from "./ApiClient";
 export class OperationService {
   static async getOperationsByFs(federalStateId: string) {
     const res = await apiClient.get<Operation[]>(
-      `${CONFIG.api.baseUrl}/operation/list/${federalStateId}`,
-      {
-        headers: this.getCustomHeaders(),
-      },
+      `${CONFIG.api.baseUrl}/operation/list/${federalStateId}`
     );
     return Array.isArray(res.data) ? res.data : [];
   }
