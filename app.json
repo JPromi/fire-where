@@ -17,7 +17,7 @@
     },
     "android": {
       "package": "com.jpromi.firePoint",
-      "versionCode": 7,
+      "versionCode": 8,
       "intentFilters": [
         {
           "action": "VIEW",
