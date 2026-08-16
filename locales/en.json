@@ -19,12 +19,12 @@
         "guessing": "Güssing",
         "jennersdorf": "Jennersdorf",
         "mattersburg": "Mattersburg",
-        "neusiedl-am-see": "Neusiedl am See",
+        "neusiedl": "Neusiedl am See",
         "oberpullendorf": "Oberpullendorf",
         "oberwart": "Oberwart"
       },
       "la": {
-       "amstetten": "Amstetten",
+        "amstetten": "Amstetten",
         "baden": "Baden",
         "bruck-an-der-leitha": "Bruck an der Leitha",
         "gaenserndorf": "Gänserndorf",
@@ -94,6 +94,56 @@
         "lienz": "Lienz",
         "reutte": "Reutte",
         "schwaz": "Schwaz"
+      },
+      "ca": {
+        "klagenfurt": "Klagenfurt City",
+        "klagenfurt-land": "Klagenfurt District",
+        "spittal-an-der-drau": "Spittal an der Drau",
+        "villach": "Villach City",
+        "villach-land": "Villach District",
+        "feldkirchen": "Feldkirchen",
+        "hermagor": "Hermagor",
+        "voelkermarkt": "Völkermarkt",
+        "waiern": "Wolfsberg"
+      },
+      "sb": {
+        "salzburg": "Salzburg City",
+        "hallein": "Hallein",
+        "salzburg-umgebung": "Salzburg Surroundings",
+        "sankt-johan-im-pongau": "St. Johann im Pongau",
+        "tamsweg": "Tamsweg",
+        "zell-am-see": "Zell am See"
+      },
+      "vb": {
+        "bludenz": "Bludenz",
+        "dornbirn": "Dornbirn",
+        "feldkirch": "Feldkirch",
+        "bregenz": "Bregenz"
+      },
+      "vi": {
+        "innere-stadt": "Inner City",
+        "leopoldstadt": "Leopoldstadt",
+        "landstrasse": "Landstraße",
+        "wieden": "Wieden",
+        "margareten": "Margareten",
+        "mariahilf": "Mariahilf",
+        "neubau": "Neubau",
+        "josefstadt": "Josefstadt",
+        "alsergrund": "Alsergrund",
+        "favoriten": "Favoriten",
+        "simmering": "Simmering",
+        "meidling": "Meidling",
+        "hietzing": "Hietzing",
+        "penzing": "Penzing",
+        "rudolfsheim-fuenfhaus": "Rudolfsheim-Fünfhaus",
+        "ottakring": "Ottakring",
+        "hernals": "Hernals",
+        "waehring": "Währing",
+        "doebling": "Döbling",
+        "brigittenau": "Brigittenau",
+        "floridsdorf": "Floridsdorf",
+        "donaustadt": "Donaustadt",
+        "liesing": "Liesing"
       }
     },
     "serviceOrigin": {
@@ -106,6 +156,9 @@
   },
   "common": {
     "back": "Back",
+    "yes": "Yes",
+    "no": "No",
+    "confirmAction": "Are you sure you want to perform this action?",
     "unknown": "Unknown",
     "none": "None",
     "error": {
@@ -125,6 +178,12 @@
       "alarmed": "Alerted",
       "inOperationSince": "In operation since",
       "operationDuration": "Operation duration",
+      "summary": {
+        "firedepartment_one": "{{count}} Fire Department",
+        "firedepartment_other": "{{count}} Fire Departments",
+        "unit_one": "{{count}} Vehicle",
+        "unit_other": "{{count}} Vehicles"
+      },
       "unit": {
         "alarmed": "Alerted",
         "disposition": "Dispatched",
@@ -162,7 +221,7 @@
       "error": {
         "noResults": "No fire departments found.",
         "noQuery": "Please enter a search term."
-        }
+      }
     },
     "details": {
       "chip": {
@@ -197,24 +256,25 @@
       "general": {
         "title": "General",
         "language": "Language",
-        "nerdMode": "Developer Mode"
+        "nerdMode": "Developer Mode",
+        "clearAllData": "Delete all data"
       },
       "operations": {
-          "title": "Operations"
-        },
-        "software": {
-          "title": "Software",
-          "developer": "Developer",
-          "feedback": "Feedback",
-          "repository": "Repository",
-          "buildVersion": "Build Version"
-        },
-        "informations": {
-          "title": "Information",
-          "imprint": "Imprint",
-          "legal": "Privacy Policy",
-          "websiteValue": "Website"
-        }
+        "title": "Operations"
+      },
+      "software": {
+        "title": "Software",
+        "developer": "Developer",
+        "feedback": "Feedback",
+        "repository": "Repository",
+        "buildVersion": "Build Version"
+      },
+      "informations": {
+        "title": "Information",
+        "imprint": "Imprint",
+        "legal": "Privacy Policy",
+        "websiteValue": "Website"
+      }
     },
     "extended": {
       "language": {

@@ -19,7 +19,7 @@
         "guessing": "Güssing",
         "jennersdorf": "Jennersdorf",
         "mattersburg": "Mattersburg",
-        "neusiedl-am-see": "Neusiedl am See",
+        "neusiedl": "Neusiedl am See",
         "oberpullendorf": "Oberpullendorf",
         "oberwart": "Oberwart"
       },
@@ -94,6 +94,56 @@
         "lienz": "Lienz",
         "reutte": "Reutte",
         "schwaz": "Schwaz"
+      },
+      "ca": {
+        "klagenfurt": "Klagenfurt Stadt",
+        "klagenfurt-land": "Klagenfurt Land",
+        "spittal-an-der-drau": "Spittal an der Drau",
+        "villach": "Villach Stadt",
+        "villach-land": "Villach Land",
+        "feldkirchen": "Feldkirchen",
+        "hermagor": "Hermagor",
+        "voelkermarkt": "Völkermarkt",
+        "waiern": "Wolfsberg"
+      },
+      "sb": {
+        "salzburg": "Salzburg Stadt",
+        "hallein": "Hallein",
+        "salzburg-umgebung": "Salzburg Umgebung",
+        "sankt-johan-im-pongau": "St. Johann im Pongau",
+        "tamsweg": "Tamsweg",
+        "zell-am-see": "Zell am See"
+      },
+      "vb": {
+        "bludenz": "Bludenz",
+        "dornbirn": "Dornbirn",
+        "feldkirch": "Feldkirch",
+        "bregenz": "Bregenz"
+      },
+      "vi": {
+        "innere-stadt": "Innere Stadt",
+        "leopoldstadt": "Leopoldstadt",
+        "landstrasse": "Landstraße",
+        "wieden": "Wieden",
+        "margareten": "Margareten",
+        "mariahilf": "Mariahilf",
+        "neubau": "Neubau",
+        "josefstadt": "Josefstadt",
+        "alsergrund": "Alsergrund",
+        "favoriten": "Favoriten",
+        "simmering": "Simmering",
+        "meidling": "Meidling",
+        "hietzing": "Hietzing",
+        "penzing": "Penzing",
+        "rudolfsheim-fuenfhaus": "Rudolfsheim-Fünfhaus",
+        "ottakring": "Ottakring",
+        "hernals": "Hernals",
+        "waehring": "Währing",
+        "doebling": "Döbling",
+        "brigittenau": "Brigittenau",
+        "floridsdorf": "Floridsdorf",
+        "donaustadt": "Donaustadt",
+        "liesing": "Liesing"
       }
     },
     "serviceOrigin": {
@@ -111,11 +161,19 @@
   },
   "common": {
     "back": "Zurück",
+    "yes": "Ja",
+    "no": "Nein",
+    "confirmAction": "Möchtest du diese Aktion wirklich ausführen?",
     "unknown": "Unbekannt",
     "none": "Keine",
     "error": {
       "notFound": "Nicht gefunden",
       "internalServerError": "Es ist ein Fehler bei der Anfrage aufgetreten"
+    },
+    "customError": {
+      "firedepartmentNotFound": "Die Feuerwehr wurde nicht gefunden.",
+      "operationNotFound": "Der Einsatz wurde nicht gefunden.",
+      "maxFavouritesReached": "Das Limit von {{max}} Favouriten wurde erreicht. Bitte entferne zuerst eine Feuerwehr aus den Favoriten."
     },
     "time": {
       "hours": "Stunden",
@@ -130,6 +188,12 @@
       "alarmed": "Alarmierung",
       "inOperationSince": "Im Einsatz seit",
       "operationDuration": "Einsatzdauer",
+      "summary": {
+        "firedepartment_one": "{{count}} Feuerwehr",
+        "firedepartment_other": "{{count}} Feuerwehren",
+        "unit_one": "{{count}} Fahrzeug",
+        "unit_other": "{{count}} Fahrzeuge"
+      },
       "unit": {
         "alarmed": "Alarmiert",
         "disposition": "Disposition",
@@ -202,7 +266,8 @@
       "general": {
         "title": "Allgemein",
         "language": "Sprache",
-        "nerdMode": "Entwicklermodus"
+        "nerdMode": "Entwicklermodus",
+        "clearAllData": "Alle Daten löschen"
       },
       "operations": {
         "title": "Einsätze"

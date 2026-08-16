@@ -81,7 +81,6 @@
       "suedost-steiermark",
       "voitsberg",
       "weiz"
-
     ]
   },
   {
@@ -96,6 +95,63 @@
       "lienz",
       "reutte",
       "schwaz"
+    ]
+  },
+  {
+    "fdId": "ca",
+    "districts": [
+      "klagenfurt",
+      "klagenfurt-land",
+      "spittal-an-der-drau",
+      "villach",
+      "villach-land",
+      "feldkirchen",
+      "hermagor",
+      "voelkermarkt",
+      "waiern"
+    ]
+  },
+  {
+    "fdId": "sb",
+    "districts": [
+      "salzburg",
+      "hallein",
+      "salzburg-umgebung",
+      "sankt-johan-im-pongau",
+      "tamsweg",
+      "zell-am-see"
+    ]
+  },
+  {
+    "fdId": "vb",
+    "districts": ["bludenz", "dornbirn", "feldkirch", "bregenz"]
+  },
+  {
+    "fdId": "vi",
+    "districts": [
+      "innere-stadt",
+      "leopoldstadt",
+      "landstrasse",
+      "wieden",
+      "margareten",
+      "mariahilf",
+      "neubau",
+      "josefstadt",
+      "alsergrund",
+      "favoriten",
+      "simmering",
+      "meidling",
+      "hietzing",
+      "penzing",
+      "rudolfsheim-fuenfhaus",
+      "ottakring",
+      "hernals",
+      "waehring",
+      "doebling",
+      "brigittenau",
+      "floridsdorf",
+      "donaustadt",
+      "liesing"
     ]
   }
 ]

@@ -1,13 +1,14 @@
 import '@/i18n';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
+import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router/react-navigation';
 import 'react-native-reanimated';
 
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useEffect } from 'react';
 import { setCustomText } from 'react-native-global-props';
+import { ErrorMessage } from '@/components/ui/ErrorMessage';
 
 
 export default function RootLayout() {
@@ -52,6 +53,7 @@ export default function RootLayout() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
+      <ErrorMessage />
     </ThemeProvider>
   );
 }

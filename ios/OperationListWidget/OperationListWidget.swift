@@ -65,7 +65,12 @@ struct SimpleEntry: TimelineEntry {
 struct OperationListWidgetEntryView : View {
   
   @Environment(\.widgetFamily) var family
+  @Environment(\.widgetRenderingMode) private var renderingMode
   var entry: Provider.Entry
+  
+  private var isMonochrome: Bool {
+    renderingMode == .accented
+  }
   
   var locationLink: URL {
     if entry.configuration.federalState != .none {
@@ -83,6 +88,8 @@ struct OperationListWidgetEntryView : View {
       mediumWidget
     case .systemLarge:
       largeWidget
+    case .systemExtraLarge:
+      extraLargeWidget
     default:
       smallWidget
     }
@@ -163,7 +170,7 @@ struct OperationListWidgetEntryView : View {
         ForEach(entry.operations.prefix(4), id: \.id) { operation in
           Link(destination: URL(string: "firepoint://operation/details/\(operation.uuid)")!) {
             HStack(spacing: 6) {
-              operationTypeBox(alarm: operation.alarm)
+              operationTypeBox(alarm: operation.alarm, isMonochrome: isMonochrome)
               Text(operation.alarm.message ?? "")
                 .font(.system(size: 14, weight: .regular, design: .default))
                 .lineLimit(1)
@@ -221,7 +228,7 @@ struct OperationListWidgetEntryView : View {
         ForEach(entry.operations.prefix(7), id: \.id) { operation in
           Link(destination: URL(string: "firepoint://operation/details/\(operation.uuid)")!) {
             HStack(spacing: 6) {
-              operationTypeBox(alarm: operation.alarm)
+              operationTypeBox(alarm: operation.alarm, isMonochrome: isMonochrome)
               Text(operation.alarm.message ?? "")
                 .font(.system(size: 14, weight: .regular, design: .default))
                 .lineLimit(1)
@@ -236,11 +243,84 @@ struct OperationListWidgetEntryView : View {
     .frame(maxHeight: .infinity, alignment: .top)
     
   }
+  
+  var extraLargeWidget: some View {
+    VStack(spacing: 16) {
       
+      /// Counter
+      Link(destination: locationLink) {
+        HStack(alignment: .center, spacing: 4) {
+          /// Title
+          VStack(alignment: .leading, spacing: 0) {
+            Text(LocalizedStringResource("operation.active"))
+              .font(.caption2)
+              .fontWeight(.light)
+              .foregroundStyle(.secondary)
+            
+            Text(
+              entry.configuration.federalState == .none ?
+              LocalizedStringResource("country.at")
+              :
+                FederalState.caseDisplayRepresentations[entry.configuration.federalState]?
+                .title
+              ?? LocalizedStringResource(stringLiteral: "")
+            )
+            .font(.headline)
+            .fontWeight(.semibold)
+          }
+          .frame(maxWidth: .infinity, alignment: .topLeading)
+          
+          Spacer()
+          
+          /// Counter
+          Text("\(entry.operations.count)")
+            .font(.system(size: 48, weight: .bold, design: .default))
+            .monospacedDigit()
+            .opacity(0.9)
+            .frame(width: 100, alignment: .center)
+        }
+        .frame(height: 50, alignment: .center)
+
+      }
+      
+      Divider()
+      
+      // Operations
+      let operations = Array(entry.operations.prefix(16))
+      let columns = operations.chunked(into: 8)
+
+      HStack(alignment: .top, spacing: 10) {
+        ForEach(Array(columns.enumerated()), id: \.offset) { _, column in
+          VStack(alignment: .leading, spacing: 10) {
+            ForEach(column, id: \.id) { operation in
+              Link(
+                destination: URL(
+                  string: "firepoint://operation/details/\(operation.uuid)"
+                )!
+              ) {
+                HStack(spacing: 6) {
+                  operationTypeBox(alarm: operation.alarm, isMonochrome: isMonochrome)
+
+                  Text(operation.alarm.message ?? "")
+                    .font(.system(size: 14))
+                    .lineLimit(1)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+              }
+            }
+          }
+          .frame(maxWidth: .infinity, alignment: .topLeading)
+        }
+      }
+      .frame(maxHeight: .infinity, alignment: .top)
+    }
+  }
+
 }
 
 @ViewBuilder
-func operationTypeBox(alarm: Alarm) -> some View {
+func operationTypeBox(alarm: Alarm, isMonochrome: Bool = false) -> some View {
   let colorService = OperationColorService()
 
   let alarmText: String = {
@@ -269,6 +349,10 @@ func operationTypeBox(alarm: Alarm) -> some View {
       return 32
     }
   }()
+  
+  let backgroundColor: Color = isMonochrome
+    ? Color.clear
+    : colorService.background(alarm: alarm)
 
   VStack {
     Text(alarmText)
@@ -284,8 +368,14 @@ func operationTypeBox(alarm: Alarm) -> some View {
       .foregroundColor(colorService.text(alarm: alarm))
 
   }
-    .background(colorService.background(alarm: alarm))
-    .cornerRadius(4)
+  .background(backgroundColor)
+  .cornerRadius(4)
+  .overlay {
+    if isMonochrome {
+      RoundedRectangle(cornerRadius: 4)
+        .stroke(Color.primary, lineWidth: 1)
+    }
+  }
 }
 
 struct OperationListWidget: Widget {
@@ -313,3 +403,4 @@ extension ConfigurationAppIntent {
 } timeline: {
   SimpleEntry(date: .now, configuration: .test, operations: [])
 }
+

@@ -13,7 +13,17 @@ import { useHeaderTitleOnFocus } from "@/utils/UseHeaderTitleOnFocus";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ActivityIndicator, Animated, FlatList, Pressable, StyleSheet, Text, useColorScheme, View } from "react-native";
+import {
+  ActivityIndicator,
+  Animated,
+  FlatList,
+  Platform,
+  Pressable,
+  StyleSheet,
+  Text,
+  useColorScheme,
+  View,
+} from "react-native";
 
 export default function FiredepartmentOperationScreen() {
   const dynamicSide = useDynamicSide();
@@ -24,9 +34,9 @@ export default function FiredepartmentOperationScreen() {
   const { uuid } = useLocalSearchParams<{ uuid: string }>();
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
-  
+
   const [openOptions, setOpenOptions] = useState(false);
-  const animateOptions = useRef(new Animated.Value(0)).current; 
+  const animateOptions = useRef(new Animated.Value(0)).current;
 
   const [operations, setOperations] = useState<Page<Operation>>({
     size: 25,
@@ -36,18 +46,25 @@ export default function FiredepartmentOperationScreen() {
     dateEnd: undefined as Date | undefined,
     operationType: undefined,
   });
-  
-  const pageTitle = title(t('firedepartment.details.operations.title'));
-  
+
+  const pageTitle = title(t("firedepartment.details.operations.title"));
+
   useHeaderTitleOnFocus(pageTitle);
 
   useEffect(() => {
     loadOperations();
-    }, [uuid]);
+  }, [uuid]);
 
   function loadOperations(): void {
     setLoading(true);
-    FiredepartmentService.getFiredepartmentOperations(uuid, operations.size, operations.number, filter.dateStart, filter.dateEnd, filter.operationType)
+    FiredepartmentService.getFiredepartmentOperations(
+      uuid,
+      operations.size,
+      operations.number,
+      filter.dateStart,
+      filter.dateEnd,
+      filter.operationType,
+    )
       .then(setOperations)
       .then(() => {
         setLoading(false);
@@ -60,42 +77,47 @@ export default function FiredepartmentOperationScreen() {
   function loadMoreOperations(): void {
     if (operations.last) return;
     setLoadingMore(true);
-    FiredepartmentService.getFiredepartmentOperations(uuid, operations.size, operations.number + 1, filter.dateStart, filter.dateEnd, filter.operationType)
-      .then((newOps) => {
-        setOperations({
-          ...newOps,
-          content: [...operations.content, ...newOps.content],
-        });
-        setLoadingMore(false);
+    FiredepartmentService.getFiredepartmentOperations(
+      uuid,
+      operations.size,
+      operations.number + 1,
+      filter.dateStart,
+      filter.dateEnd,
+      filter.operationType,
+    ).then((newOps) => {
+      setOperations({
+        ...newOps,
+        content: [...operations.content, ...newOps.content],
       });
+      setLoadingMore(false);
+    });
   }
 
   function getDate(dateString: string | undefined): string {
-    if(dateString) {
+    if (dateString) {
       const date = new Date(dateString);
-      return date.toLocaleDateString('de-DE', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
+      return date.toLocaleDateString("de-DE", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
       });
     } else {
-      return t('common.unknown');
+      return t("common.unknown");
     }
   }
 
   function validateFilterDate() {
     if (filter.dateStart && filter.dateEnd) {
       if (filter.dateStart > filter.dateEnd) {
-        setFilter(p => ({ ...p, dateEnd: undefined }));
+        setFilter((p) => ({ ...p, dateEnd: undefined }));
       }
     }
 
     // if ((filter.dateEnd && filter.dateStart) || (!filter.dateEnd && !filter.dateStart)) {
     //   loadOperations();
     // }
-      
   }
 
   // animation
@@ -120,54 +142,73 @@ export default function FiredepartmentOperationScreen() {
         <View style={[styles.containerScrollView]}>
           <Pressable
             style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
               gap: 8,
-              padding: 12
+              padding: 12,
             }}
             onPress={toggleOptions}
           >
-            <IconSymbol name="line.horizontal.3.decrease" color={Colors[colorScheme ?? 'light'].textSub} size={24} />
-            <Text style={{ color: Colors[colorScheme ?? 'light'].textSub, fontSize: 16, marginLeft: 8, userSelect: 'none' }}>{t('firedepartment.details.operations.filter.title')}</Text>
+            <IconSymbol
+              name="line.horizontal.3.decrease"
+              color={Colors[colorScheme ?? "light"].textSub}
+              size={24}
+            />
+            <Text
+              style={{
+                color: Colors[colorScheme ?? "light"].textSub,
+                fontSize: 16,
+                marginLeft: 8,
+                userSelect: "none",
+              }}
+            >
+              {t("firedepartment.details.operations.filter.title")}
+            </Text>
           </Pressable>
           <Animated.View
             style={{
               height: optionsHeight,
-              overflow: 'hidden',
+              overflow: "hidden",
             }}
           >
             <View style={{ padding: 12, height: optionsHeightMax }}>
-              
-              <ThemedText type="subtitle">{t('firedepartment.details.operations.filter.date.label')}</ThemedText>
-              <View style={[styles.filterGroup, { flexDirection: 'row', gap: 12 }]}>
+              <ThemedText type="subtitle">
+                {t("firedepartment.details.operations.filter.date.label")}
+              </ThemedText>
+              <View
+                style={[styles.filterGroup, { flexDirection: "row", gap: 12 }]}
+              >
                 <View style={[styles.filterGroupField, { flex: 1 }]}>
-                  <ThemedText>{t('firedepartment.details.operations.filter.date.start')}</ThemedText>
+                  <ThemedText>
+                    {t("firedepartment.details.operations.filter.date.start")}
+                  </ThemedText>
 
                   <DatePickerField
-                    style={{ width: '100%', marginTop: 4 }}
+                    style={{ width: "100%", marginTop: 4 }}
                     canUndefined={true}
                     value={filter.dateStart}
                     maxDate={new Date()}
                     onChange={(d) => {
-                      setFilter(p => ({ ...p, dateStart: d }))
+                      setFilter((p) => ({ ...p, dateStart: d }));
                       validateFilterDate();
-                    }
-                    }
+                    }}
                   />
                 </View>
 
                 <View style={[styles.filterGroupField, { flex: 1 }]}>
-                  <ThemedText>{t('firedepartment.details.operations.filter.date.end')}</ThemedText>
+                  <ThemedText>
+                    {t("firedepartment.details.operations.filter.date.end")}
+                  </ThemedText>
 
                   <DatePickerField
-                    style={{ width: '100%', marginTop: 4 }}
+                    style={{ width: "100%", marginTop: 4 }}
                     canUndefined={true}
                     value={filter.dateEnd}
                     maxDate={new Date()}
                     minDate={filter.dateStart}
                     onChange={(d) => {
-                      setFilter(p => ({ ...p, dateEnd: d }))
+                      setFilter((p) => ({ ...p, dateEnd: d }));
                       validateFilterDate();
                     }}
                   />
@@ -177,67 +218,106 @@ export default function FiredepartmentOperationScreen() {
               <View
                 style={{
                   marginTop: 12,
-                  display: 'flex',
-                  flexDirection: 'row',
+                  display: "flex",
+                  flexDirection: "row",
                   gap: 12,
-                  justifyContent: 'flex-end',
-                }}>
+                  justifyContent: "flex-end",
+                }}
+              >
                 <Pressable
                   style={{
                     width: 80,
                     height: 36,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
                     borderRadius: 8,
                   }}
                   onPress={() => {
-                    setFilter({ dateStart: undefined, dateEnd: undefined, operationType: undefined });
+                    setFilter({
+                      dateStart: undefined,
+                      dateEnd: undefined,
+                      operationType: undefined,
+                    });
                     loadOperations();
                     toggleOptions();
-                  }}>
-                  <ThemedText style={{ color: Colors[colorScheme ?? 'light'].textSub }}>{t('firedepartment.details.operations.filter.buttons.reset')}</ThemedText>
+                  }}
+                >
+                  <ThemedText
+                    style={{ color: Colors[colorScheme ?? "light"].textSub }}
+                  >
+                    {t(
+                      "firedepartment.details.operations.filter.buttons.reset",
+                    )}
+                  </ThemedText>
                 </Pressable>
 
                 <Pressable
                   style={{
                     width: 80,
                     height: 36,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
                     borderRadius: 8,
-                    backgroundColor: Colors[colorScheme ?? 'light'].linkBackground,
+                    backgroundColor:
+                      Colors[colorScheme ?? "light"].linkBackground,
                   }}
                   onPress={() => {
                     loadOperations();
                     toggleOptions();
-                  }}>
-                  <ThemedText style={{ color: Colors[colorScheme ?? 'light'].linkForeground }}>{t('firedepartment.details.operations.filter.buttons.load')}</ThemedText>
+                  }}
+                >
+                  <ThemedText
+                    style={{
+                      color: Colors[colorScheme ?? "light"].linkForeground,
+                    }}
+                  >
+                    {t("firedepartment.details.operations.filter.buttons.load")}
+                  </ThemedText>
                 </Pressable>
               </View>
-
             </View>
           </Animated.View>
         </View>
-        { loading ? (
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: dynamicSide.bottom + 50 }}>
-            <ActivityIndicator size="small" color={Colors[colorScheme ?? 'light'].tint} />
+        {loading ? (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              marginBottom: dynamicSide.bottom + 50,
+            }}
+          >
+            <ActivityIndicator
+              size="small"
+              color={Colors[colorScheme ?? "light"].tint}
+            />
           </View>
         ) : (
-          <FlatList 
+          <FlatList
             contentContainerStyle={[styles.containerScrollView]}
             data={operations.content}
             keyboardShouldPersistTaps="handled"
             keyExtractor={(item) => item.uuid}
             ListFooterComponent={
               <>
-                { loadingMore ? (
+                {loadingMore ? (
                   <View style={{ marginVertical: 20 }}>
-                    <ActivityIndicator size="small" color={Colors[colorScheme ?? 'light'].tint} />
+                    <ActivityIndicator
+                      size="small"
+                      color={Colors[colorScheme ?? "light"].tint}
+                    />
                   </View>
-                ) : null }
-                <View style={{ height: dynamicSide.bottom + 50 }} />
+                ) : null}
+                <View
+                  style={{
+                    height:
+                      Platform.OS === "ios"
+                        ? dynamicSide.bottom + 10
+                        : dynamicSide.bottom + 50,
+                  }}
+                />
               </>
             }
             onEndReached={loadMoreOperations}
@@ -248,74 +328,86 @@ export default function FiredepartmentOperationScreen() {
                 style={({ pressed }) => ({
                   padding: 12,
                   borderBottomWidth: 1,
-                  borderColor: Colors[colorScheme ?? 'light'].border,
+                  borderColor: Colors[colorScheme ?? "light"].border,
                   opacity: pressed ? 0.7 : 1,
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
                   gap: 12,
                 })}
                 onPress={() => {
                   router.push({
-                    pathname: "/operation/details/[uuid]",
-                    params: { uuid: op.uuid }
+                    pathname:
+                      "/firedepartment/operation-details/[operationUuid]",
+                    params: { operationUuid: op.uuid },
                   });
                 }}
               >
                 {/* Alarm Message */}
                 <View
                   style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'flex-start',
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "flex-start",
                     flex: 1,
-                    overflow: 'hidden',
-                  }}>
+                    overflow: "hidden",
+                  }}
+                >
                   <ThemedText
                     numberOfLines={1}
                     ellipsizeMode="tail"
                     style={{
-                      color: Colors[colorScheme ?? 'light'].text,
-                      fontWeight: 'bold',
+                      color: Colors[colorScheme ?? "light"].text,
+                      fontWeight: "bold",
                       fontSize: 18,
-                      maxWidth: '100%',
-                      textAlign: 'left',
-                      }}>{op.alarm.message}</ThemedText>
+                      maxWidth: "100%",
+                      textAlign: "left",
+                    }}
+                  >
+                    {op.alarm.message}
+                  </ThemedText>
 
                   {/* additional informations */}
                   <View
                     style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      alignItems: 'flex-end',
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "flex-end",
                       gap: 12,
-                      maxWidth: '100%',
-                      overflow: 'hidden',
-                    }}>
+                      maxWidth: "100%",
+                      overflow: "hidden",
+                    }}
+                  >
                     <ThemedText
                       style={{
-                        color: Colors[colorScheme ?? 'light'].text,
+                        color: Colors[colorScheme ?? "light"].text,
                         fontSize: 14,
                         opacity: 0.5,
                         lineHeight: 15,
                         marginTop: 4,
-                        }}>{getDate(op.startTime)}</ThemedText>
+                      }}
+                    >
+                      {getDate(op.startTime)}
+                    </ThemedText>
 
-                    { op.address.location ? (                      
+                    {op.address.location ? (
                       <ThemedText
                         numberOfLines={1}
                         ellipsizeMode="tail"
                         style={{
-                          color: Colors[colorScheme ?? 'light'].text,
+                          color: Colors[colorScheme ?? "light"].text,
                           fontSize: 14,
                           opacity: 0.5,
                           lineHeight: 15,
-                          textOverflow: 'ellipsis',
-                          overflow: 'hidden',
+                          textOverflow: "ellipsis",
+                          overflow: "hidden",
                           flex: 1,
-                        }}>{op.address.location}</ThemedText>
-                    ) : (null) }
+                        }}
+                      >
+                        {op.address.location}
+                      </ThemedText>
+                    ) : null}
                   </View>
                 </View>
 
@@ -335,19 +427,19 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   containerScrollView: {
-    width: '100%',
+    width: "100%",
     maxWidth: 1000,
-    marginHorizontal: 'auto',
+    marginHorizontal: "auto",
   },
   filterGroup: {
     marginBottom: 12,
     gap: 8,
-    flexWrap: 'wrap',
+    flexWrap: "wrap",
   },
   filterGroupField: {
     marginTop: 8,
-    display: 'flex',
-    flexDirection: 'column',
-    flexWrap: 'wrap',
-  }
+    display: "flex",
+    flexDirection: "column",
+    flexWrap: "wrap",
+  },
 });

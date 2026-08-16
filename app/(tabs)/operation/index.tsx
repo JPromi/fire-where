@@ -1,46 +1,66 @@
-import { Stack, useRouter } from 'expo-router';
-import { ActivityIndicator, Platform, Pressable, RefreshControl, ScrollView, StyleSheet, Text, useColorScheme, View } from 'react-native';
+import { Stack, useFocusEffect, useRouter } from "expo-router";
+import { BlurTargetView } from "expo-blur";
+import {
+  ActivityIndicator,
+  Platform,
+  Pressable,
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  Text,
+  useColorScheme,
+  View,
+} from "react-native";
 
-import IconAtMap from '@/assets/icons/map-at.svg';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { Colors } from '@/constants/Colors';
-import { FederalState } from '@/models/FederalState';
-import { useEffect, useState } from 'react';
+import IconAtMap from "@/assets/icons/map-at.svg";
+import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/ThemedView";
+import { Colors } from "@/constants/Colors";
+import { FederalState } from "@/models/FederalState";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-import federStatesData from '@/assets/data/federal-states.json';
-import { SvgAtMap } from '@/components/assets/SvgAtMap';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import { useDynamicSide } from '@/hooks/useDynamicSide';
-import { LocationStatistic } from '@/models/LocationStatistic';
-import { OperationService } from '@/services/OperationService';
-import { ServiceService } from '@/services/ServiceService';
-import { title } from '@/utils/TitleFunction';
-import { useHeaderTitleOnFocus } from '@/utils/UseHeaderTitleOnFocus';
-import { BlurView } from 'expo-blur';
-import { useTranslation } from 'react-i18next';
+import federStatesData from "@/assets/data/federal-states.json";
+import { SvgAtMap } from "@/components/assets/SvgAtMap";
+import { uiError } from "@/components/ui/ErrorMessage";
+import { IconSymbol } from "@/components/ui/IconSymbol";
+import { LiquidGlassView } from "@/components/ui/LiquidGlassView";
+import { useDynamicSide } from "@/hooks/useDynamicSide";
+import { LocationStatistic } from "@/models/LocationStatistic";
+import { OperationService } from "@/services/OperationService";
+import { ServiceService } from "@/services/ServiceService";
+import { title } from "@/utils/TitleFunction";
+import { useHeaderTitleOnFocus } from "@/utils/UseHeaderTitleOnFocus";
+import { useTranslation } from "react-i18next";
 
 export default function OperationSelectFederalStateScreen() {
   const colorScheme = useColorScheme();
   const { t } = useTranslation();
   const router = useRouter();
   const dynamicSide = useDynamicSide();
-  const blurSupported = Platform.OS === 'ios' || (Platform.OS === 'android' && Platform.Version >= 31);
-
+  const blurTargetRef = useRef<View | null>(null);
+  const mapBottomSpacing =
+    dynamicSide.bottom + (Platform.OS === "ios" ? 0 : 50);
   const [isMapView, setIsMapView] = useState(true);
   const [statistic, setStatistic] = useState<LocationStatistic[]>([]);
   const [federalStates, setFederalStates] = useState<FederalState[]>([]);
   const [loaded, setLoaded] = useState(false);
+  const [blurTargetReady, setBlurTargetReady] = useState(false);
 
   const [lastDataUpdate, setLastDataUpdate] = useState<Date | null>(null);
 
-  const pageTitle = title(t('operation.title'));
+  const pageTitle = title(t("operation.title"));
   useHeaderTitleOnFocus(pageTitle);
 
   useEffect(() => {
     setLoaded(false);
     setFederalStatesFromData();
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      setFederalStatesFromData();
+    }, []),
+  );
 
   function setFederalStatesFromData() {
     const data: FederalState[] = federStatesData.map((fs) => ({
@@ -52,7 +72,7 @@ export default function OperationSelectFederalStateScreen() {
 
     ServiceService.getServices().then((services) => {
       data.forEach((fs) => {
-        const service = services.find(s => s.serviceName === `fs-${fs.id}`);
+        const service = services.find((s) => s.serviceName === `fs-${fs.id}`);
         if (service && service.isEnabled) {
           fs.disabled = false;
         }
@@ -66,7 +86,7 @@ export default function OperationSelectFederalStateScreen() {
       setFederalStates(data);
 
       getStatistic();
-    })
+    });
   }
 
   function setView(isMap: boolean) {
@@ -74,24 +94,25 @@ export default function OperationSelectFederalStateScreen() {
   }
 
   function getActiveFederalStates(): string[] {
-    return federalStates
-      .filter(fs => !fs.disabled)
-      .map(fs => fs.id);
+    return federalStates.filter((fs) => !fs.disabled).map((fs) => fs.id);
   }
 
   function selectFederalState(fdId: string) {
-    const found = federalStates.find(fs => fs.id === fdId);
+    const found = federalStates.find((fs) => fs.id === fdId);
     const longId = found ? found.idLong : null;
     if (longId && !found?.disabled) {
       router.push({
         pathname: "/operation/[federalStateId]",
-        params: { federalStateId: longId }
+        params: { federalStateId: longId },
       });
     }
   }
 
   function getStatistic() {
-    if (lastDataUpdate && (new Date().getTime() - lastDataUpdate.getTime()) < 1000 * 10) {
+    if (
+      lastDataUpdate &&
+      new Date().getTime() - lastDataUpdate.getTime() < 1000 * 10
+    ) {
       setTimeout(() => {
         setLoaded(true);
       }, 150);
@@ -103,23 +124,48 @@ export default function OperationSelectFederalStateScreen() {
         setStatistic(data);
         setLoaded(true);
         setLastDataUpdate(new Date());
+      })
+      .catch((error) => {
+        console.error("Error fetching statistic:", error);
+        uiError(t("common.error.internalServerError"));
+        setLoaded(true);
       });
   }
 
   function getActiveOperations(fsId: string): number {
-    const fsStatistic = statistic.find(stat => stat.nameId === fsId);
+    const fsStatistic = statistic.find((stat) => stat.nameId === fsId);
     return fsStatistic ? fsStatistic.countActive : 0;
   }
 
-  if(loaded) {
+  if (loaded) {
     return (
       <>
         <ThemedView style={styles.container}>
-          { isMapView ? (
-            <View style={[styles.contentMap, { paddingBottom: dynamicSide.bottom + 50, paddingLeft: dynamicSide.left, paddingRight: dynamicSide.right }]}>
+          <BlurTargetView
+            ref={blurTargetRef}
+            onLayout={() => setBlurTargetReady(true)}
+            style={styles.target}
+          >
+          {isMapView ? (
+            <View
+              style={[
+                styles.contentMap,
+                {
+                  paddingBottom: mapBottomSpacing,
+                  paddingLeft: dynamicSide.left,
+                  paddingRight: dynamicSide.right,
+                },
+              ]}
+            >
               {/* Main Content */}
-              <View style={{ flex: 1, display: 'flex', marginHorizontal: 'auto' }}>
-                <SvgAtMap activeFs={getActiveFederalStates()} onSelect={(fsId) => selectFederalState(fsId)} statistic={statistic}/>
+              <View
+                style={{ flex: 1, display: "flex", marginHorizontal: "auto" }}
+              >
+                <SvgAtMap
+                  activeFs={getActiveFederalStates()}
+                  onSelect={(fsId) => selectFederalState(fsId)}
+                  statistic={statistic}
+                />
               </View>
 
               {/* Bottom Informations */}
@@ -129,35 +175,60 @@ export default function OperationSelectFederalStateScreen() {
                   getStatistic();
                 }}
                 style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
                   opacity: 0.25,
                   padding: 16,
-                  alignContent: 'center',
+                  alignContent: "center",
                   gap: 8,
-                  alignSelf: 'flex-start',
-                  position: 'absolute',
-                  bottom: dynamicSide.bottom + 50,
+                  alignSelf: "flex-start",
+                  position: "absolute",
+                  bottom: mapBottomSpacing,
                   left: dynamicSide.left,
-                }}>
-                <IconSymbol name={'arrow.2.circlepath'} color={Colors[colorScheme ?? 'light'].text} size={16}/>
-                <Text style={{
-                  color: Colors[colorScheme ?? 'light'].text,
-                  fontSize: 12,
-                }}>{lastDataUpdate?.toLocaleString()}</Text>
+                }}
+              >
+                <IconSymbol
+                  name={"arrow.2.circlepath"}
+                  color={Colors[colorScheme ?? "light"].text}
+                  size={16}
+                />
+                <Text
+                  style={{
+                    color: Colors[colorScheme ?? "light"].text,
+                    fontSize: 12,
+                  }}
+                >
+                  {lastDataUpdate?.toLocaleString()}
+                </Text>
               </Pressable>
             </View>
           ) : (
             <ScrollView
               refreshControl={
-                <RefreshControl refreshing={false} onRefresh={() => {
-                  getStatistic();
-                }}/>
+                <RefreshControl
+                  refreshing={false}
+                  onRefresh={() => {
+                    getStatistic();
+                  }}
+                />
               }
-              style={{ paddingLeft: dynamicSide.left, paddingRight: dynamicSide.right }}
-              contentContainerStyle={{ flexGrow: 1 }}>
-              <View style={[styles.contentList, { marginBottom: dynamicSide.bottom + 50, paddingLeft: dynamicSide.left, paddingRight: dynamicSide.right }]}>
+              style={{
+                paddingLeft: dynamicSide.left,
+                paddingRight: dynamicSide.right,
+              }}
+              contentContainerStyle={{ flexGrow: 1 }}
+            >
+              <View
+                style={[
+                  styles.contentList,
+                  {
+                    marginBottom: dynamicSide.bottom + 50,
+                    paddingLeft: dynamicSide.left,
+                    paddingRight: dynamicSide.right,
+                  },
+                ]}
+              >
                 {federalStates.map((fs) => (
                   <Pressable
                     key={fs.id}
@@ -166,30 +237,37 @@ export default function OperationSelectFederalStateScreen() {
                     style={({ pressed }) => ({
                       padding: 12,
                       borderBottomWidth: 1,
-                      borderColor: Colors[colorScheme ?? 'light'].border,
+                      borderColor: Colors[colorScheme ?? "light"].border,
                       opacity: fs.disabled ? 0.25 : pressed ? 0.7 : 1,
-                      display: 'flex',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "space-between",
                       // cursor: fs.disabled ? 'not-allowed' : 'pointer',
                     })}
                   >
-                    <ThemedText style={{ color: Colors[colorScheme ?? 'light'].text }}>
+                    <ThemedText
+                      style={{ color: Colors[colorScheme ?? "light"].text }}
+                    >
                       {fs.name}
                     </ThemedText>
 
-                    { getActiveOperations(fs.id ??'') > 0 && (
-                      <Text style={{
-                        color: Colors[colorScheme ?? 'light'].opSupportText,
-                        fontSize: 16,
-                        fontWeight: 'semibold',
-                        backgroundColor: Colors[colorScheme ?? 'light'].opSupport,
-                        width: 40,
-                        textAlign: 'center',
-                        borderRadius: 5,
-                        paddingVertical: 2,
-                      }}>{getActiveOperations(fs.id ??'')}</Text>
+                    {getActiveOperations(fs.id ?? "") > 0 && (
+                      <Text
+                        style={{
+                          color: Colors[colorScheme ?? "light"].opSupportText,
+                          fontSize: 16,
+                          fontWeight: "semibold",
+                          backgroundColor:
+                            Colors[colorScheme ?? "light"].opSupport,
+                          width: 40,
+                          textAlign: "center",
+                          borderRadius: 5,
+                          paddingVertical: 2,
+                        }}
+                      >
+                        {getActiveOperations(fs.id ?? "")}
+                      </Text>
                     )}
                   </Pressable>
                 ))}
@@ -199,71 +277,100 @@ export default function OperationSelectFederalStateScreen() {
                     getStatistic();
                   }}
                   style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
                     opacity: 0.25,
                     padding: 16,
-                    alignContent: 'center',
-                    justifyContent: 'center',
+                    alignContent: "center",
+                    justifyContent: "center",
                     gap: 8,
-                  }}>
-                  <IconSymbol name={'arrow.2.circlepath'} color={Colors[colorScheme ?? 'light'].text} size={16}/>
-                  <Text style={{
-                    color: Colors[colorScheme ?? 'light'].text,
-                    fontSize: 12,
-                  }}>{lastDataUpdate?.toLocaleString()}</Text>
+                  }}
+                >
+                  <IconSymbol
+                    name={"arrow.2.circlepath"}
+                    color={Colors[colorScheme ?? "light"].text}
+                    size={16}
+                  />
+                  <Text
+                    style={{
+                      color: Colors[colorScheme ?? "light"].text,
+                      fontSize: 12,
+                    }}
+                  >
+                    {lastDataUpdate?.toLocaleString()}
+                  </Text>
                 </Pressable>
               </View>
             </ScrollView>
           )}
+          </BlurTargetView>
 
-          <View
-            style={
-              [
-                {
-                  marginBottom: dynamicSide.bottom + 50,
-                  position: 'absolute',
-                  bottom: 20,
-                  right: 20,
-                  zIndex: 2,
-                  borderRadius: 10,
-                  overflow: 'hidden',
-                  backgroundColor: blurSupported ? '' : Colors[colorScheme ?? 'light'].backgroundForground,
-                  backdropFilter: blurSupported ? 'blur(10px) brightness(0.2)' : '',
-                  marginRight: dynamicSide.right,
-                }
-              ]
-            }
+          <LiquidGlassView
+            style={[
+              {
+                marginBottom: mapBottomSpacing,
+                position: "absolute",
+                bottom: 20,
+                right: 20,
+                zIndex: 2,
+                backgroundColor:
+                  Platform.OS === "ios"
+                    ? "transparent"
+                    : Colors[colorScheme ?? "light"].tint + "15",
+                marginRight: dynamicSide.right,
+                borderRadius: Platform.OS === "ios" ? 20 : 10,
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              },
+            ]}
+            colorScheme={colorScheme === "dark" ? "dark" : "light"}
+            tintColor={Colors[colorScheme ?? "light"].tint + "15"}
+            blurTarget={blurTargetReady ? blurTargetRef : undefined}
           >
-            <BlurView
-              style={
-                [
-                  styles.buttonContainer,
-                  {
-                    backgroundColor: Colors[colorScheme ?? 'light'].tint + '15',
-                  }
-                ]
-                }
-                tint={colorScheme === 'dark' ? 'dark' : 'light'}
-              >
-              <Pressable style={[styles.button, { opacity: isMapView ? .75 : .32 }]} onPress={() => {setView(true)}}>
-                <IconAtMap style={[styles.buttonIcon]} color={colorScheme === 'dark' ? '#fff' : '#000'}/>
-              </Pressable>
-              <Pressable style={[styles.button, { opacity: !isMapView ? .75 : .32 }]} onPress={() => {setView(false)}}>
-                <IconSymbol name="rectangle.grid.1x2" size={24} color={colorScheme === 'dark' ? '#fff' : '#000'} />
-              </Pressable>
-            </BlurView>
-          </View>
+            <Pressable
+              style={[styles.button, { opacity: isMapView ? 0.75 : 0.32 }]}
+              onPress={() => {
+                setView(true);
+              }}
+            >
+              <IconAtMap
+                style={[styles.buttonIcon]}
+                color={colorScheme === "dark" ? "#fff" : "#000"}
+              />
+            </Pressable>
+            <Pressable
+              style={[styles.button, { opacity: !isMapView ? 0.75 : 0.32 }]}
+              onPress={() => {
+                setView(false);
+              }}
+            >
+              <IconSymbol
+                name="rectangle.grid.1x2"
+                size={24}
+                color={colorScheme === "dark" ? "#fff" : "#000"}
+              />
+            </Pressable>
+          </LiquidGlassView>
         </ThemedView>
       </>
     );
   } else {
     return (
       <>
-        <Stack.Screen options={{ title: t('operation.title') }} />
-        <ThemedView style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
-          <ActivityIndicator size="large" color={Colors[colorScheme ?? 'light'].tint} />
+        <Stack.Screen options={{ title: t("operation.title") }} />
+        <ThemedView
+          style={[
+            styles.container,
+            { justifyContent: "center", alignItems: "center" },
+          ]}
+        >
+          <ActivityIndicator
+            size="large"
+            color={Colors[colorScheme ?? "light"].tint}
+          />
         </ThemedView>
       </>
     );
@@ -274,27 +381,30 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  target: {
+    flex: 1,
+  },
   contentMap: {
-    display: 'flex',
+    display: "flex",
     flex: 1,
     flexGrow: 1,
-    position: 'relative',
+    position: "relative",
   },
   contentList: {
-    width: '100%',
+    width: "100%",
     maxWidth: 1000,
-    marginHorizontal: 'auto',
+    marginHorizontal: "auto",
   },
   buttonContainer: {
-    display: 'flex',
-    flexDirection: 'row',
+    display: "flex",
+    flexDirection: "row",
   },
   button: {
     width: 50,
     height: 50,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
     padding: 8,
     fontSize: 12,
     // opacity: .32,
@@ -305,5 +415,5 @@ const styles = StyleSheet.create({
     maxHeight: 24,
     maxWidth: 36,
     marginBottom: 2,
-  }
+  },
 });

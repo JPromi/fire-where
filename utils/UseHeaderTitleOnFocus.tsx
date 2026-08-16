@@ -1,10 +1,13 @@
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useFocusEffect, useNavigation } from "expo-router/react-navigation";
 import { useCallback } from "react";
 import * as titleFunction from "./TitleFunction";
 
+type HeaderNavigation = {
+  setOptions: (options: { title?: string }) => void;
+};
+
 export function useHeaderTitleOnFocus(title?: string | null) {
-  const navigation = useNavigation<NativeStackNavigationProp<any>>();
+  const navigation = useNavigation<HeaderNavigation>();
 
   useFocusEffect(
     useCallback(() => {

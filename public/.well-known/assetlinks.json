@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.jpromi.firePoint",
+      "sha256_cert_fingerprints": [
+        "15:2D:CE:46:FF:56:5F:8B:89:A6:8E:2F:29:EE:30:D4:73:2D:77:46:65:35:28:FE:A6:34:A6:F5:63:C4:B9:FE"
+      ]
+    }
+  }
+]

@@ -1,15 +1,26 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { IconSymbol } from "@/components/ui/IconSymbol";
 import { Colors } from "@/constants/Colors";
 import { useDynamicSide } from "@/hooks/useDynamicSide";
 import { Firedepartment } from "@/models/Firedepartment";
 import { FiredepartmentService } from "@/services/FiredeparmentService";
+import { FavouritesService } from "@/services/local/FavouritesService";
 import { title } from "@/utils/TitleFunction";
 import { useHeaderTitleOnFocus } from "@/utils/UseHeaderTitleOnFocus";
-import { useRouter } from "expo-router";
-import { useEffect, useState } from "react";
+import { useFocusEffect, useRouter } from "expo-router";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ActivityIndicator, FlatList, Platform, Pressable, StyleSheet, TextInput, useColorScheme, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  Platform,
+  Pressable,
+  StyleSheet,
+  TextInput,
+  useColorScheme,
+  View,
+} from "react-native";
 
 export default function FiredepartmentDetailScreen() {
   const dynamicSide = useDynamicSide();
@@ -18,17 +29,20 @@ export default function FiredepartmentDetailScreen() {
   const { t } = useTranslation();
 
   const [firedepartments, setFiredepartments] = useState<Firedepartment[]>([]);
+  const [favourites, setFavourites] = useState<Firedepartment[]>([]);
+  const [favouriteIds, setFavouriteIds] = useState<string[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState("");
 
-  const pageTitle = title(t('firedepartment.title'));
+  const pageTitle = title(t("firedepartment.title"));
   useHeaderTitleOnFocus(pageTitle);
 
   useEffect(() => {
+    // getFavourites();
     if (!query) {
       setLoading(false);
-      setFiredepartments([]);
+      setFiredepartments(favourites);
       return;
     }
 
@@ -45,6 +59,12 @@ export default function FiredepartmentDetailScreen() {
     return () => clearTimeout(t);
   }, [query]);
 
+  useFocusEffect(
+    useCallback(() => {
+      getFavourites(query.length === 0);
+    }, [query]),
+  );
+
   function searchChange(text: string) {
     setQuery(text);
   }
@@ -57,135 +77,227 @@ export default function FiredepartmentDetailScreen() {
     }
   }
 
-  function getFederalStateName(fsName: string) : string{
+  function getFederalStateName(fsName: string): string {
     switch (fsName) {
-      case 'Lower Austria':
-        return t('assets.federalStates.la');
-      case 'Upper Austria':
-        return t('assets.federalStates.ua');
-      case 'Styria':
-        return t('assets.federalStates.st');
-      case 'Burgenland':
-        return t('assets.federalStates.bl');
-      case 'Vienna':
-        return t('assets.federalStates.vi');
-      case 'Carinthia':
-        return t('assets.federalStates.ca');
-      case 'Salzburg':
-        return t('assets.federalStates.sb');
-      case 'Tyrol':
-        return t('assets.federalStates.ty');
-      case 'Vorarlberg':
-        return t('assets.federalStates.vb');
+      case "Lower Austria":
+        return t("assets.federalStates.la");
+      case "Upper Austria":
+        return t("assets.federalStates.ua");
+      case "Styria":
+        return t("assets.federalStates.st");
+      case "Burgenland":
+        return t("assets.federalStates.bl");
+      case "Vienna":
+        return t("assets.federalStates.vi");
+      case "Carinthia":
+        return t("assets.federalStates.ca");
+      case "Salzburg":
+        return t("assets.federalStates.sb");
+      case "Tyrol":
+        return t("assets.federalStates.ty");
+      case "Vorarlberg":
+        return t("assets.federalStates.vb");
       default:
         return fsName;
     }
   }
 
+  function getFavourites(replaceResults: boolean = false) {
+    FavouritesService.getFavouriteIds()
+      .then((favs) => {
+        setFavouriteIds(favs);
+        if (favs.length > 0) {
+          FiredepartmentService.searchFiredepartments(
+            undefined,
+            36,
+            0,
+            favs,
+          ).then((res) => {
+            setFavourites(res.content);
+            if (replaceResults) {
+              setFiredepartments(res.content);
+            }
+          });
+        } else {
+          if (replaceResults) {
+            setFiredepartments([]);
+          }
+        }
+      })
+      .catch((error) => {
+        console.error("Error retrieving favourites:", error);
+      });
+  }
+
+  function isFavourite(fd: Firedepartment): boolean {
+    return favouriteIds.includes(fd.uuid);
+  }
+
   return (
     <>
-        <ThemedView style={styles.container}>
-          {/* <ScrollView style={{
+      <ThemedView style={styles.container}>
+        {/* <ScrollView style={{
             flex: 1,
             paddingLeft: dynamicSide.left,
             paddingRight: dynamicSide.right,
             display: 'flex',
           }}
           contentContainerStyle={{ flexGrow: 1 }}> */}
-            <View style={[styles.contentList, { flex: 1 }]}>
-              {/* Search */}
-              <View
-                style={{
-                  paddingHorizontal: 10,
-                  paddingVertical: Platform.OS === 'android' ? 0 : 10,
-                  marginVertical: 20,
-                  marginHorizontal: 12,
-                  backgroundColor: Colors[colorScheme ?? 'light'].backgroundForground,
-                  borderRadius: 100,
-                  display: 'flex',
-                }}
-                >
-                <TextInput
-                  placeholder={t('firedepartment.search.placeholder')}
-                  onChangeText={searchChange}
-                  returnKeyType="search"
-                  style={
-                    {
-                      color: Colors[colorScheme ?? 'light'].text,
-                      paddingHorizontal: 5,
-                      ...Platform.select({
-                        web: {
-                          outline: 'none',
-                        }
-                      })
-                    }
-                  }/>
-              </View>
+        <View style={[styles.contentList, { flex: 1 }]}>
+          {/* Search */}
+          <View
+            style={{
+              paddingHorizontal: 10,
+              paddingVertical: Platform.OS === "android" ? 0 : 10,
+              marginVertical: 20,
+              marginHorizontal: 12,
+              backgroundColor:
+                Colors[colorScheme ?? "light"].backgroundForground,
+              borderRadius: 100,
+              display: "flex",
+            }}
+          >
+            <TextInput
+              placeholder={t("firedepartment.search.placeholder")}
+              onChangeText={searchChange}
+              returnKeyType="search"
+              style={{
+                color: Colors[colorScheme ?? "light"].text,
+                paddingHorizontal: 5,
+                ...Platform.select({
+                  web: {
+                    outline: "none",
+                  },
+                }),
+              }}
+            />
+          </View>
 
-              {/* List */}
-              { loading ? (
-                <View style={{ display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: dynamicSide.bottom + 50 }}>
-                  <ActivityIndicator size="small" color={Colors[colorScheme ?? 'light'].tint} />
-                </View>
-              ) : firedepartments.length === 0 ? (
-                <View style={{ justifyContent: 'center', alignItems: 'center', marginBottom: dynamicSide.bottom + 50 }}>
-                  <ThemedText style={{ color: Colors[colorScheme ?? 'light'].text, opacity: 0.5 }}>
-                    { query ? t('firedepartment.search.error.noResults') : t('firedepartment.search.error.noQuery') }
-                  </ThemedText>
-                </View>
-              ) : (
-                <FlatList
-                  data={firedepartments}
-                  keyboardShouldPersistTaps="handled"
-                  keyExtractor={(item) => item.uuid}
-                  ListFooterComponent={<View style={{ height: dynamicSide.bottom + 50 }} />}
-                  renderItem={({ item: fd }) => (
-                  <Pressable
-                    key={fd.uuid}
-                    onPress={() => openFd(fd)}
-                    style={({ pressed }) => ({
-                        padding: 12,
-                        borderBottomWidth: 1,
-                        borderColor: Colors[colorScheme ?? 'light'].border,
-                        opacity: pressed ? 0.7 : 1,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'space-between',
-                      })}>
-                      {/* Name */}
-                      <ThemedText
-                        numberOfLines={1}
-                        ellipsizeMode="tail"
-                        style={{
-                          color: Colors[colorScheme ?? 'light'].text,
-                          fontWeight: 'bold',
-                          fontSize: 18,
-                          maxWidth: '100%',
-                          textAlign: 'left',
-                          }}>{fd.name}</ThemedText>
-
-                      {/* Sub */}
-                      { fd.address.federalState && (
-                        <View>
-                          <ThemedText
-                            numberOfLines={1}
-                            ellipsizeMode="tail"
-                            style={{
-                                color: Colors[colorScheme ?? 'light'].text,
-                                fontSize: 14,
-                                opacity: 0.5,
-                                lineHeight: 15,
-                                marginTop: 4,
-                              }}>{getFederalStateName(fd.address.federalState)}</ThemedText>
-                        </View>
-                      ) }
-                    </Pressable>
-                  )} />
-              )}
-
+          {/* List */}
+          {loading ? (
+            <View
+              style={{
+                display: "flex",
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+                marginBottom: dynamicSide.bottom + 50,
+              }}
+            >
+              <ActivityIndicator
+                size="small"
+                color={Colors[colorScheme ?? "light"].tint}
+              />
             </View>
-          {/* </ScrollView> */}
-        </ThemedView>
+          ) : firedepartments.length === 0 ? (
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                marginBottom: dynamicSide.bottom + 50,
+              }}
+            >
+              <ThemedText
+                style={{
+                  color: Colors[colorScheme ?? "light"].text,
+                  opacity: 0.5,
+                }}
+              >
+                {query
+                  ? t("firedepartment.search.error.noResults")
+                  : t("firedepartment.search.error.noQuery")}
+              </ThemedText>
+            </View>
+          ) : (
+            <FlatList
+              data={firedepartments}
+              keyboardShouldPersistTaps="handled"
+              keyExtractor={(item) => item.uuid}
+              ListFooterComponent={
+                <View style={{ height: dynamicSide.bottom + 50 }} />
+              }
+              renderItem={({ item: fd }) => (
+                <Pressable
+                  key={fd.uuid}
+                  onPress={() => openFd(fd)}
+                  style={({ pressed }) => ({
+                    padding: 12,
+                    borderBottomWidth: 1,
+                    borderColor: Colors[colorScheme ?? "light"].border,
+                    opacity: pressed ? 0.7 : 1,
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  })}
+                >
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "space-between",
+                      flex: 1,
+                    }}
+                  >
+                    {/* Name */}
+                    <ThemedText
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
+                      style={{
+                        color: Colors[colorScheme ?? "light"].text,
+                        fontWeight: "bold",
+                        fontSize: 18,
+                        maxWidth: "100%",
+                        textAlign: "left",
+                      }}
+                    >
+                      {fd.name}
+                    </ThemedText>
+
+                    {/* Sub */}
+                    {fd.address.federalState && (
+                      <View>
+                        <ThemedText
+                          numberOfLines={1}
+                          ellipsizeMode="tail"
+                          style={{
+                            color: Colors[colorScheme ?? "light"].text,
+                            fontSize: 14,
+                            opacity: 0.5,
+                            lineHeight: 15,
+                            marginTop: 4,
+                          }}
+                        >
+                          {getFederalStateName(fd.address.federalState)}
+                        </ThemedText>
+                      </View>
+                    )}
+                  </View>
+
+                  <>
+                    {isFavourite(fd) && (
+                      <View
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          marginLeft: 10,
+                        }}
+                      >
+                        <IconSymbol
+                          name="star.fill"
+                          size={25}
+                          color={Colors[colorScheme ?? "light"].favourite}
+                        />
+                      </View>
+                    )}
+                  </>
+                </Pressable>
+              )}
+            />
+          )}
+        </View>
+        {/* </ScrollView> */}
+      </ThemedView>
     </>
   );
 }
@@ -195,8 +307,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentList: {
-    width: '100%',
+    width: "100%",
     maxWidth: 1000,
-    marginHorizontal: 'auto',
+    marginHorizontal: "auto",
   },
 });
