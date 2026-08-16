@@ -35,17 +35,27 @@ Nachdem für Niederösterreich die App [Grisu](https://github.com/Grisu-NOE/mobi
 ### Browser Redirect
 Ändere die Folgenden werte um aufrufe der Webanwendungen automatisch auf die App zu redirecten:
 
-#### Config
-Datei: [/apps.json](/app.json)
-1. Ändere den Wert von der Variable `expo.android.intentFilters[0].data[0].host` zu deiner Domain (z.B. app.fire-where.at)
+Datei: [/android/app/src/main/AndroidManifest.xml](/android/app/src/main/AndroidManifest.xml)
+1. Ändere im Folgenden Block die URL von `app.fire-where.at` zu deiner Domain:
+```xml
+<intent-filter android:autoVerify="true">
+  <action android:name="android.intent.action.VIEW" />
 
-#### Android
+  <category android:name="android.intent.category.DEFAULT" />
+  <category android:name="android.intent.category.BROWSABLE" />
+
+  <data
+      android:scheme="https"
+      android:host="app.fire-where.at" /> <!-- HIER ÄNDERN -->
+</intent-filter>
+```
+
+\
 Datei: [/public/.well-known/assetlinks.json](/public/.well-known/assetlinks.json)
-
 1. `package_name` zu deinem Package name (z.B. com.jpromi.firePoint)
 2. `sha256_cert_fingerprints` ändere das zu deinem Google Play App-Signaturschlüssel [Anleitung](https://developer.android.com/training/app-links/faq)
 
-#### iOS
+\
 Datei: [/public/.well-known/apple-app-site-association](/public/.well-known/apple-app-site-association)
 1. Suche deine Apple Developer Team ID aus deinem [Developer Account](https://developer.apple.com/account#MembershipDetailsCard) raus.
 2. Ersetze die appIDs mit deiner, diese besteht aus `Team ID.Package name` (z.B. `ABC1234567.com.jpromi.firePoint`)
