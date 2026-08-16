@@ -10,27 +10,13 @@
       "bundleIdentifier": "com.jpromi.firePoint",
       "buildNumber": "2",
       "icon": "./assets/images/icon.png",
-      "associatedDomains": ["applinks:app.fire-where.at"],
       "infoPlist": {
         "LSApplicationQueriesSchemes": ["https", "http"]
       }
     },
     "android": {
       "package": "com.jpromi.firePoint",
-      "versionCode": 8,
-      "intentFilters": [
-        {
-          "action": "VIEW",
-          "autoVerify": true,
-          "data": [
-            {
-              "scheme": "https",
-              "host": "app.fire-where.at"
-            }
-          ],
-          "category": ["BROWSABLE", "DEFAULT"]
-        }
-      ]
+      "versionCode": 8
     },
     "web": {
       "bundler": "metro",
