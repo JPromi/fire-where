@@ -188,6 +188,7 @@
       "alarmed": "Alarmierung",
       "inOperationSince": "Im Einsatz seit",
       "operationDuration": "Einsatzdauer",
+      "shareMessage": "{{alarm}} - {{title}}\n{{url}}",
       "summary": {
         "firedepartment_one": "{{count}} Feuerwehr",
         "firedepartment_other": "{{count}} Feuerwehren",
@@ -234,6 +235,7 @@
       }
     },
     "details": {
+      "shareMessage": "{{firedepartment}}\n{{url}}",
       "chip": {
         "volunteer": "Freiwillig",
         "ready": "Einsatzbereit",

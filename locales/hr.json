@@ -178,6 +178,7 @@
       "alarmed": "Alarmiranje",
       "inOperationSince": "U intervenciji od",
       "operationDuration": "Trajanje intervencije",
+      "shareMessage": "{{alarm}} - {{title}}\n{{url}}",
       "summary": {
         "firedepartment_one": "{{count}} Vatrogasno društvo",
         "firedepartment_other": "{{count}} Vatrogasna društva",
@@ -224,6 +225,7 @@
       }
     },
     "details": {
+      "shareMessage": "{{firedepartment}}\n{{url}}",
       "chip": {
         "volunteer": "Dobrovoljno"
       }
