@@ -9,6 +9,7 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 import { useEffect } from 'react';
 import { setCustomText } from 'react-native-global-props';
 import { ErrorMessage } from '@/components/ui/ErrorMessage';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 
 export default function RootLayout() {
@@ -40,7 +41,7 @@ export default function RootLayout() {
         document.head.appendChild(style);
       }
     }
-  }, [loaded]);
+  }, [loaded, colorScheme]);
 
   if (!loaded) {
     // Async font loading only occurs in development.
@@ -49,11 +50,13 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <ErrorMessage />
+      <SafeAreaProvider>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+        <ErrorMessage />
+      </SafeAreaProvider>
     </ThemeProvider>
   );
 }
