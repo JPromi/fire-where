@@ -91,7 +91,7 @@ android {
         applicationId 'com.jpromi.firePoint'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 8
+        versionCode 9
         versionName "1.2.1"
     }
     signingConfigs {
