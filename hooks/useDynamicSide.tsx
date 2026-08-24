@@ -1,10 +1,8 @@
 import { useMemo } from 'react';
-import { useWindowDimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export function useDynamicSide() {
   const insets = useSafeAreaInsets();
-  const { width, height } = useWindowDimensions(); // triggert re-render bei Rotation
 
   return useMemo(() => {
     return {
@@ -13,5 +11,5 @@ export function useDynamicSide() {
       bottom: insets.bottom,
       left: insets.left,
     };
-  }, [insets.bottom, width, height]);
+  }, [insets.top, insets.right, insets.bottom, insets.left]);
 }
