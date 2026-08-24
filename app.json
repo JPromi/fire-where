@@ -2,7 +2,7 @@
   "expo": {
     "name": "Fire Where",
     "slug": "fire-where",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "scheme": "firewhere",
     "userInterfaceStyle": "automatic",
     "ios": {
