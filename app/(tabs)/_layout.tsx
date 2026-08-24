@@ -63,16 +63,6 @@ export default function TabLayout() {
           selected: Colors[theme].tabIconSelected,
         }}
         minimizeBehavior="onScrollDown"
-        screenListeners={({ navigation, route }) => ({
-          tabPress: () => {
-            navigation.dispatch(
-              CommonActions.reset({
-                index: 0,
-                routes: [{ name: route.name }],
-              }),
-            );
-          },
-        })}
       >
         <NativeTabs.Trigger name="operation" disableAutomaticContentInsets>
           <NativeTabs.Trigger.Icon
@@ -109,16 +99,6 @@ export default function TabLayout() {
 
   return (
     <Tabs
-      screenListeners={({ navigation, route }) => ({
-        tabPress: () => {
-          navigation.dispatch(
-            CommonActions.reset({
-              index: 0,
-              routes: [{ name: route.name }],
-            }),
-          );
-        },
-      })}
       screenOptions={{
         tabBarActiveTintColor: Colors[theme].tint,
         headerShown: true,
@@ -154,6 +134,16 @@ export default function TabLayout() {
           ),
           // href: '/operation',
         }}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 0,
+                routes: [{ name: "operation" }],
+              }),
+            );
+          },
+        })}
       />
       <Tabs.Screen
         name="firedepartment"
@@ -166,6 +156,16 @@ export default function TabLayout() {
           ),
           // href: '/firedepartmnet',
         }}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 0,
+                routes: [{ name: "firedepartment" }],
+              }),
+            );
+          },
+        })}
       />
       <Tabs.Screen
         name="settings"
@@ -176,6 +176,16 @@ export default function TabLayout() {
             <IconSymbol size={28} name="gear" color={color} />
           ),
         }}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 0,
+                routes: [{ name: "settings" }],
+              }),
+            );
+          },
+        })}
       />
       {/* <Tabs.Screen
         name="operation/[federalStateId]"
