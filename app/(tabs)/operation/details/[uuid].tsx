@@ -167,8 +167,11 @@ export default function OperationDetailScreen() {
   function shareFiredepartment() {
     if (CONFIG.informations.app.webUrl === null) return;
 
+    const url = `${CONFIG.informations.app.webUrl}/operation/details/${operation?.uuid}`;
+
     Share.share({
-      url: `${CONFIG.informations.app.webUrl}/operation/details/${operation?.uuid}`,
+      message: url,
+      url: url,
     });
   }
 

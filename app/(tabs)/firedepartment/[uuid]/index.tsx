@@ -118,8 +118,11 @@ export default function FiredepartmentDetailScreen() {
   function shareFiredepartment() {
     if (CONFIG.informations.app.webUrl === null) return;
 
+    const url = `${CONFIG.informations.app.webUrl}/firedepartment/${firedepartment?.nameId ?? firedepartment?.uuid}`;
+
     Share.share({
-      url: `${CONFIG.informations.app.webUrl}/firedepartment/${firedepartment?.nameId ?? firedepartment?.uuid}`,
+      message: url,
+      url: url,
     });
   }
 
