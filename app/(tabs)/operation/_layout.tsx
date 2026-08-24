@@ -2,6 +2,10 @@ import { StackHeader } from '@/components/navigation/StackHeader';
 import { Stack } from 'expo-router';
 import { Platform } from 'react-native';
 
+export const unstable_settings = {
+  initialRouteName: 'index',
+};
+
 const StackLayout = () => {
   return (
     <Stack
