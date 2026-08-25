@@ -34,7 +34,7 @@ type SettingsItem = {
   valueExtra?: string;
   valueLink?: string;
   function?: () => void | Promise<void>;
-  showIfKeyIsset?: string;
+  showIfKeyIsSet?: string;
   valueTranslationKey?: string;
 };
 
@@ -93,7 +93,7 @@ export default function SettingsScreen() {
             name: t("settings.extended.jumpToDistrict.title"),
             type: "extra",
             valueExtra: "",
-            showIfKeyIsset: "jumpToFederalState",
+            showIfKeyIsSet: "jumpToFederalState",
             valueTranslationKey: "",
           },
         ],
@@ -216,7 +216,7 @@ export default function SettingsScreen() {
       items: group.items.map((item) => ({ ...item })),
     }));
 
-    // set valueTranslationkey for jumpToDistrict
+    // set valueTranslationKey for jumpToDistrict
     const jumpToDistrictItem = updatedSettings
       .flatMap((group) => group.items)
       .find((item) => item.key === "jumpToDistrict");
@@ -290,10 +290,10 @@ export default function SettingsScreen() {
   }
 
   function isItemDisabled(item: SettingsItem): boolean {
-    if (item.showIfKeyIsset) {
+    if (item.showIfKeyIsSet) {
       const relatedItem = settings
         .flatMap((group) => group.items)
-        .find((i) => i.key === item.showIfKeyIsset);
+        .find((i) => i.key === item.showIfKeyIsSet);
       if (relatedItem && (relatedItem.valueExtra || relatedItem.valueSwitch)) {
         return false;
       } else {
@@ -396,7 +396,7 @@ export default function SettingsScreen() {
                       display: "flex",
                       flexDirection: "column",
                       backgroundColor:
-                        Colors[colorScheme ?? "light"].backgroundForground,
+                        Colors[colorScheme ?? "light"].backgroundForeground,
                       paddingHorizontal: 15,
                       borderRadius: 10,
                     }}
@@ -413,7 +413,7 @@ export default function SettingsScreen() {
                           borderTopWidth: itemIndex === 0 ? 0 : 1,
                           borderTopColor:
                             Colors[colorScheme ?? "light"]
-                              .backgroundForgroundBorder,
+                              .backgroundForegroundBorder,
                         }}
                       >
                         {item.type === "function" || item.type === "ask" ? (

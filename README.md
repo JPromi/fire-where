@@ -2,7 +2,7 @@
 
 ## Warum Fire Where?
 
-### Beschriebung
+### Beschreibung
 
 **Fire Where** zeigt dir in fast ganz Österreich alle Einsätze der Feuerwehren an.
 Die Daten hierfür werden von [`JPromi/operation-point`](https://github.com/JPromi/operation-point) geladen.
@@ -10,11 +10,11 @@ Die Daten hierfür werden von [`JPromi/operation-point`](https://github.com/JPro
 ### Name
 
 Der Name **Fire Where**, übersetzt auf Deutsch "Feuer Wo", beschreibt das Hauptziel dieser App, anzuzeigen wo in Österreich gerade ein Feuerwehr Einsatz ist.
-Außerdem soll es noch von der Aussprache ähnlich klingen wie "Feiawehr", welches im Wiener und Nierösterreichischen Raum für "Feuerwehr" verwendet wird.
+Außerdem soll es noch von der Aussprache ähnlich klingen wie "Feiawehr", welches im Wiener und Niederösterreichischen Raum für "Feuerwehr" verwendet wird.
 
 ### Warum?
 
-Nachdem für Niederösterreich die App [Grisu](https://github.com/Grisu-NOE/mobile-app) 2025 Archiviert wurde und es keinen Nachfolger gab, habe ich mit der Entwicklung der **Fire Where** App begonnen, die Idee war alle Öffentlichen Daten der Einsatzdaten der Feuerwehren in einer modernen App anzuzeigen.
+Nachdem für Niederösterreich die App [Grisu](https://github.com/Grisu-NOE/mobile-app) 2025 archiviert wurde und es keinen Nachfolger gab, habe ich mit der Entwicklung der **Fire Where** App begonnen, die Idee war alle öffentlichen Daten der Einsatzdaten der Feuerwehren in einer modernen App anzuzeigen.
 
 ---
 
@@ -34,7 +34,7 @@ Nachdem für Niederösterreich die App [Grisu](https://github.com/Grisu-NOE/mobi
 
 ### Version setzen
 
-Ändere in den folgenden Datein die Version
+Ändere in den folgenden Dateien die Version
 
 - `package.json`
 - `package-lock.json`
@@ -42,13 +42,13 @@ Nachdem für Niederösterreich die App [Grisu](https://github.com/Grisu-NOE/mobi
 
 ### Browser Redirect
 
-Ändere die Folgenden werte um aufrufe der Webanwendungen automatisch auf die App zu redirecten:
+Ändere die folgenden Werte, um Aufrufe der Webanwendungen automatisch auf die App zu redirecten:
 
 #### Android
 
 Datei: [/android/app/src/main/AndroidManifest.xml](/android/app/src/main/AndroidManifest.xml)
 
-1. Ändere im Folgenden Block die URL von `app.fire-where.at` zu deiner Domain:
+1. Ändere im folgenden Block die URL von `app.fire-where.at` zu deiner Domain:
 
 ```xml
 <intent-filter android:autoVerify="true">
@@ -73,7 +73,7 @@ Datei: [/public/.well-known/assetlinks.json](/public/.well-known/assetlinks.json
 
 Füge die Domain in Xcode hinzu
 
-1. Gehe in Xcode zu `Targets` -> `Fire Where` -> `Singing & Capabilities` -> `All`
+1. Gehe in Xcode zu `Targets` -> `Fire Where` -> `Signing & Capabilities` -> `All`
 2. Bearbeite die Liste `Associated Domains`
 
 \

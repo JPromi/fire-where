@@ -14,7 +14,7 @@ export class OperationVariablesService {
         return Colors[colorScheme ?? 'light'].opTechnical;
       case 'G':
       case 'S':
-        return Colors[colorScheme ?? 'light'].opChimical;
+        return Colors[colorScheme ?? 'light'].opChemical;
       case 'SOF':
       case 'SD':
         return Colors[colorScheme ?? 'light'].opSupport;
@@ -35,7 +35,7 @@ export class OperationVariablesService {
         return Colors[colorScheme ?? 'light'].opTechnicalText;
       case 'G':
       case 'S':
-        return Colors[colorScheme ?? 'light'].opChimicalText;
+        return Colors[colorScheme ?? 'light'].opChemicalText;
       case 'SOF':
       case 'SD':
         return Colors[colorScheme ?? 'light'].opSupportText;
@@ -64,7 +64,7 @@ export class OperationVariablesService {
       case 'ÖL':
       case 'ABC':
       case 'GAS':
-        return Colors[colorScheme ?? 'light'].opChimical;
+        return Colors[colorScheme ?? 'light'].opChemical;
       case 'UNTERSTÜTZUNG':
         return Colors[colorScheme ?? 'light'].opSupport;
       default:
@@ -92,7 +92,7 @@ export class OperationVariablesService {
       case 'ÖL':
       case 'ABC':
       case 'GAS':
-        return Colors[colorScheme ?? 'light'].opChimicalText;
+        return Colors[colorScheme ?? 'light'].opChemicalText;
       case 'UNTERSTÜTZUNG':
         return Colors[colorScheme ?? 'light'].opSupportText;
       default:

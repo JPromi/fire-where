@@ -464,7 +464,7 @@ export default function OperationDetailScreen() {
                         display: "flex",
                         flexDirection: "column",
                         backgroundColor:
-                          Colors[colorScheme ?? "light"].backgroundForground,
+                          Colors[colorScheme ?? "light"].backgroundForeground,
                         width: "100%",
                         maxWidth:
                           screenWidth > 700
@@ -641,7 +641,7 @@ export default function OperationDetailScreen() {
                         display: "flex",
                         flexDirection: "column",
                         backgroundColor:
-                          Colors[colorScheme ?? "light"].backgroundForground,
+                          Colors[colorScheme ?? "light"].backgroundForeground,
                         width: "100%",
                         maxWidth:
                           screenWidth > 700

@@ -190,7 +190,7 @@ export default function OperationDetailScreen() {
           <View style={[styles.contentList, { paddingBottom: dynamicSide.bottom + 50 + 10, paddingLeft: dynamicSide.left + 10, paddingRight: dynamicSide.right + 10 }]}>
             <View
               style={{
-                backgroundColor: Colors[colorScheme ?? 'light'].backgroundForground,
+                backgroundColor: Colors[colorScheme ?? 'light'].backgroundForeground,
                 borderRadius: 10,
                 paddingHorizontal: 15,
               }}>
@@ -207,7 +207,7 @@ export default function OperationDetailScreen() {
                     alignItems: 'center',
                     height: 48,
                     borderTopWidth: index === 0 && index === 0 ? 0 : 1,
-                    borderTopColor: Colors[colorScheme ?? 'light'].backgroundForgroundBorder,
+                    borderTopColor: Colors[colorScheme ?? 'light'].backgroundForegroundBorder,
                   }}>
                   <ThemedText>{item.label}</ThemedText>
                   { selectedData === item.value &&

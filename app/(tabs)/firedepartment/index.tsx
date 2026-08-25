@@ -4,7 +4,7 @@ import { IconSymbol } from "@/components/ui/IconSymbol";
 import { Colors } from "@/constants/Colors";
 import { useDynamicSide } from "@/hooks/useDynamicSide";
 import { Firedepartment } from "@/models/Firedepartment";
-import { FiredepartmentService } from "@/services/FiredeparmentService";
+import { FiredepartmentService } from "@/services/FiredepartmentService";
 import { FavouritesService } from "@/services/local/FavouritesService";
 import { title } from "@/utils/TitleFunction";
 import { useHeaderTitleOnFocus } from "@/utils/UseHeaderTitleOnFocus";
@@ -152,7 +152,7 @@ export default function FiredepartmentDetailScreen() {
               marginVertical: 20,
               marginHorizontal: 12,
               backgroundColor:
-                Colors[colorScheme ?? "light"].backgroundForground,
+                Colors[colorScheme ?? "light"].backgroundForeground,
               borderRadius: 100,
               display: "flex",
             }}

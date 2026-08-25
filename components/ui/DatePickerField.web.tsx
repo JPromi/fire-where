@@ -44,7 +44,7 @@ export function DatePickerField({ value, onChange, canUndefined = false, style, 
           borderRadius: 8,
           borderWidth: 1,
           borderStyle: 'solid',
-          borderColor: Colors[colorScheme ?? 'light'].backgroundForgroundBorder,
+          borderColor: Colors[colorScheme ?? 'light'].backgroundForegroundBorder,
           backgroundColor: 'transparent',
           color: Colors[colorScheme ?? 'light'].text,
           padding: 8,
@@ -58,7 +58,7 @@ export function DatePickerField({ value, onChange, canUndefined = false, style, 
           }
           
           input[type="date"].datePickerInput:focus {
-            background-color: ${Colors[colorScheme ?? 'light'].backgroundForground} !important;
+            background-color: ${Colors[colorScheme ?? 'light'].backgroundForeground} !important;
           }
 
           input[type="date"].datePickerInput {

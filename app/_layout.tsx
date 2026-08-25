@@ -34,7 +34,7 @@ export default function RootLayout() {
           }
 
           html, body {
-            scrollbar-color: ${Colors[colorScheme ?? 'light'].backgroundForground} transparent;
+            scrollbar-color: ${Colors[colorScheme ?? 'light'].backgroundForeground} transparent;
             scrollbar-width: thin;
           }
         `;

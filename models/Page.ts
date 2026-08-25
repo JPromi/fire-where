@@ -1,7 +1,7 @@
 export type Page<T> = {
   content: T[];
   pageable: {
-    pageNumer: number;
+    pageNumber: number;
     pageSize: number;
     sort: {
       sorted: boolean;

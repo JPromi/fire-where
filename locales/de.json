@@ -173,7 +173,7 @@
     "customError": {
       "firedepartmentNotFound": "Die Feuerwehr wurde nicht gefunden.",
       "operationNotFound": "Der Einsatz wurde nicht gefunden.",
-      "maxFavouritesReached": "Das Limit von {{max}} Favouriten wurde erreicht. Bitte entferne zuerst eine Feuerwehr aus den Favoriten."
+      "maxFavouritesReached": "Das Limit von {{max}} Favoriten wurde erreicht. Bitte entferne zuerst eine Feuerwehr aus den Favoriten."
     },
     "time": {
       "hours": "Stunden",
@@ -204,8 +204,8 @@
       },
       "nerdInformation": {
         "system": {
-          "title": "System Informationen",
-          "dataOrigin": "Daten Herkunft",
+          "title": "Systeminformationen",
+          "dataOrigin": "Datenherkunft",
           "firstSeen": "Ersterfassung",
           "lastUpdate": "Letzte Aktualisierung",
           "lastSeen": "Letzte Erfassung"
@@ -237,7 +237,7 @@
       "chip": {
         "volunteer": "Freiwillig",
         "ready": "Einsatzbereit",
-        "inOperation": "im Einsatz"
+        "inOperation": "Im Einsatz"
       },
       "operationsOverview": {
         "currentOperations": "Aktuelle Einsätze",
@@ -277,7 +277,7 @@
         "developer": "Entwickler",
         "feedback": "Feedback",
         "repository": "Repository",
-        "buildVersion": "Build Version"
+        "buildVersion": "Build-Version"
       },
       "informations": {
         "title": "Informationen",
