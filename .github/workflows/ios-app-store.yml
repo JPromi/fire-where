@@ -23,8 +23,8 @@ jobs:
       github.event_name == 'workflow_dispatch'
 
     env:
-      APP_BUNDLE_ID: com.jpromi.fireSpot
-      IOS_SCHEME: fireSpot
+      APP_BUNDLE_ID: com.jpromi.firePoint
+      IOS_SCHEME: firePoint
       PROVISIONING_PROFILE_SPECIFIER: ${{ vars.IOS_PROVISIONING_PROFILE_SPECIFIER }}
 
     steps:
@@ -100,7 +100,7 @@ jobs:
 
           echo "${{ secrets.IOS_PROVISIONING_PROFILE_BASE64 }}" \
             | base64 --decode \
-            > ~/Library/MobileDevice/Provisioning\ Profiles/firespot.mobileprovision
+            > ~/Library/MobileDevice/Provisioning\ Profiles/firewhere.mobileprovision
 
       - name: Archive iOS app
         run: |
