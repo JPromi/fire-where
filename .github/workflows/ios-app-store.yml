@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - "v*"
+
   workflow_dispatch:
     inputs:
       version:
@@ -16,6 +17,7 @@ jobs:
     name: Prepare app env
     runs-on: ubuntu-latest
     environment: env
+
     if: >
       startsWith(github.ref, 'refs/tags/v') ||
       github.event_name == 'workflow_dispatch'
@@ -48,6 +50,7 @@ jobs:
     runs-on: macos-latest
     needs: prepare-env
     environment: App Store
+
     if: >
       startsWith(github.ref, 'refs/tags/v') ||
       github.event_name == 'workflow_dispatch'
@@ -104,12 +107,10 @@ jobs:
           echo "Version: $VERSION_NAME"
           echo "Build: $BUILD_NUMBER"
 
-      - name: Generate iOS project
-        env:
-          EXPO_NO_TELEMETRY: 1
-        run: npx expo prebuild --platform ios --clean --non-interactive
+      # Kein expo prebuild!
+      # Der bestehende ios/-Ordner aus dem Repository wird verwendet.
 
-      - name: Install pods
+      - name: Install CocoaPods dependencies
         run: npx pod-install ios
 
       - name: Import signing certificate
@@ -121,6 +122,7 @@ jobs:
       - name: Install provisioning profile
         run: |
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+
           echo "${{ secrets.IOS_PROVISIONING_PROFILE_BASE64 }}" \
             | base64 --decode \
             > ~/Library/MobileDevice/Provisioning\ Profiles/firespot.mobileprovision
@@ -151,15 +153,19 @@ jobs:
           <dict>
               <key>method</key>
               <string>app-store-connect</string>
+
               <key>signingStyle</key>
               <string>manual</string>
+
               <key>teamID</key>
               <string>${{ vars.APPLE_TEAM_ID }}</string>
+
               <key>provisioningProfiles</key>
               <dict>
                   <key>${APP_BUNDLE_ID}</key>
                   <string>${PROVISIONING_PROFILE_SPECIFIER}</string>
               </dict>
+
               <key>signingCertificate</key>
               <string>Apple Distribution</string>
           </dict>
@@ -178,17 +184,19 @@ jobs:
         shell: bash
         run: |
           IPA_PATH="$(find "$RUNNER_TEMP/export" -name "*.ipa" -print -quit)"
+
           if [[ -z "$IPA_PATH" ]]; then
             echo "No IPA was exported." >&2
             exit 1
           fi
+
           echo "IPA_PATH=$IPA_PATH" >> "$GITHUB_ENV"
           echo "IPA: $IPA_PATH"
 
       - name: Upload IPA artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ios-${{ env.VERSION_NAME }}
+          name: ios-${{ env.RELEASE_NAME }}
           path: ${{ env.IPA_PATH }}
 
       - name: Upload to App Store Connect
