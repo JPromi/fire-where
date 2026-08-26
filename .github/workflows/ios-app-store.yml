@@ -27,6 +27,7 @@ jobs:
       IOS_WORKSPACE: FirePoint
       IOS_SCHEME: FirePoint
       PROVISIONING_PROFILE_SPECIFIER: ${{ vars.IOS_PROVISIONING_PROFILE_SPECIFIER }}
+      WIDGET_PROVISIONING_PROFILE_SPECIFIER: ${{ vars.IOS_WIDGET_PROVISIONING_PROFILE_SPECIFIER }}
 
     steps:
       - name: Checkout
@@ -95,13 +96,17 @@ jobs:
           p12-file-base64: ${{ secrets.IOS_DISTRIBUTION_CERTIFICATE_BASE64 }}
           p12-password: ${{ secrets.IOS_DISTRIBUTION_CERTIFICATE_PASSWORD }}
 
-      - name: Install provisioning profile
+      - name: Install provisioning profiles
         run: |
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-
+      
           echo "${{ secrets.IOS_PROVISIONING_PROFILE_BASE64 }}" \
             | base64 --decode \
             > ~/Library/MobileDevice/Provisioning\ Profiles/firewhere.mobileprovision
+      
+          echo "${{ secrets.IOS_WIDGET_PROVISIONING_PROFILE_BASE64 }}" \
+            | base64 --decode \
+            > ~/Library/MobileDevice/Provisioning\ Profiles/firewhere-widget.mobileprovision
 
       - name: Archive iOS app
         run: |
