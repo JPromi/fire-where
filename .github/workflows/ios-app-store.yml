@@ -119,10 +119,12 @@ jobs:
             -destination "generic/platform=iOS" \
             -archivePath "$RUNNER_TEMP/${IOS_SCHEME}.xcarchive" \
             DEVELOPMENT_TEAM="${{ vars.APPLE_TEAM_ID }}" \
-            CODE_SIGN_STYLE=Manual \
-            CODE_SIGN_IDENTITY="Apple Distribution" \
             CURRENT_PROJECT_VERSION="$BUILD_NUMBER" \
             MARKETING_VERSION="$VERSION_NAME" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$HOME/.appstoreconnect/private_keys/AuthKey_${{ vars.APPSTORE_API_KEY_ID }}.p8" \
+            -authenticationKeyID "${{ vars.APPSTORE_API_KEY_ID }}" \
+            -authenticationKeyIssuerID "${{ vars.APPSTORE_ISSUER_ID }}" \
             archive
 
       - name: Create export options
