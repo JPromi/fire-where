@@ -24,7 +24,8 @@ jobs:
 
     env:
       APP_BUNDLE_ID: com.jpromi.firePoint
-      IOS_SCHEME: firePoint
+      IOS_WORKSPACE: FirePoint
+      IOS_SCHEME: FirePoint
       PROVISIONING_PROFILE_SPECIFIER: ${{ vars.IOS_PROVISIONING_PROFILE_SPECIFIER }}
 
     steps:
@@ -105,7 +106,7 @@ jobs:
       - name: Archive iOS app
         run: |
           xcodebuild \
-            -workspace "ios/${IOS_SCHEME}.xcworkspace" \
+            -workspace "ios/${IOS_WORKSPACE}.xcworkspace" \
             -scheme "$IOS_SCHEME" \
             -configuration Release \
             -sdk iphoneos \
