@@ -24,17 +24,22 @@ jobs:
 
     env:
       APP_BUNDLE_ID: com.jpromi.firePoint
-      WIDGET_BUNDLE_ID: com.jpromi.firePoint.OperationListWidget
       IOS_WORKSPACE: FirePoint
       IOS_SCHEME: FirePoint
-      PROVISIONING_PROFILE_SPECIFIER: ${{ vars.IOS_PROVISIONING_PROFILE_SPECIFIER }}
-      WIDGET_PROVISIONING_PROFILE_SPECIFIER: ${{ vars.IOS_WIDGET_PROVISIONING_PROFILE_SPECIFIER }}
 
     steps:
+      # ------------------------------------------------------------
+      # Checkout
+      # ------------------------------------------------------------
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      # ------------------------------------------------------------
+      # Node / Expo dependencies
+      # ------------------------------------------------------------
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -45,7 +50,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # ------------------------------------------------------------
+      # .env
+      # ------------------------------------------------------------
+
       - name: Create env file
+        shell: bash
         run: |
           {
             echo 'API_BASE_URL="${{ vars.API_BASE_URL }}"'
@@ -60,6 +70,10 @@ jobs:
             echo 'INFO_APP_PRIVACY_URL="${{ vars.INFO_APP_PRIVACY_URL }}"'
           } > .env
 
+      # ------------------------------------------------------------
+      # Version
+      # ------------------------------------------------------------
+
       - name: Determine version
         shell: bash
         run: |
@@ -73,6 +87,7 @@ jobs:
 
           if [[ ! "$VERSION_NAME" =~ ^[0-9]+(\.[0-9]+){0,2}$ ]]; then
             echo "Invalid iOS version: $VERSION_NAME" >&2
+            echo "Expected something like 1.2.1"
             exit 1
           fi
 
@@ -84,12 +99,21 @@ jobs:
 
           echo "Version: $VERSION_NAME"
           echo "Build: $BUILD_NUMBER"
+          echo "Release: $RELEASE_NAME"
 
-      # Kein expo prebuild!
-      # Der bestehende ios/ Ordner wird direkt verwendet.
+      # ------------------------------------------------------------
+      # CocoaPods
+      #
+      # KEIN expo prebuild!
+      # Der vorhandene native ios/ Ordner wird direkt verwendet.
+      # ------------------------------------------------------------
 
       - name: Install CocoaPods dependencies
         run: npx pod-install ios
+
+      # ------------------------------------------------------------
+      # Apple Distribution Certificate
+      # ------------------------------------------------------------
 
       - name: Import signing certificate
         uses: Apple-Actions/import-codesign-certs@v5
@@ -97,19 +121,42 @@ jobs:
           p12-file-base64: ${{ secrets.IOS_DISTRIBUTION_CERTIFICATE_BASE64 }}
           p12-password: ${{ secrets.IOS_DISTRIBUTION_CERTIFICATE_PASSWORD }}
 
-      - name: Install provisioning profiles
+      # ------------------------------------------------------------
+      # App Store Connect API Key
+      # ------------------------------------------------------------
+
+      - name: Setup App Store Connect API key
+        shell: bash
         run: |
-          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-      
-          echo "${{ secrets.IOS_PROVISIONING_PROFILE_BASE64 }}" \
-            | base64 --decode \
-            > ~/Library/MobileDevice/Provisioning\ Profiles/firewhere.mobileprovision
-      
-          echo "${{ secrets.IOS_WIDGET_PROVISIONING_PROFILE_BASE64 }}" \
-            | base64 --decode \
-            > ~/Library/MobileDevice/Provisioning\ Profiles/firewhere-widget.mobileprovision
+          KEY_PATH="$RUNNER_TEMP/AuthKey_${{ vars.APPSTORE_API_KEY_ID }}.p8"
+
+          cat > "$KEY_PATH" <<'EOF'
+          ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
+          EOF
+
+          chmod 600 "$KEY_PATH"
+
+          if [[ ! -f "$KEY_PATH" ]]; then
+            echo "App Store Connect API key could not be created." >&2
+            exit 1
+          fi
+
+          echo "APPSTORE_API_KEY_PATH=$KEY_PATH" >> "$GITHUB_ENV"
+
+          echo "App Store Connect API key created successfully."
+
+      # ------------------------------------------------------------
+      # Archive
+      #
+      # Automatic Signing:
+      # Xcode lädt/erstellt Provisioning Profiles für
+      # - FirePoint
+      # - OperationListWidgetExtension
+      # automatisch.
+      # ------------------------------------------------------------
 
       - name: Archive iOS app
+        shell: bash
         run: |
           xcodebuild \
             -workspace "ios/${IOS_WORKSPACE}.xcworkspace" \
@@ -122,12 +169,20 @@ jobs:
             CURRENT_PROJECT_VERSION="$BUILD_NUMBER" \
             MARKETING_VERSION="$VERSION_NAME" \
             -allowProvisioningUpdates \
-            -authenticationKeyPath "$HOME/.appstoreconnect/private_keys/AuthKey_${{ vars.APPSTORE_API_KEY_ID }}.p8" \
+            -authenticationKeyPath "$APPSTORE_API_KEY_PATH" \
             -authenticationKeyID "${{ vars.APPSTORE_API_KEY_ID }}" \
             -authenticationKeyIssuerID "${{ vars.APPSTORE_ISSUER_ID }}" \
             archive
 
+      # ------------------------------------------------------------
+      # ExportOptions
+      #
+      # Ebenfalls Automatic Signing.
+      # Keine Provisioning Profiles manuell angeben.
+      # ------------------------------------------------------------
+
       - name: Create export options
+        shell: bash
         run: |
           cat > "$RUNNER_TEMP/ExportOptions.plist" <<EOF
           <?xml version="1.0" encoding="UTF-8"?>
@@ -138,33 +193,40 @@ jobs:
               <string>app-store-connect</string>
 
               <key>signingStyle</key>
-              <string>manual</string>
+              <string>automatic</string>
 
               <key>teamID</key>
               <string>${{ vars.APPLE_TEAM_ID }}</string>
 
-              <key>provisioningProfiles</key>
-              <dict>
-                  <key>${APP_BUNDLE_ID}</key>
-                  <string>${PROVISIONING_PROFILE_SPECIFIER}</string>
-              
-                  <key>${WIDGET_BUNDLE_ID}</key>
-                  <string>${WIDGET_PROVISIONING_PROFILE_SPECIFIER}</string>
-              </dict>
-              
               <key>signingCertificate</key>
               <string>Apple Distribution</string>
+
+              <key>stripSwiftSymbols</key>
+              <true/>
           </dict>
           </plist>
           EOF
 
+      # ------------------------------------------------------------
+      # Export IPA
+      # ------------------------------------------------------------
+
       - name: Export IPA
+        shell: bash
         run: |
           xcodebuild \
             -exportArchive \
             -archivePath "$RUNNER_TEMP/${IOS_SCHEME}.xcarchive" \
             -exportPath "$RUNNER_TEMP/export" \
-            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist"
+            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$APPSTORE_API_KEY_PATH" \
+            -authenticationKeyID "${{ vars.APPSTORE_API_KEY_ID }}" \
+            -authenticationKeyIssuerID "${{ vars.APPSTORE_ISSUER_ID }}"
+
+      # ------------------------------------------------------------
+      # Find IPA
+      # ------------------------------------------------------------
 
       - name: Locate IPA
         shell: bash
@@ -179,11 +241,19 @@ jobs:
           echo "IPA_PATH=$IPA_PATH" >> "$GITHUB_ENV"
           echo "IPA: $IPA_PATH"
 
+      # ------------------------------------------------------------
+      # GitHub Artifact
+      # ------------------------------------------------------------
+
       - name: Upload IPA artifact
         uses: actions/upload-artifact@v4
         with:
           name: ios-${{ env.RELEASE_NAME }}
           path: ${{ env.IPA_PATH }}
+
+      # ------------------------------------------------------------
+      # App Store Connect / TestFlight
+      # ------------------------------------------------------------
 
       - name: Upload to App Store Connect
         uses: Apple-Actions/upload-testflight-build@v3
@@ -192,4 +262,3 @@ jobs:
           issuer-id: ${{ vars.APPSTORE_ISSUER_ID }}
           api-key-id: ${{ vars.APPSTORE_API_KEY_ID }}
           api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
-  
