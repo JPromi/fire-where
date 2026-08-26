@@ -91,7 +91,7 @@ jobs:
             exit 1
           fi
 
-          BUILD_NUMBER=$((10000 + GITHUB_RUN_NUMBER))
+          BUILD_NUMBER=${GITHUB_RUN_NUMBER}
 
           echo "VERSION_NAME=$VERSION_NAME" >> "$GITHUB_ENV"
           echo "BUILD_NUMBER=$BUILD_NUMBER" >> "$GITHUB_ENV"
