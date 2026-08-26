@@ -13,42 +13,9 @@ on:
         default: "0.0.0"
 
 jobs:
-  prepare-env:
-    name: Prepare app env
-    runs-on: ubuntu-latest
-    environment: env
-
-    if: >
-      startsWith(github.ref, 'refs/tags/v') ||
-      github.event_name == 'workflow_dispatch'
-
-    steps:
-      - name: Create env file
-        run: |
-          {
-            echo 'API_BASE_URL="${{ vars.API_BASE_URL }}"'
-            echo 'INFO_APP_NAME="${{ vars.INFO_APP_NAME }}"'
-            echo 'INFO_DEVELOPER_NAME="${{ vars.INFO_DEVELOPER_NAME }}"'
-            echo 'INFO_DEVELOPER_WEBSITE="${{ vars.INFO_DEVELOPER_WEBSITE }}"'
-            echo 'INFO_APP_WEB_URL="${{ vars.INFO_APP_WEB_URL }}"'
-            echo 'INFO_APP_FEEDBACK_EMAIL="${{ vars.INFO_APP_FEEDBACK_EMAIL }}"'
-            echo 'INFO_APP_REPO_NAME="${{ vars.INFO_APP_REPO_NAME }}"'
-            echo 'INFO_APP_REPO_URL="${{ vars.INFO_APP_REPO_URL }}"'
-            echo 'INFO_APP_IMPRINT_URL="${{ vars.INFO_APP_IMPRINT_URL }}"'
-            echo 'INFO_APP_PRIVACY_URL="${{ vars.INFO_APP_PRIVACY_URL }}"'
-          } > .env
-
-      - name: Upload env artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-env
-          path: .env
-          retention-days: 1
-
   build:
     name: Build and upload IPA
     runs-on: macos-latest
-    needs: prepare-env
     environment: App Store
 
     if: >
@@ -75,11 +42,20 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Download env file
-        uses: actions/download-artifact@v4
-        with:
-          name: app-env
-          path: .
+      - name: Create env file
+        run: |
+          {
+            echo 'API_BASE_URL="${{ vars.API_BASE_URL }}"'
+            echo 'INFO_APP_NAME="${{ vars.INFO_APP_NAME }}"'
+            echo 'INFO_DEVELOPER_NAME="${{ vars.INFO_DEVELOPER_NAME }}"'
+            echo 'INFO_DEVELOPER_WEBSITE="${{ vars.INFO_DEVELOPER_WEBSITE }}"'
+            echo 'INFO_APP_WEB_URL="${{ vars.INFO_APP_WEB_URL }}"'
+            echo 'INFO_APP_FEEDBACK_EMAIL="${{ vars.INFO_APP_FEEDBACK_EMAIL }}"'
+            echo 'INFO_APP_REPO_NAME="${{ vars.INFO_APP_REPO_NAME }}"'
+            echo 'INFO_APP_REPO_URL="${{ vars.INFO_APP_REPO_URL }}"'
+            echo 'INFO_APP_IMPRINT_URL="${{ vars.INFO_APP_IMPRINT_URL }}"'
+            echo 'INFO_APP_PRIVACY_URL="${{ vars.INFO_APP_PRIVACY_URL }}"'
+          } > .env
 
       - name: Determine version
         shell: bash
@@ -94,7 +70,6 @@ jobs:
 
           if [[ ! "$VERSION_NAME" =~ ^[0-9]+(\.[0-9]+){0,2}$ ]]; then
             echo "Invalid iOS version: $VERSION_NAME" >&2
-            echo "Use one to three period-separated integers, for example 1.0.0." >&2
             exit 1
           fi
 
@@ -108,7 +83,7 @@ jobs:
           echo "Build: $BUILD_NUMBER"
 
       # Kein expo prebuild!
-      # Der bestehende ios/-Ordner aus dem Repository wird verwendet.
+      # Der bestehende ios/ Ordner wird direkt verwendet.
 
       - name: Install CocoaPods dependencies
         run: npx pod-install ios
