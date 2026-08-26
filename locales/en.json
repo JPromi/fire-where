@@ -178,6 +178,7 @@
       "alarmed": "Alerted",
       "inOperationSince": "In operation since",
       "operationDuration": "Operation duration",
+      "shareMessage": "{{alarm}} - {{title}}\n{{url}}",
       "summary": {
         "firedepartment_one": "{{count}} Fire Department",
         "firedepartment_other": "{{count}} Fire Departments",
@@ -224,6 +225,7 @@
       }
     },
     "details": {
+      "shareMessage": "{{firedepartment}}\n{{url}}",
       "chip": {
         "volunteer": "Volunteer",
         "ready": "Ready",

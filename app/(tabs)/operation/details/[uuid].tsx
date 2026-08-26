@@ -169,9 +169,20 @@ export default function OperationDetailScreen() {
 
     const url = `${CONFIG.informations.app.webUrl}/operation/details/${operation?.uuid}`;
 
+    var alarm = ""
+
+    if (operation?.alarm?.level?.toString() || operation?.alarm?.type || operation?.alarm?.levelAddition) {
+      alarm = `${operation?.alarm?.type}${operation?.alarm?.level?.toString() || ""}${operation?.alarm?.levelAddition || ""}`;
+    } else if (operation?.alarm?.tyrolCategory) {
+      alarm = `${operation?.alarm?.tyrolOrganization}-${operation?.alarm?.tyrolOutOrder}-${operation?.alarm?.tyrolCategory}`;
+    }
+
     Share.share({
-      message: url,
-      url: url,
+      message: t("operation.details.shareMessage", {
+        alarm: alarm,
+        title: operation?.alarm?.message ?? "",
+        url: url,
+      }),
     });
   }
 

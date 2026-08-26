@@ -121,8 +121,10 @@ export default function FiredepartmentDetailScreen() {
     const url = `${CONFIG.informations.app.webUrl}/firedepartment/${firedepartment?.nameId ?? firedepartment?.uuid}`;
 
     Share.share({
-      message: url,
-      url: url,
+      message: t("firedepartment.details.shareMessage", {
+        firedepartment: firedepartment?.name ?? "",
+        url: url,
+      }),
     });
   }
 
