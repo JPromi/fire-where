@@ -1,5 +1,5 @@
 import districtData from "@/assets/data/districts.json";
-import federStatesData from "@/assets/data/federal-states.json";
+import federalStatesData from "@/assets/data/federal-states.json";
 import IconAtMap from "@/assets/icons/map-at.svg";
 import { SvgAtFederalStateMap } from "@/components/assets/SvgAtFederalStateMap";
 import { ThemedText } from "@/components/ThemedText";
@@ -81,7 +81,7 @@ export default function OperationSelectDistrict() {
   );
 
   function loadFederalStatesFromData() {
-    const data: FederalState[] = federStatesData.map((fs) => ({
+    const data: FederalState[] = federalStatesData.map((fs) => ({
       id: fs.id,
       idLong: fs.idLong,
       name: t(`assets.federalStates.${fs.id}`),
@@ -129,11 +129,11 @@ export default function OperationSelectDistrict() {
     setIsMapView(isMap);
   }
 
-  function handlePress(disctrictId: string) {
-    if (disctrictId) {
+  function handlePress(districtId: string) {
+    if (districtId) {
       router.push({
         pathname: "/operation/[federalStateId]/[districtId]",
-        params: { federalStateId: federalStateId, districtId: disctrictId },
+        params: { federalStateId: federalStateId, districtId: districtId },
       });
     }
   }

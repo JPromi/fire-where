@@ -19,7 +19,7 @@ import { Colors } from "@/constants/Colors";
 import { FederalState } from "@/models/FederalState";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import federStatesData from "@/assets/data/federal-states.json";
+import federalStatesData from "@/assets/data/federal-states.json";
 import { SvgAtMap } from "@/components/assets/SvgAtMap";
 import { uiError } from "@/components/ui/ErrorMessage";
 import { IconSymbol } from "@/components/ui/IconSymbol";
@@ -63,7 +63,7 @@ export default function OperationSelectFederalStateScreen() {
   );
 
   function setFederalStatesFromData() {
-    const data: FederalState[] = federStatesData.map((fs) => ({
+    const data: FederalState[] = federalStatesData.map((fs) => ({
       id: fs.id,
       idLong: fs.idLong,
       name: t(`assets.federalStates.${fs.id}`),

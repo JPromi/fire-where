@@ -17,7 +17,7 @@ export function DatePickerField({ value, onChange, canUndefined = false, style, 
   const [tmp, setTmp] = useState(value);
   const colorScheme = useColorScheme();
 
-  // ToDo: Translat
+  // ToDo: Translate
   return (
     <View style={style}>
       <Pressable
@@ -26,9 +26,9 @@ export function DatePickerField({ value, onChange, canUndefined = false, style, 
           paddingVertical: 8,
           paddingHorizontal: 12,
           borderWidth: 1,
-          borderColor: Colors[colorScheme ?? 'light'].backgroundForgroundBorder,
+          borderColor: Colors[colorScheme ?? 'light'].backgroundForegroundBorder,
           borderRadius: 8,
-          backgroundColor: Colors[colorScheme ?? 'light'].backgroundForground,
+          backgroundColor: Colors[colorScheme ?? 'light'].backgroundForeground,
         }}>
         <ThemedText>{value?.toLocaleDateString() ?? "Kein Datum"}</ThemedText>
       </Pressable>

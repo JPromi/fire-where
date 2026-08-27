@@ -7,7 +7,7 @@ import { Colors } from "@/constants/Colors";
 import { useDynamicSide } from "@/hooks/useDynamicSide";
 import { Operation } from "@/models/Operation";
 import { Page } from "@/models/Page";
-import { FiredepartmentService } from "@/services/FiredeparmentService";
+import { FiredepartmentService } from "@/services/FiredepartmentService";
 import { title } from "@/utils/TitleFunction";
 import { useHeaderTitleOnFocus } from "@/utils/UseHeaderTitleOnFocus";
 import { useLocalSearchParams, useRouter } from "expo-router";

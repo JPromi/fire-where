@@ -1,5 +1,5 @@
 import districtData from '@/assets/data/districts.json';
-import federStatesData from '@/assets/data/federal-states.json';
+import federalStatesData from '@/assets/data/federal-states.json';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from "@/components/ThemedView";
 import { uiError } from '@/components/ui/ErrorMessage';
@@ -38,7 +38,7 @@ export default function OperationSelectDistrict() {
     setLoading(true);
 
     // federal states data processing
-    const fsData = federStatesData.map(fs => ({
+    const fsData = federalStatesData.map(fs => ({
       id: fs.id,
       idLong: fs.idLong,
       name: t(`assets.federalStates.${fs.id}`),

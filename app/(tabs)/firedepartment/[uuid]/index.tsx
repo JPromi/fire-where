@@ -11,7 +11,7 @@ import { CONFIG } from "@/constants/Config";
 import { useDynamicSide } from "@/hooks/useDynamicSide";
 import { Firedepartment } from "@/models/Firedepartment";
 import { Operation } from "@/models/Operation";
-import { FiredepartmentService } from "@/services/FiredeparmentService";
+import { FiredepartmentService } from "@/services/FiredepartmentService";
 import { FavouritesService } from "@/services/local/FavouritesService";
 import { title } from "@/utils/TitleFunction";
 import { useHeaderTitleOnFocus } from "@/utils/UseHeaderTitleOnFocus";

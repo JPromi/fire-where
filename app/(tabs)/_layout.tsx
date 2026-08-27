@@ -114,7 +114,7 @@ export default function TabLayout() {
             backdropFilter: "blur(1000px) brightness(0.2)",
             position: "absolute",
             height: 50 + marginBottom,
-            backgroundColor: Colors[theme].backgroundForground,
+            backgroundColor: Colors[theme].backgroundForeground,
             display: isEmbedded ? "none" : "flex",
           },
           default: {
@@ -154,7 +154,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => (
             <Firedepartment height={28} width={28} color={color} />
           ),
-          // href: '/firedepartmnet',
+          // href: '/firedepartment',
         }}
         listeners={({ navigation }) => ({
           tabPress: (e) => {
