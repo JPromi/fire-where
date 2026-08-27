@@ -1,0 +1,264 @@
+name: iOS App Store
+
+on:
+  push:
+    tags:
+      - "v*"
+
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Base version for develop build"
+        required: true
+        default: "0.0.0"
+
+jobs:
+  build:
+    name: Build and upload IPA
+    runs-on: macos-latest
+    environment: App Store
+
+    if: >
+      startsWith(github.ref, 'refs/tags/v') ||
+      github.event_name == 'workflow_dispatch'
+
+    env:
+      APP_BUNDLE_ID: com.jpromi.firePoint
+      IOS_WORKSPACE: FirePoint
+      IOS_SCHEME: FirePoint
+
+    steps:
+      # ------------------------------------------------------------
+      # Checkout
+      # ------------------------------------------------------------
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # ------------------------------------------------------------
+      # Node / Expo dependencies
+      # ------------------------------------------------------------
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # ------------------------------------------------------------
+      # .env
+      # ------------------------------------------------------------
+
+      - name: Create env file
+        shell: bash
+        run: |
+          {
+            echo 'API_BASE_URL="${{ vars.API_BASE_URL }}"'
+            echo 'INFO_APP_NAME="${{ vars.INFO_APP_NAME }}"'
+            echo 'INFO_DEVELOPER_NAME="${{ vars.INFO_DEVELOPER_NAME }}"'
+            echo 'INFO_DEVELOPER_WEBSITE="${{ vars.INFO_DEVELOPER_WEBSITE }}"'
+            echo 'INFO_APP_WEB_URL="${{ vars.INFO_APP_WEB_URL }}"'
+            echo 'INFO_APP_FEEDBACK_EMAIL="${{ vars.INFO_APP_FEEDBACK_EMAIL }}"'
+            echo 'INFO_APP_REPO_NAME="${{ vars.INFO_APP_REPO_NAME }}"'
+            echo 'INFO_APP_REPO_URL="${{ vars.INFO_APP_REPO_URL }}"'
+            echo 'INFO_APP_IMPRINT_URL="${{ vars.INFO_APP_IMPRINT_URL }}"'
+            echo 'INFO_APP_PRIVACY_URL="${{ vars.INFO_APP_PRIVACY_URL }}"'
+          } > .env
+
+      # ------------------------------------------------------------
+      # Version
+      # ------------------------------------------------------------
+
+      - name: Determine version
+        shell: bash
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            VERSION_NAME="${GITHUB_REF_NAME#v}"
+            RELEASE_NAME="v${VERSION_NAME}"
+          else
+            VERSION_NAME="${{ inputs.version }}"
+            RELEASE_NAME="${VERSION_NAME}-dev.${GITHUB_RUN_NUMBER}"
+          fi
+
+          if [[ ! "$VERSION_NAME" =~ ^[0-9]+(\.[0-9]+){0,2}$ ]]; then
+            echo "Invalid iOS version: $VERSION_NAME" >&2
+            echo "Expected something like 1.2.1"
+            exit 1
+          fi
+
+          BUILD_NUMBER=${GITHUB_RUN_NUMBER}
+
+          echo "VERSION_NAME=$VERSION_NAME" >> "$GITHUB_ENV"
+          echo "BUILD_NUMBER=$BUILD_NUMBER" >> "$GITHUB_ENV"
+          echo "RELEASE_NAME=$RELEASE_NAME" >> "$GITHUB_ENV"
+
+          echo "Version: $VERSION_NAME"
+          echo "Build: $BUILD_NUMBER"
+          echo "Release: $RELEASE_NAME"
+
+      # ------------------------------------------------------------
+      # CocoaPods
+      #
+      # KEIN expo prebuild!
+      # Der vorhandene native ios/ Ordner wird direkt verwendet.
+      # ------------------------------------------------------------
+
+      - name: Install CocoaPods dependencies
+        run: npx pod-install ios
+
+      # ------------------------------------------------------------
+      # Apple Distribution Certificate
+      # ------------------------------------------------------------
+
+      - name: Import signing certificate
+        uses: Apple-Actions/import-codesign-certs@v5
+        with:
+          p12-file-base64: ${{ secrets.IOS_DISTRIBUTION_CERTIFICATE_BASE64 }}
+          p12-password: ${{ secrets.IOS_DISTRIBUTION_CERTIFICATE_PASSWORD }}
+
+      # ------------------------------------------------------------
+      # App Store Connect API Key
+      # ------------------------------------------------------------
+
+      - name: Setup App Store Connect API key
+        shell: bash
+        run: |
+          KEY_PATH="$RUNNER_TEMP/AuthKey_${{ vars.APPSTORE_API_KEY_ID }}.p8"
+
+          cat > "$KEY_PATH" <<'EOF'
+          ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
+          EOF
+
+          chmod 600 "$KEY_PATH"
+
+          if [[ ! -f "$KEY_PATH" ]]; then
+            echo "App Store Connect API key could not be created." >&2
+            exit 1
+          fi
+
+          echo "APPSTORE_API_KEY_PATH=$KEY_PATH" >> "$GITHUB_ENV"
+
+          echo "App Store Connect API key created successfully."
+
+      # ------------------------------------------------------------
+      # Archive
+      #
+      # Automatic Signing:
+      # Xcode lädt/erstellt Provisioning Profiles für
+      # - FirePoint
+      # - OperationListWidgetExtension
+      # automatisch.
+      # ------------------------------------------------------------
+
+      - name: Archive iOS app
+        shell: bash
+        run: |
+          xcodebuild \
+            -workspace "ios/${IOS_WORKSPACE}.xcworkspace" \
+            -scheme "$IOS_SCHEME" \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination "generic/platform=iOS" \
+            -archivePath "$RUNNER_TEMP/${IOS_SCHEME}.xcarchive" \
+            DEVELOPMENT_TEAM="${{ vars.APPLE_TEAM_ID }}" \
+            CURRENT_PROJECT_VERSION="$BUILD_NUMBER" \
+            MARKETING_VERSION="$VERSION_NAME" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$APPSTORE_API_KEY_PATH" \
+            -authenticationKeyID "${{ vars.APPSTORE_API_KEY_ID }}" \
+            -authenticationKeyIssuerID "${{ vars.APPSTORE_ISSUER_ID }}" \
+            archive
+
+      # ------------------------------------------------------------
+      # ExportOptions
+      #
+      # Ebenfalls Automatic Signing.
+      # Keine Provisioning Profiles manuell angeben.
+      # ------------------------------------------------------------
+
+      - name: Create export options
+        shell: bash
+        run: |
+          cat > "$RUNNER_TEMP/ExportOptions.plist" <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+              <key>method</key>
+              <string>app-store-connect</string>
+
+              <key>signingStyle</key>
+              <string>automatic</string>
+
+              <key>teamID</key>
+              <string>${{ vars.APPLE_TEAM_ID }}</string>
+
+              <key>signingCertificate</key>
+              <string>Apple Distribution</string>
+
+              <key>stripSwiftSymbols</key>
+              <true/>
+          </dict>
+          </plist>
+          EOF
+
+      # ------------------------------------------------------------
+      # Export IPA
+      # ------------------------------------------------------------
+
+      - name: Export IPA
+        shell: bash
+        run: |
+          xcodebuild \
+            -exportArchive \
+            -archivePath "$RUNNER_TEMP/${IOS_SCHEME}.xcarchive" \
+            -exportPath "$RUNNER_TEMP/export" \
+            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$APPSTORE_API_KEY_PATH" \
+            -authenticationKeyID "${{ vars.APPSTORE_API_KEY_ID }}" \
+            -authenticationKeyIssuerID "${{ vars.APPSTORE_ISSUER_ID }}"
+
+      # ------------------------------------------------------------
+      # Find IPA
+      # ------------------------------------------------------------
+
+      - name: Locate IPA
+        shell: bash
+        run: |
+          IPA_PATH="$(find "$RUNNER_TEMP/export" -name "*.ipa" -print -quit)"
+
+          if [[ -z "$IPA_PATH" ]]; then
+            echo "No IPA was exported." >&2
+            exit 1
+          fi
+
+          echo "IPA_PATH=$IPA_PATH" >> "$GITHUB_ENV"
+          echo "IPA: $IPA_PATH"
+
+      # ------------------------------------------------------------
+      # GitHub Artifact
+      # ------------------------------------------------------------
+
+      - name: Upload IPA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-${{ env.RELEASE_NAME }}
+          path: ${{ env.IPA_PATH }}
+
+      # ------------------------------------------------------------
+      # App Store Connect / TestFlight
+      # ------------------------------------------------------------
+
+      - name: Upload to App Store Connect
+        uses: Apple-Actions/upload-testflight-build@v3
+        with:
+          app-path: ${{ env.IPA_PATH }}
+          issuer-id: ${{ vars.APPSTORE_ISSUER_ID }}
+          api-key-id: ${{ vars.APPSTORE_API_KEY_ID }}
+          api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
