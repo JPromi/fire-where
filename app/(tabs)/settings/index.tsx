@@ -52,6 +52,20 @@ export default function SettingsScreen() {
   const pageTitle = title(t("settings.title"));
   useHeaderTitleOnFocus(pageTitle);
 
+  function getBuildVersion(): string {
+    const configExtra = Constants.expoConfig?.extra;
+    const version =
+      Platform.OS === "web"
+        ? configExtra?.buildVersion || Constants.expoConfig?.version
+        : DeviceInfo.getVersion() || configExtra?.buildVersion || Constants.expoConfig?.version;
+    const buildNumber =
+      Platform.OS === "web"
+        ? configExtra?.buildNumber
+        : DeviceInfo.getBuildNumber() || configExtra?.buildNumber;
+
+    return `${version ?? ""}${buildNumber && buildNumber !== "unknown" ? ` (${buildNumber})` : ""}`;
+  }
+
   function createSettings(): SettingsGroup[] {
     return [
       {
@@ -126,9 +140,7 @@ export default function SettingsScreen() {
             key: "version",
             name: t("settings.group.software.buildVersion"),
             type: "text",
-            valueExtra:
-              `${Constants.expoConfig?.version}` +
-              (DeviceInfo.getBuildNumber() !== "unknown" ? ` (${DeviceInfo.getBuildNumber()})` : ""),
+            valueExtra: getBuildVersion(),
           },
         ],
       },

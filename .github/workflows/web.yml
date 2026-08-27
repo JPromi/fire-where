@@ -1,0 +1,77 @@
+name: Web
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Base version for develop build"
+        required: true
+        default: "0.0.0"
+
+jobs:
+  build:
+    name: Build web artifact
+    runs-on: ubuntu-latest
+    if: >
+      startsWith(github.ref, 'refs/tags/v') ||
+      github.event_name == 'workflow_dispatch'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create env file
+        run: |
+          {
+            echo 'API_BASE_URL="${{ vars.API_BASE_URL }}"'
+            echo 'INFO_APP_NAME="${{ vars.INFO_APP_NAME }}"'
+            echo 'INFO_DEVELOPER_NAME="${{ vars.INFO_DEVELOPER_NAME }}"'
+            echo 'INFO_DEVELOPER_WEBSITE="${{ vars.INFO_DEVELOPER_WEBSITE }}"'
+            echo 'INFO_APP_WEB_URL="${{ vars.INFO_APP_WEB_URL }}"'
+            echo 'INFO_APP_FEEDBACK_EMAIL="${{ vars.INFO_APP_FEEDBACK_EMAIL }}"'
+            echo 'INFO_APP_REPO_NAME="${{ vars.INFO_APP_REPO_NAME }}"'
+            echo 'INFO_APP_REPO_URL="${{ vars.INFO_APP_REPO_URL }}"'
+            echo 'INFO_APP_IMPRINT_URL="${{ vars.INFO_APP_IMPRINT_URL }}"'
+            echo 'INFO_APP_PRIVACY_URL="${{ vars.INFO_APP_PRIVACY_URL }}"'
+          } > .env
+
+      - name: Determine version
+        shell: bash
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            VERSION_NAME="${GITHUB_REF_NAME#v}"
+            RELEASE_NAME="v${VERSION_NAME}"
+          else
+            VERSION_NAME="${{ inputs.version }}-dev.${GITHUB_RUN_NUMBER}"
+            RELEASE_NAME="${VERSION_NAME}"
+          fi
+
+          echo "VERSION_NAME=$VERSION_NAME" >> "$GITHUB_ENV"
+          echo "VERSION_CODE=$GITHUB_RUN_NUMBER" >> "$GITHUB_ENV"
+          echo "RELEASE_NAME=$RELEASE_NAME" >> "$GITHUB_ENV"
+
+          echo "Version: $VERSION_NAME"
+          echo "Version Code: $GITHUB_RUN_NUMBER"
+
+      - name: Build static web app
+        run: npx expo export --platform web
+
+      - name: Upload web artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-${{ env.VERSION_NAME }}
+          path: dist

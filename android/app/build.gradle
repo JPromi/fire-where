@@ -79,8 +79,8 @@ def enableProguardInReleaseBuilds = (findProperty('android.enableProguardInRelea
  * this variant is about 6MiB larger per architecture than default.
  */
 def jscFlavor = 'io.github.react-native-community:jsc-android:2026004.+'
-def androidVersionName = project.hasProperty('android.version') ? project.property('android.version') : "1.2.1"
-def androidVersionCode = project.hasProperty('android.versionCode') ? project.property('android.versionCode').toInteger() : 9
+def androidVersionName = project.hasProperty('android.version') ? project.property('android.version') : "0.0.0"
+def androidVersionCode = project.hasProperty('android.versionCode') ? project.property('android.versionCode').toInteger() : 1
 
 android {
     ndkVersion rootProject.ext.ndkVersion
