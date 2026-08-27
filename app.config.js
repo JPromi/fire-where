@@ -17,5 +17,9 @@ export default ({ config }) => ({
     infoAppRepoUrl: process.env.INFO_APP_REPO_URL,
     infoAppImprintUrl: process.env.INFO_APP_IMPRINT_URL,
     infoAppPrivacyUrl: process.env.INFO_APP_PRIVACY_URL,
+
+    // Build information
+    buildVersion: process.env.VERSION_NAME,
+    buildNumber: process.env.VERSION_CODE || process.env.BUILD_NUMBER,
   },
 });
