@@ -6,6 +6,7 @@ const StackLayout = () => {
   return (
     <Stack
       screenOptions={{
+        headerTransparent: false,
         animation: "slide_from_right",
         animationDuration: 300,
         header:
