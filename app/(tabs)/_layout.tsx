@@ -78,7 +78,6 @@ export default function TabLayout() {
               default: "FiredepartmentTab",
               selected: "FiredepartmentTab",
             }}
-            renderingMode="template"
           />
           <NativeTabs.Trigger.Label>
             {t("firedepartment.title")}

@@ -3,13 +3,15 @@ import { Stack } from 'expo-router';
 import { Platform } from 'react-native';
 
 export const unstable_settings = {
-  initialRouteName: 'index',
+  anchor: 'index',
 };
 
 const StackLayout = () => {
   return (
     <Stack
       screenOptions={{
+        // Keep content below the header, including on iOS 26+.
+        headerTransparent: false,
         animation: 'slide_from_right',
         animationDuration: 300,
         header:
