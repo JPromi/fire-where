@@ -19,7 +19,7 @@ import {
   StyleSheet,
   TextInput,
   useColorScheme,
-  View,
+  View
 } from "react-native";
 
 export default function FiredepartmentDetailScreen() {
@@ -148,22 +148,26 @@ export default function FiredepartmentDetailScreen() {
           <View
             style={{
               paddingHorizontal: 10,
-              paddingVertical: Platform.OS === "android" ? 0 : 10,
+              paddingVertical: 0,
               marginVertical: 20,
               marginHorizontal: 12,
               backgroundColor:
                 Colors[colorScheme ?? "light"].backgroundForground,
               borderRadius: 100,
               display: "flex",
+              flexDirection: "row",
             }}
           >
             <TextInput
               placeholder={t("firedepartment.search.placeholder")}
               onChangeText={searchChange}
+              value={query}
               returnKeyType="search"
               style={{
                 color: Colors[colorScheme ?? "light"].text,
+                height: 35,
                 paddingHorizontal: 5,
+                flex: 1,
                 ...Platform.select({
                   web: {
                     outline: "none",
@@ -171,6 +175,28 @@ export default function FiredepartmentDetailScreen() {
                 }),
               }}
             />
+            {query.length > 0 && (
+              <Pressable
+                style={{
+                  width: 35,
+                  height: 35,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+                onPress={() => {
+                  setQuery("");
+                }}
+              >
+                <IconSymbol
+                  name="xmark"
+                  color={
+                      Colors[colorScheme ?? "light"].text
+                  }
+                  size={16}
+                />
+              </Pressable>
+            )}
           </View>
 
           {/* List */}
