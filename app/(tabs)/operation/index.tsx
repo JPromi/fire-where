@@ -1,5 +1,5 @@
-import { Stack, useFocusEffect, useRouter } from "expo-router";
 import { BlurTargetView } from "expo-blur";
+import { Stack, useFocusEffect, useRouter } from "expo-router";
 import {
   ActivityIndicator,
   Platform,
@@ -28,16 +28,34 @@ import { useDynamicSide } from "@/hooks/useDynamicSide";
 import { LocationStatistic } from "@/models/LocationStatistic";
 import { OperationService } from "@/services/OperationService";
 import { ServiceService } from "@/services/ServiceService";
+import { SettingService } from "@/services/local/SettingService";
 import { title } from "@/utils/TitleFunction";
 import { useHeaderTitleOnFocus } from "@/utils/UseHeaderTitleOnFocus";
 import { useTranslation } from "react-i18next";
+
+const FEDERAL_STATE_MAPPING: Record<string, string> = {
+  la: "lower-austria",
+  ua: "upper-austria",
+  bl: "burgenland",
+  ty: "tyrol",
+  st: "styria",
+  ca: "carinthia",
+  sb: "salzburg",
+  vb: "vorarlberg",
+  vi: "vienna",
+};
+
+type JumpTarget = {
+  federalStateId: string;
+  districtId?: string;
+};
 
 export default function OperationSelectFederalStateScreen() {
   const colorScheme = useColorScheme();
   const { t } = useTranslation();
   const router = useRouter();
   const dynamicSide = useDynamicSide();
-  const blurTargetRef = useRef<View | null>(null);
+  const blurTargetRef = useRef(null);
   const mapBottomSpacing =
     dynamicSide.bottom + (Platform.OS === "ios" ? 0 : 50);
   const [isMapView, setIsMapView] = useState(true);
@@ -45,6 +63,7 @@ export default function OperationSelectFederalStateScreen() {
   const [federalStates, setFederalStates] = useState<FederalState[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [blurTargetReady, setBlurTargetReady] = useState(false);
+  const hasInitialJumpRun = useRef(false);
 
   const [lastDataUpdate, setLastDataUpdate] = useState<Date | null>(null);
 
@@ -61,6 +80,47 @@ export default function OperationSelectFederalStateScreen() {
       setFederalStatesFromData();
     }, []),
   );
+
+  // Jump to fs/district
+  useEffect(() => {
+    let isActive = true;
+
+    async function jumpToDestination() {
+      if (hasInitialJumpRun.current) {
+        return;
+      }
+      hasInitialJumpRun.current = true;
+
+      const jumpTarget = await resolveJumpTarget();
+      if (!isActive || !jumpTarget) {
+        return;
+      }
+
+      if (jumpTarget.districtId && jumpTarget.federalStateId) {
+        router.push({
+          pathname: "/operation/[federalStateId]/[districtId]",
+          params: {
+            federalStateId: jumpTarget.federalStateId,
+            districtId: jumpTarget.districtId,
+          },
+        });
+        return;
+      }
+
+      if (jumpTarget.federalStateId) {
+        router.push({
+          pathname: "/operation/[federalStateId]",
+          params: { federalStateId: jumpTarget.federalStateId },
+        });
+      }
+    }
+
+    jumpToDestination();
+
+    return () => {
+      isActive = false;
+    };
+  }, [router]);
 
   function setFederalStatesFromData() {
     const data: FederalState[] = federStatesData.map((fs) => ({
@@ -106,6 +166,28 @@ export default function OperationSelectFederalStateScreen() {
         params: { federalStateId: longId },
       });
     }
+  }
+
+  async function resolveJumpTarget(): Promise<JumpTarget | null> {
+    const federalState = await SettingService.getByKey("jumpToFederalState");
+    if (!federalState) {
+      return null;
+    }
+
+    const federalStateId = FEDERAL_STATE_MAPPING[String(federalState)] || "";
+    if (!federalStateId) {
+      return null;
+    }
+
+    const district = await SettingService.getByKey("jumpToDistrict");
+    if (district) {
+      return {
+        federalStateId,
+        districtId: String(district),
+      };
+    }
+
+    return { federalStateId };
   }
 
   function getStatistic() {
