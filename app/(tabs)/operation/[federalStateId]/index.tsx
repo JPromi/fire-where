@@ -2,6 +2,7 @@ import districtData from "@/assets/data/districts.json";
 import federalStatesData from "@/assets/data/federal-states.json";
 import IconAtMap from "@/assets/icons/map-at.svg";
 import { SvgAtFederalStateMap } from "@/components/assets/SvgAtFederalStateMap";
+import { OwnHistoryStack } from "@/components/OwnHistoryStack";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { uiError } from "@/components/ui/ErrorMessage";
@@ -14,6 +15,7 @@ import { LocationStatistic } from "@/models/LocationStatistic";
 import { OperationService } from "@/services/OperationService";
 import { title } from "@/utils/TitleFunction";
 import { useHeaderTitleOnFocus } from "@/utils/UseHeaderTitleOnFocus";
+import { BlurTargetView } from "expo-blur";
 import {
   Stack,
   useFocusEffect,
@@ -21,7 +23,6 @@ import {
   useNavigation,
   useRouter,
 } from "expo-router";
-import { BlurTargetView } from "expo-blur";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -174,6 +175,7 @@ export default function OperationSelectDistrict() {
   if (loaded) {
     return (
       <>
+        {federalState?.id === "la" && <OwnHistoryStack />}
         <ThemedView style={[styles.container]}>
           <BlurTargetView
             ref={blurTargetRef}

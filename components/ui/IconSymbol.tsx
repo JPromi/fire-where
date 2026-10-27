@@ -26,7 +26,9 @@ type IconSymbolName =
   | 'square.and.arrow.up'
   | 'star'
   | 'star.fill'
-  | 'x';
+  | 'x'
+  | 'clock'
+  ;
 
 const ICONS: Record<IconSymbolName, any> = {
   'house.fill': fa.faHouse,
@@ -52,7 +54,8 @@ const ICONS: Record<IconSymbolName, any> = {
   'square.and.arrow.up': fa.faShareAlt,
   'star': fa.faStar,
   'star.fill': fa.faStar,
-  'x': fa.faXmark
+  'x': fa.faXmark,
+  'clock': fa.faClock,
 };
 
 export function IconSymbol({
