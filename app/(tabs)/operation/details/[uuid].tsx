@@ -7,9 +7,11 @@ import { IconSymbol } from "@/components/ui/IconSymbol";
 import { OperationTypeView } from "@/components/ui/OperationTypeView";
 import { Colors } from "@/constants/Colors";
 import { CONFIG } from "@/constants/Config";
+import { GrisuOperation } from "@/dtos/GrisuOperation.dto";
 import { ServiceOriginEnum } from "@/enums/ServiceOriginEnum";
 import { useDynamicSide } from "@/hooks/useDynamicSide";
 import { Operation } from "@/models/Operation";
+import { LaInfoscreenService } from "@/services/LaInfoscreenService";
 import { SettingService } from "@/services/local/SettingService";
 import { OperationService } from "@/services/OperationService";
 import { title } from "@/utils/TitleFunction";
@@ -50,6 +52,7 @@ export default function OperationDetailScreen() {
   }>({});
 
   const [operation, setOperation] = useState<Operation | undefined>(undefined);
+  const [infoscreenOperation, setInfoscreenOperation] = useState<GrisuOperation | undefined>(undefined);
 
   const pageTitle = title(operation?.alarm?.message ?? "...");
   useHeaderTitleOnFocus(pageTitle);
@@ -93,7 +96,24 @@ export default function OperationDetailScreen() {
       .finally(() => {
         setLoading(false);
         setRefreshing(false);
+
+
+        // load LA extended data if enabled
+        if (laShowExtendedData) {
+          LaInfoscreenService.getHistoryOperations().then((operations) => {
+            if (operations?.CurrentState === "data" && operations.EinsatzData && operation) {
+              setInfoscreenOperation(operations.EinsatzData.find((op) => op.EinsatzID === operation.externalIds.lowerAustriaSysId) as GrisuOperation);
+              if (infoscreenOperation) {
+                updateOperationWithLaExtendedData(
+                  operation,
+                  infoscreenOperation as GrisuOperation,
+                );
+              }
+            }
+          });
+        }
       });
+    
   }
 
   function onRefresh() {
@@ -156,7 +176,9 @@ export default function OperationDetailScreen() {
       minute: "2-digit",
     });
 
-    if (operation.system.serviceOrigin === ServiceOriginEnum.LA_WASTL_PUB) {
+    if (
+      operation.system.serviceOrigin === ServiceOriginEnum.LA_WASTL_PUB && !infoscreenOperation
+    ) {
       newDateString = newDateString.slice(0, -1) + "x";
       return newDateString;
     } else {
@@ -192,6 +214,56 @@ export default function OperationDetailScreen() {
     return (
       typeof navigator !== "undefined" && typeof navigator.share === "function"
     );
+  }
+
+  // LA extended data
+  const [laShowExtendedData, setLaShowExtendedData] = useState(false);
+
+  useEffect(() => {
+    if (operation?.system.serviceOrigin === ServiceOriginEnum.LA_WASTL_PUB) {
+      SettingService.getByKey("laExtendedMode").then((value) => {
+        if (value) {
+          setLaShowExtendedData(value as boolean);
+        } else {
+          setLaShowExtendedData(false);
+        }
+      });
+    }
+  },[]);
+
+  function updateOperationWithLaExtendedData(operation: Operation, laOperation: GrisuOperation) {
+    const updatedOperation: Operation = {
+      ...operation
+    };
+
+    if (laOperation.Dispositionen && laOperation.Dispositionen.length > 0) {
+
+      // Firedepartments
+      for (const dispo of operation.firedepartments || []) {
+        const laDispo = laOperation.Dispositionen.find((d) => d.Name === dispo.firedepartment?.name);
+
+        if (laDispo) {
+          dispo.alarmTime = laDispo.AlarmTime || dispo.alarmTime;
+          dispo.dispoTime = laDispo.DispoTime || dispo.dispoTime;
+          dispo.outTime = laDispo.AusTime || dispo.outTime;
+          dispo.inTime = laDispo.EinTime || dispo.inTime;
+        }
+      }
+
+      // Units
+      for (const dispo of operation.units || []) {
+        const laDispo = laOperation.Dispositionen.find((d) => d.Name === dispo.unit?.name);
+
+        if (laDispo) {
+          dispo.alarmTime = laDispo.AlarmTime || dispo.alarmTime;
+          dispo.dispoTime = laDispo.DispoTime || dispo.dispoTime;
+          dispo.outTime = laDispo.AusTime || dispo.outTime;
+          dispo.inTime = laDispo.EinTime || dispo.inTime;
+        }
+      }
+    }
+
+    setOperation(updatedOperation);
   }
 
   return (
