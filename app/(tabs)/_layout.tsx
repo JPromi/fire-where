@@ -1,6 +1,6 @@
 import Firedepartment from "@/assets/icons/firedepartment.svg";
-import { Tabs } from "expo-router";
-import { NativeTabs } from "expo-router/unstable-native-tabs";
+import { Tabs, useGlobalSearchParams } from "expo-router";
+import { NativeTabs } from "expo-router/native-tabs";
 import { useEffect } from "react";
 import { Platform } from "react-native";
 
@@ -13,7 +13,6 @@ import { useDynamicBottom } from "@/hooks/useDynamicBottom";
 import i18n from "@/i18n";
 import { settingsLocalService } from "@/services/local/SettingLocalService";
 import { SettingService } from "@/services/local/SettingService";
-import { CommonActions } from "expo-router/react-navigation";
 import { useTranslation } from "react-i18next";
 
 export default function TabLayout() {
@@ -21,6 +20,7 @@ export default function TabLayout() {
   const theme = colorScheme === "dark" ? "dark" : "light";
   const marginBottom = useDynamicBottom();
   const { t } = useTranslation();
+  const { embedded } = useGlobalSearchParams<{ embedded?: string }>();
 
   // init i18n
   useEffect(() => {
@@ -50,9 +50,7 @@ export default function TabLayout() {
     });
   }, []);
 
-  const isEmbedded =
-    Platform.OS === "web" &&
-    new URLSearchParams(window.location.search).get("embedded") === "true";
+  const isEmbedded = Platform.OS === "web" && embedded === "true";
 
   if (Platform.OS === "ios") {
     return (
@@ -74,10 +72,7 @@ export default function TabLayout() {
         </NativeTabs.Trigger>
         <NativeTabs.Trigger name="firedepartment" disableAutomaticContentInsets>
           <NativeTabs.Trigger.Icon
-            xcasset={{
-              default: "FiredepartmentTab",
-              selected: "FiredepartmentTab",
-            }}
+            src={require("@/assets/icons/firedepartment-tab.png")}
             renderingMode="template"
           />
           <NativeTabs.Trigger.Label>
@@ -134,16 +129,6 @@ export default function TabLayout() {
           ),
           // href: '/operation',
         }}
-        listeners={({ navigation }) => ({
-          tabPress: (e) => {
-            navigation.dispatch(
-              CommonActions.reset({
-                index: 0,
-                routes: [{ name: "operation" }],
-              }),
-            );
-          },
-        })}
       />
       <Tabs.Screen
         name="firedepartment"
@@ -156,16 +141,6 @@ export default function TabLayout() {
           ),
           // href: '/firedepartment',
         }}
-        listeners={({ navigation }) => ({
-          tabPress: (e) => {
-            navigation.dispatch(
-              CommonActions.reset({
-                index: 0,
-                routes: [{ name: "firedepartment" }],
-              }),
-            );
-          },
-        })}
       />
       <Tabs.Screen
         name="settings"
@@ -176,16 +151,6 @@ export default function TabLayout() {
             <IconSymbol size={28} name="gear" color={color} />
           ),
         }}
-        listeners={({ navigation }) => ({
-          tabPress: (e) => {
-            navigation.dispatch(
-              CommonActions.reset({
-                index: 0,
-                routes: [{ name: "settings" }],
-              }),
-            );
-          },
-        })}
       />
       {/* <Tabs.Screen
         name="operation/[federalStateId]"

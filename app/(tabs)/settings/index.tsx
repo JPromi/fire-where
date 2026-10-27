@@ -8,7 +8,7 @@ import { settingsLocalService } from "@/services/local/SettingLocalService";
 import { SettingService } from "@/services/local/SettingService";
 import { title } from "@/utils/TitleFunction";
 import { useHeaderTitleOnFocus } from "@/utils/UseHeaderTitleOnFocus";
-import Constants from "expo-constants";
+import { getBuildVersion } from "@/utils/BuildVersion";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -24,7 +24,6 @@ import {
   useColorScheme,
   View,
 } from "react-native";
-import DeviceInfo from "react-native-device-info";
 
 type SettingsItem = {
   key: string;
@@ -51,20 +50,6 @@ export default function SettingsScreen() {
   const [loading, setLoading] = useState(true);
   const pageTitle = title(t("settings.title"));
   useHeaderTitleOnFocus(pageTitle);
-
-  function getBuildVersion(): string {
-    const configExtra = Constants.expoConfig?.extra;
-    const version =
-      Platform.OS === "web"
-        ? configExtra?.buildVersion || Constants.expoConfig?.version
-        : DeviceInfo.getVersion() || configExtra?.buildVersion || Constants.expoConfig?.version;
-    const buildNumber =
-      Platform.OS === "web"
-        ? configExtra?.buildNumber
-        : DeviceInfo.getBuildNumber() || configExtra?.buildNumber;
-
-    return `${version ?? ""}${buildNumber && buildNumber !== "unknown" ? ` (${buildNumber})` : ""}`;
-  }
 
   function createSettings(): SettingsGroup[] {
     return [
