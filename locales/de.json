@@ -189,6 +189,12 @@
       "inOperationSince": "Im Einsatz seit",
       "operationDuration": "Einsatzdauer",
       "shareMessage": "{{alarm}} - {{title}}\n{{url}}",
+      "extendedData": {
+        "title": "Erweiterte Einsatz Daten",
+        "additionalInformation": "Bemerkungen",
+        "address": "Adresse",
+        "object": "Objekt"
+      },
       "summary": {
         "firedepartment_one": "{{count}} Feuerwehr",
         "firedepartment_other": "{{count}} Feuerwehren",

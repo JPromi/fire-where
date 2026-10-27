@@ -454,6 +454,92 @@ export default function OperationDetailScreen() {
                 </View>
               </View>
 
+              {/* La Extended Data */}
+              { infoscreenOperation && laShowExtendedData && (
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    borderColor: Colors[colorScheme ?? "light"].border,
+                    borderWidth: 1,
+                    borderRadius: 8,
+                    padding: 12,
+                    paddingTop: 20,
+                    marginBottom: 20,
+                    width: "100%",
+                    maxWidth: 1000,
+                    alignSelf: "center",
+                    gap: 12,
+                  }}>
+
+                  {/* Title */}
+                  <View
+                    style={{
+                      paddingHorizontal: 6,
+                      top: -7,
+                      left: 6,
+                      position: "absolute",
+                      backgroundColor: Colors[colorScheme ?? "light"].background,
+                    }}>
+                    <ThemedText
+                      style={{
+                        opacity: 0.5,
+                        fontSize: 14,
+                        lineHeight: 15,
+                      }}>
+                      {t("operation.details.extendedData.title")}
+                    </ThemedText>
+                  </View>
+
+                  {/* Additional Information */}
+                  { infoscreenOperation.Bemerkung && (
+                    <View>
+                      <ThemedText
+                        style={{
+                          opacity: 0.5,
+                          fontSize: 14,
+                          lineHeight: 15,
+                        }}
+                      >
+                        {t("operation.details.extendedData.additionalInformation")}
+                      </ThemedText>
+                      <ThemedText>{infoscreenOperation.Bemerkung}</ThemedText>
+                    </View>
+                  )}
+                  
+                  {/* Address */}
+                  <View>
+                    <ThemedText
+                      style={{
+                        opacity: 0.5,
+                        fontSize: 14,
+                        lineHeight: 15,
+                      }}
+                    >
+                      {t("operation.details.extendedData.address")}
+                    </ThemedText>
+                    <ThemedText>{infoscreenOperation.Strasse} {infoscreenOperation.Nummer1} {infoscreenOperation.Nummer2} {infoscreenOperation.Nummer3}</ThemedText>
+                    <ThemedText>{infoscreenOperation.Ort} {infoscreenOperation.Plz}</ThemedText>
+                  </View>
+
+                  {/* Objekt */}
+                  { infoscreenOperation.Objekt && (
+                    <View>
+                      <ThemedText
+                        style={{
+                          opacity: 0.5,
+                          fontSize: 14,
+                          lineHeight: 15,
+                        }}
+                      >
+                        {t("operation.details.extendedData.object")}
+                      </ThemedText>
+                      <ThemedText>{infoscreenOperation.Objekt}</ThemedText>
+                    </View>
+                  )}
+                </View>
+              ) }
+
               {/* Resource Sum */}
               {operation.firedepartments?.length > 0 ||
               operation.units?.length > 0 ? (
