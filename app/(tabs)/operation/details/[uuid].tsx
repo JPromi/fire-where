@@ -53,6 +53,7 @@ export default function OperationDetailScreen() {
 
   const [operation, setOperation] = useState<Operation | undefined>(undefined);
   const [infoscreenOperation, setInfoscreenOperation] = useState<GrisuOperation | undefined>(undefined);
+  const [laShowExtendedData, setLaShowExtendedData] = useState(false);
 
   const pageTitle = title(operation?.alarm?.message ?? "...");
   useHeaderTitleOnFocus(pageTitle);
@@ -79,41 +80,42 @@ export default function OperationDetailScreen() {
     );
   }, [operation]);
 
-  function getOperation(uuid: string, setLoadingState: boolean = true) {
+  async function getOperation(uuid: string, setLoadingState: boolean = true) {
     if (setLoadingState) {
       setLoading(true);
     }
-    OperationService.getOperation(uuid)
-      .then(setOperation)
-      .catch((error) => {
-        console.error(error);
-        uiError(
-          error.request.status === 404
-            ? t("common.error.notFound")
-            : t("common.error.internalServerError"),
-        );
-      })
-      .finally(() => {
-        setLoading(false);
-        setRefreshing(false);
+    try {
+      const loadedOperation = await OperationService.getOperation(uuid);
+      setOperation(loadedOperation);
 
+      // load LA extended data if enabled
+      if (loadedOperation.system.serviceOrigin === ServiceOriginEnum.LA_WASTL_PUB) {
+        const laExtendedMode = await SettingService.getByKey("laExtendedMode") === true;
+        setLaShowExtendedData(laExtendedMode);
 
-        // load LA extended data if enabled
-        if (laShowExtendedData) {
-          LaInfoscreenService.getHistoryOperations().then((operations) => {
-            if (operations?.CurrentState === "data" && operations.EinsatzData && operation) {
-              setInfoscreenOperation(operations.EinsatzData.find((op) => op.EinsatzID === operation.externalIds.lowerAustriaSysId) as GrisuOperation);
-              if (infoscreenOperation) {
-                updateOperationWithLaExtendedData(
-                  operation,
-                  infoscreenOperation as GrisuOperation,
-                );
-              }
-            }
-          });
+        if (laExtendedMode) {
+          const operations = await LaInfoscreenService.getHistoryOperations();
+          const laOperation = operations?.CurrentState === "data"
+            ? operations.EinsatzData?.find((op) => op.EinsatzID === loadedOperation.externalIds.lowerAustriaSysId)
+            : undefined;
+
+          setInfoscreenOperation(laOperation);
+          if (laOperation) {
+            updateOperationWithLaExtendedData(loadedOperation, laOperation);
+          }
         }
-      });
-    
+      }
+    } catch (error: any) {
+      console.error(error);
+      uiError(
+        error.request?.status === 404
+          ? t("common.error.notFound")
+          : t("common.error.internalServerError"),
+      );
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
   }
 
   function onRefresh() {
@@ -216,21 +218,29 @@ export default function OperationDetailScreen() {
     );
   }
 
-  // LA extended data
-  const [laShowExtendedData, setLaShowExtendedData] = useState(false);
+  function withViennaTimeZone(value: string | null): string | undefined {
+    if (!value) return undefined;
 
-  useEffect(() => {
-    if (operation?.system.serviceOrigin === ServiceOriginEnum.LA_WASTL_PUB) {
-      SettingService.getByKey("laExtendedMode").then((value) => {
-        if (value) {
-          setLaShowExtendedData(value as boolean);
-        } else {
-          setLaShowExtendedData(false);
-        }
-      });
+    const wallTime = Date.parse(`${value}Z`);
+    if (!Number.isFinite(wallTime)) return undefined;
+
+    const options: Intl.DateTimeFormatOptions = {
+      year: "numeric", month: "2-digit", day: "2-digit",
+      hour: "2-digit", minute: "2-digit", second: "2-digit",
+      hourCycle: "h23",
+    };
+    const vienna = new Intl.DateTimeFormat("en-GB", { ...options, timeZone: "Europe/Vienna" });
+    const expected = new Intl.DateTimeFormat("en-GB", { ...options, timeZone: "UTC" }).format(wallTime);
+
+    // Use the offset that reproduces the API's wall-clock time in Vienna.
+    for (const offset of ["+01:00", "+02:00"]) {
+      const result = `${value}${offset}`;
+      if (vienna.format(new Date(result)) === expected) return result;
     }
-  },[]);
+    return undefined;
+  }
 
+  // LA extended data
   function updateOperationWithLaExtendedData(operation: Operation, laOperation: GrisuOperation) {
     const updatedOperation: Operation = {
       ...operation
@@ -243,10 +253,10 @@ export default function OperationDetailScreen() {
         const laDispo = laOperation.Dispositionen.find((d) => d.Name === dispo.firedepartment?.name);
 
         if (laDispo) {
-          dispo.alarmTime = laDispo.AlarmTime || dispo.alarmTime;
-          dispo.dispoTime = laDispo.DispoTime || dispo.dispoTime;
-          dispo.outTime = laDispo.AusTime || dispo.outTime;
-          dispo.inTime = laDispo.EinTime || dispo.inTime;
+          dispo.alarmTime = withViennaTimeZone(laDispo.AlarmTime) ?? dispo.alarmTime;
+          dispo.dispoTime = withViennaTimeZone(laDispo.DispoTime) ?? dispo.dispoTime;
+          dispo.outTime = withViennaTimeZone(laDispo.AusTime) ?? dispo.outTime;
+          dispo.inTime = withViennaTimeZone(laDispo.EinTime) ?? dispo.inTime;
         }
       }
 
@@ -255,13 +265,17 @@ export default function OperationDetailScreen() {
         const laDispo = laOperation.Dispositionen.find((d) => d.Name === dispo.unit?.name);
 
         if (laDispo) {
-          dispo.alarmTime = laDispo.AlarmTime || dispo.alarmTime;
-          dispo.dispoTime = laDispo.DispoTime || dispo.dispoTime;
-          dispo.outTime = laDispo.AusTime || dispo.outTime;
-          dispo.inTime = laDispo.EinTime || dispo.inTime;
+          dispo.alarmTime = withViennaTimeZone(laDispo.AlarmTime) ?? dispo.alarmTime;
+          dispo.dispoTime = withViennaTimeZone(laDispo.DispoTime) ?? dispo.dispoTime;
+          dispo.outTime = withViennaTimeZone(laDispo.AusTime) ?? dispo.outTime;
+          dispo.inTime = withViennaTimeZone(laDispo.EinTime) ?? dispo.inTime;
         }
       }
+      
     }
+
+    updatedOperation.startTime =
+      withViennaTimeZone(laOperation.EinsatzErzeugt) ?? operation.startTime;
 
     setOperation(updatedOperation);
   }
