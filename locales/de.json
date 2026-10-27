@@ -314,5 +314,11 @@
       "disclaimer1": "Die erweiterten Einsatzdaten sind nur für Feuerwehrmitglider in Niederösterreich verfügbar.\nUm Zugriff zu erhalten, muss der obenstehende Aktivierungscode im Infoscreen Admin Bereich aktiviert werden.",
       "disclaimer2": "Bei Aktivierung der erweiterten Daten werden die Daten direkt von der infoscreen.florian10.info API geladen, Fire Where speichert weder die Daten noch werden sie an andere Dienste weitergegeben."
     }
+  },
+  "errorPage": {
+    "functionalityNotAvailable": {
+      "web": "Diese Funktionalität ist in der Web-Version nicht verfügbar.",
+      "mobile": "Diese Funktionalität ist in der mobilen Version nicht verfügbar."
+    }
   }
 }

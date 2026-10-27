@@ -314,8 +314,10 @@ export default function SettingsScreen() {
 
   // data
   async function clearAllData() {
-    await SecureStore.deleteItemAsync("laInfoscreenAccessToken");
-    await SecureStore.deleteItemAsync("laInfoscreenAccessCode");
+    if (Platform.OS !== "web") {
+      await SecureStore.deleteItemAsync("laInfoscreenAccessToken");
+      await SecureStore.deleteItemAsync("laInfoscreenAccessCode");
+    }
     await SettingService.clearAll();
     await loadSettings();
     await FavouritesService.clearAllFavourites();
