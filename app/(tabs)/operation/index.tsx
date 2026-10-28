@@ -20,7 +20,6 @@ import { FederalState } from "@/models/FederalState";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import federalStatesData from "@/assets/data/federal-states.json";
-import { OwnHistoryStack } from "@/components/OwnHistoryStack";
 import { SvgAtMap } from "@/components/assets/SvgAtMap";
 import { uiError } from "@/components/ui/ErrorMessage";
 import { IconSymbol } from "@/components/ui/IconSymbol";
@@ -223,7 +222,6 @@ export default function OperationSelectFederalStateScreen() {
   if (loaded) {
     return (
       <>
-        <OwnHistoryStack />
         <ThemedView style={styles.container}>
           <BlurTargetView
             ref={blurTargetRef}
