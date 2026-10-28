@@ -299,6 +299,7 @@ export default function FiredepartmentDetailScreen() {
                           height: "50%",
                           left: "5%",
                           objectFit: "contain",
+                          paddingLeft: dynamicSide.left,
                           filter:
                             "drop-shadow(0 0 10px " +
                             (Colors[colorScheme ?? "light"].background + "88") +
@@ -318,6 +319,7 @@ export default function FiredepartmentDetailScreen() {
                           shadowOffset: { width: 0, height: 0 },
                           shadowOpacity: 0.75,
                           shadowRadius: 10,
+                          paddingLeft: dynamicSide.left,
                         }}
                       >
                         {firedepartment.logo.split(".").pop()?.toLowerCase() ===
@@ -356,6 +358,7 @@ export default function FiredepartmentDetailScreen() {
                     display: "flex",
                     flexDirection: "row-reverse",
                     gap: 10,
+                    paddingRight: dynamicSide.right,
                   }}
                 >
                   {/* favourite button */}

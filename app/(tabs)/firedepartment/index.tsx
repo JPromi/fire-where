@@ -143,7 +143,14 @@ export default function FiredepartmentDetailScreen() {
             display: 'flex',
           }}
           contentContainerStyle={{ flexGrow: 1 }}> */}
-        <View style={[styles.contentList, { flex: 1 }]}>
+        <View style={[
+          styles.contentList,
+          {
+            flex: 1,
+            paddingLeft: dynamicSide.left,
+            paddingRight: dynamicSide.right,
+          }
+        ]}>
           {/* Search */}
           <View
             style={{

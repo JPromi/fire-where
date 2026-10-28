@@ -138,7 +138,13 @@ export default function FiredepartmentOperationScreen() {
 
   return (
     <>
-      <ThemedView style={styles.container}>
+      <ThemedView style={[
+        styles.container,
+        {
+          paddingRight: dynamicSide.right,
+          paddingLeft: dynamicSide.left, 
+        }
+      ]}>
         <View style={[styles.containerScrollView]}>
           <Pressable
             style={{
