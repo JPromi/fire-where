@@ -168,6 +168,11 @@
     "time": {
       "hours": "Sati",
       "minutes": "Minute"
+    },
+    "customError": {
+      "firedepartmentNotFound": "Vatrogasno društvo nije pronađeno.",
+      "operationNotFound": "Intervencija nije pronađena.",
+      "maxFavouritesReached": "Dosegnut je najveći broj favorita ({{max}}). Najprije uklonite jedno vatrogasno društvo iz favorita."
     }
   },
   "operation": {
@@ -212,6 +217,12 @@
           "lowerAustriaSysId": "Donja Austrija sistemski ID",
           "lowerAustriaId": "Donja Austrija ID"
         }
+      },
+      "extendedData": {
+        "title": "Prošireni podaci o intervenciji",
+        "additionalInformation": "Napomene",
+        "address": "Adresa",
+        "object": "Objekt"
       }
     }
   },
@@ -227,7 +238,28 @@
     "details": {
       "shareMessage": "{{firedepartment}}\n{{url}}",
       "chip": {
-        "volunteer": "Dobrovoljno"
+        "volunteer": "Dobrovoljno",
+        "ready": "Spremno za intervenciju",
+        "inOperation": "Na intervenciji"
+      },
+      "operationsOverview": {
+        "currentOperations": "Trenutačne intervencije",
+        "allOperations": "Sve intervencije"
+      },
+      "operations": {
+        "title": "Intervencije",
+        "filter": {
+          "title": "Filtar",
+          "date": {
+            "label": "Datum",
+            "start": "Početak",
+            "end": "Kraj"
+          },
+          "buttons": {
+            "load": "Učitaj",
+            "reset": "Poništi"
+          }
+        }
       }
     }
   },
@@ -267,6 +299,27 @@
       "jumpToDistrict": {
         "title": "Skok na okrug"
       }
+    },
+    "laExtended": {
+      "title": "Prošireni podaci za Donju Austriju",
+      "extendedViewActivated": "Prošireni prikaz je aktiviran",
+      "authentication": {
+        "title": "Autentifikacija",
+        "accessCode": "Aktivacijski kod",
+        "accessCodeAuthenticated": "Autentifikacija uspješna",
+        "checkAccess": "Provjera pristupnih podataka",
+        "checkAccessButton": "Provjeri"
+      },
+      "confirmDisableExtendedMode": "Deaktivirati prošireni prikaz za Donju Austriju?",
+      "confirmDisableExtendedModeMessage": "Time će se izbrisati svi spremljeni pristupni podaci i prošireni podaci više se neće prikazivati.",
+      "disclaimer1": "Prošireni podaci o intervencijama dostupni su samo članovima vatrogasnih društava u Donjoj Austriji.\nZa pristup je potrebno aktivirati gore navedeni aktivacijski kod u administratorskom sučelju sustava Infoscreen.",
+      "disclaimer2": "Kada su prošireni podaci aktivirani, podaci se učitavaju izravno putem API-ja infoscreen.florian10.info. Fire Where ne pohranjuje te podatke niti ih prosljeđuje drugim servisima."
+    }
+  },
+  "errorPage": {
+    "functionalityNotAvailable": {
+      "web": "Ova funkcija nije dostupna u web-verziji.",
+      "mobile": "Ova funkcija nije dostupna u mobilnoj verziji."
     }
   }
 }
