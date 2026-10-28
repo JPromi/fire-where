@@ -165,6 +165,11 @@
       "notFound": "Not found",
       "internalServerError": "An error occurred while processing the request"
     },
+    "customError": {
+      "firedepartmentNotFound": "The fire department was not found.",
+      "operationNotFound": "The operation was not found.",
+      "maxFavouritesReached": "The limit of {{max}} favorites has been reached. Please remove a fire department from the favorites first."
+    },
     "time": {
       "hours": "hours",
       "minutes": "minutes"
@@ -179,6 +184,12 @@
       "inOperationSince": "In operation since",
       "operationDuration": "Operation duration",
       "shareMessage": "{{alarm}} - {{title}}\n{{url}}",
+      "extendedData": {
+        "title": "Extended Incident Data",
+        "additionalInformation": "Additional Information",
+        "address": "Address",
+        "object": "Object"
+      },
       "summary": {
         "firedepartment_one": "{{count}} Fire Department",
         "firedepartment_other": "{{count}} Fire Departments",
@@ -288,6 +299,27 @@
       "jumpToDistrict": {
         "title": "Jump to District"
       }
+    },
+    "laExtended": {
+      "title": "Lower Austria extended data",
+      "extendedViewActivated": "Extended view activated",
+      "authentication": {
+        "title": "Authentication",
+        "accessCode": "Activation Code",
+        "accessCodeAuthenticated": "Authenticated",
+        "checkAccess": "Check Access",
+        "checkAccessButton": "Check"
+      },
+      "confirmDisableExtendedMode": "Disable extended view",
+      "confirmDisableExtendedModeMessage": "By disabling the extended view, all saved access data will be deleted and the extended data will no longer be displayed.",
+      "disclaimer1": "The extended operation data is only available to firefighters in Lower Austria.\nTo gain access, the activation code above must be activated in the Infoscreen Admin area.",
+      "disclaimer2": "When activating the extended data, the data is loaded directly from the infoscreen.florian10.info API, and Fire Where does not store the data or pass it on to other services."
+    }
+  },
+  "errorPage": {
+    "functionalityNotAvailable": {
+      "web": "This functionality is not available in the web version.",
+      "mobile": "This functionality is not available in the mobile version."
     }
   }
 }

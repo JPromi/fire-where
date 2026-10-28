@@ -7,9 +7,11 @@ import { IconSymbol } from "@/components/ui/IconSymbol";
 import { OperationTypeView } from "@/components/ui/OperationTypeView";
 import { Colors } from "@/constants/Colors";
 import { CONFIG } from "@/constants/Config";
+import { GrisuOperation } from "@/dtos/GrisuOperation.dto";
 import { ServiceOriginEnum } from "@/enums/ServiceOriginEnum";
 import { useDynamicSide } from "@/hooks/useDynamicSide";
 import { Operation } from "@/models/Operation";
+import { LaInfoscreenService } from "@/services/LaInfoscreenService";
 import { SettingService } from "@/services/local/SettingService";
 import { OperationService } from "@/services/OperationService";
 import { title } from "@/utils/TitleFunction";
@@ -50,6 +52,8 @@ export default function OperationDetailScreen() {
   }>({});
 
   const [operation, setOperation] = useState<Operation | undefined>(undefined);
+  const [infoscreenOperation, setInfoscreenOperation] = useState<GrisuOperation | undefined>(undefined);
+  const [laShowExtendedData, setLaShowExtendedData] = useState(false);
 
   const pageTitle = title(operation?.alarm?.message ?? "...");
   useHeaderTitleOnFocus(pageTitle);
@@ -76,24 +80,42 @@ export default function OperationDetailScreen() {
     );
   }, [operation]);
 
-  function getOperation(uuid: string, setLoadingState: boolean = true) {
+  async function getOperation(uuid: string, setLoadingState: boolean = true) {
     if (setLoadingState) {
       setLoading(true);
     }
-    OperationService.getOperation(uuid)
-      .then(setOperation)
-      .catch((error) => {
-        console.error(error);
-        uiError(
-          error.request.status === 404
-            ? t("common.error.notFound")
-            : t("common.error.internalServerError"),
-        );
-      })
-      .finally(() => {
-        setLoading(false);
-        setRefreshing(false);
-      });
+    try {
+      const loadedOperation = await OperationService.getOperation(uuid);
+      setOperation(loadedOperation);
+
+      // load LA extended data if enabled
+      if (loadedOperation.system.serviceOrigin === ServiceOriginEnum.LA_WASTL_PUB) {
+        const laExtendedMode = await SettingService.getByKey("laExtendedMode") === true;
+        setLaShowExtendedData(laExtendedMode);
+
+        if (laExtendedMode) {
+          const operations = await LaInfoscreenService.getHistoryOperations();
+          const laOperation = operations?.CurrentState === "data"
+            ? operations.EinsatzData?.find((op) => op.EinsatzID === loadedOperation.externalIds.lowerAustriaSysId)
+            : undefined;
+
+          setInfoscreenOperation(laOperation);
+          if (laOperation) {
+            updateOperationWithLaExtendedData(loadedOperation, laOperation);
+          }
+        }
+      }
+    } catch (error: any) {
+      console.error(error);
+      uiError(
+        error.request?.status === 404
+          ? t("common.error.notFound")
+          : t("common.error.internalServerError"),
+      );
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
   }
 
   function onRefresh() {
@@ -156,7 +178,9 @@ export default function OperationDetailScreen() {
       minute: "2-digit",
     });
 
-    if (operation.system.serviceOrigin === ServiceOriginEnum.LA_WASTL_PUB) {
+    if (
+      operation.system.serviceOrigin === ServiceOriginEnum.LA_WASTL_PUB && !infoscreenOperation
+    ) {
       newDateString = newDateString.slice(0, -1) + "x";
       return newDateString;
     } else {
@@ -192,6 +216,68 @@ export default function OperationDetailScreen() {
     return (
       typeof navigator !== "undefined" && typeof navigator.share === "function"
     );
+  }
+
+  function withViennaTimeZone(value: string | null): string | undefined {
+    if (!value) return undefined;
+
+    const wallTime = Date.parse(`${value}Z`);
+    if (!Number.isFinite(wallTime)) return undefined;
+
+    const options: Intl.DateTimeFormatOptions = {
+      year: "numeric", month: "2-digit", day: "2-digit",
+      hour: "2-digit", minute: "2-digit", second: "2-digit",
+      hourCycle: "h23",
+    };
+    const vienna = new Intl.DateTimeFormat("en-GB", { ...options, timeZone: "Europe/Vienna" });
+    const expected = new Intl.DateTimeFormat("en-GB", { ...options, timeZone: "UTC" }).format(wallTime);
+
+    // Use the offset that reproduces the API's wall-clock time in Vienna.
+    for (const offset of ["+01:00", "+02:00"]) {
+      const result = `${value}${offset}`;
+      if (vienna.format(new Date(result)) === expected) return result;
+    }
+    return undefined;
+  }
+
+  // LA extended data
+  function updateOperationWithLaExtendedData(operation: Operation, laOperation: GrisuOperation) {
+    const updatedOperation: Operation = {
+      ...operation
+    };
+
+    if (laOperation.Dispositionen && laOperation.Dispositionen.length > 0) {
+
+      // Firedepartments
+      for (const dispo of operation.firedepartments || []) {
+        const laDispo = laOperation.Dispositionen.find((d) => d.Name === dispo.firedepartment?.name);
+
+        if (laDispo) {
+          dispo.alarmTime = withViennaTimeZone(laDispo.AlarmTime) ?? dispo.alarmTime;
+          dispo.dispoTime = withViennaTimeZone(laDispo.DispoTime) ?? dispo.dispoTime;
+          dispo.outTime = withViennaTimeZone(laDispo.AusTime) ?? dispo.outTime;
+          dispo.inTime = withViennaTimeZone(laDispo.EinTime) ?? dispo.inTime;
+        }
+      }
+
+      // Units
+      for (const dispo of operation.units || []) {
+        const laDispo = laOperation.Dispositionen.find((d) => d.Name === dispo.unit?.name);
+
+        if (laDispo) {
+          dispo.alarmTime = withViennaTimeZone(laDispo.AlarmTime) ?? dispo.alarmTime;
+          dispo.dispoTime = withViennaTimeZone(laDispo.DispoTime) ?? dispo.dispoTime;
+          dispo.outTime = withViennaTimeZone(laDispo.AusTime) ?? dispo.outTime;
+          dispo.inTime = withViennaTimeZone(laDispo.EinTime) ?? dispo.inTime;
+        }
+      }
+      
+    }
+
+    updatedOperation.startTime =
+      withViennaTimeZone(laOperation.EinsatzErzeugt) ?? operation.startTime;
+
+    setOperation(updatedOperation);
   }
 
   return (
@@ -367,6 +453,92 @@ export default function OperationDetailScreen() {
                   </View>
                 </View>
               </View>
+
+              {/* La Extended Data */}
+              { infoscreenOperation && laShowExtendedData && (
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    borderColor: Colors[colorScheme ?? "light"].border,
+                    borderWidth: 1,
+                    borderRadius: 8,
+                    padding: 12,
+                    paddingTop: 20,
+                    marginBottom: 20,
+                    width: "100%",
+                    maxWidth: 1000,
+                    alignSelf: "center",
+                    gap: 12,
+                  }}>
+
+                  {/* Title */}
+                  <View
+                    style={{
+                      paddingHorizontal: 6,
+                      top: -7,
+                      left: 6,
+                      position: "absolute",
+                      backgroundColor: Colors[colorScheme ?? "light"].background,
+                    }}>
+                    <ThemedText
+                      style={{
+                        opacity: 0.5,
+                        fontSize: 14,
+                        lineHeight: 15,
+                      }}>
+                      {t("operation.details.extendedData.title")}
+                    </ThemedText>
+                  </View>
+
+                  {/* Additional Information */}
+                  { infoscreenOperation.Bemerkung && (
+                    <View>
+                      <ThemedText
+                        style={{
+                          opacity: 0.5,
+                          fontSize: 14,
+                          lineHeight: 15,
+                        }}
+                      >
+                        {t("operation.details.extendedData.additionalInformation")}
+                      </ThemedText>
+                      <ThemedText>{infoscreenOperation.Bemerkung}</ThemedText>
+                    </View>
+                  )}
+                  
+                  {/* Address */}
+                  <View>
+                    <ThemedText
+                      style={{
+                        opacity: 0.5,
+                        fontSize: 14,
+                        lineHeight: 15,
+                      }}
+                    >
+                      {t("operation.details.extendedData.address")}
+                    </ThemedText>
+                    <ThemedText>{infoscreenOperation.Strasse} {infoscreenOperation.Nummer1} {infoscreenOperation.Nummer2} {infoscreenOperation.Nummer3}</ThemedText>
+                    <ThemedText>{infoscreenOperation.Ort} {infoscreenOperation.Plz}</ThemedText>
+                  </View>
+
+                  {/* Objekt */}
+                  { infoscreenOperation.Objekt && (
+                    <View>
+                      <ThemedText
+                        style={{
+                          opacity: 0.5,
+                          fontSize: 14,
+                          lineHeight: 15,
+                        }}
+                      >
+                        {t("operation.details.extendedData.object")}
+                      </ThemedText>
+                      <ThemedText>{infoscreenOperation.Objekt}</ThemedText>
+                    </View>
+                  )}
+                </View>
+              ) }
 
               {/* Resource Sum */}
               {operation.firedepartments?.length > 0 ||

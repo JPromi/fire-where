@@ -6,10 +6,11 @@ import { useDynamicSide } from "@/hooks/useDynamicSide";
 import { FavouritesService } from "@/services/local/FavouritesService";
 import { settingsLocalService } from "@/services/local/SettingLocalService";
 import { SettingService } from "@/services/local/SettingService";
+import { getBuildVersion } from "@/utils/BuildVersion";
 import { title } from "@/utils/TitleFunction";
 import { useHeaderTitleOnFocus } from "@/utils/UseHeaderTitleOnFocus";
-import { getBuildVersion } from "@/utils/BuildVersion";
 import { useRouter } from "expo-router";
+import * as SecureStore from "expo-secure-store";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -95,6 +96,16 @@ export default function SettingsScreen() {
             showIfKeyIsSet: "jumpToFederalState",
             valueTranslationKey: "",
           },
+          {
+            key: "laExtendedMode",
+            name: t("settings.laExtended.title"),
+            type: "function",
+            function: () => {
+              router.push({
+                pathname: `/settings/la-extended`,
+              });
+            },
+          }
         ],
       },
       {
@@ -303,6 +314,10 @@ export default function SettingsScreen() {
 
   // data
   async function clearAllData() {
+    if (Platform.OS !== "web") {
+      await SecureStore.deleteItemAsync("laInfoscreenAccessToken");
+      await SecureStore.deleteItemAsync("laInfoscreenAccessCode");
+    }
     await SettingService.clearAll();
     await loadSettings();
     await FavouritesService.clearAllFavourites();
