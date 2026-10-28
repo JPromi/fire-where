@@ -38,36 +38,42 @@ export default function LaExtendedScreen() {
   async function saveSettings(value: boolean) {
     let isConfirmed = false;
 
-    if (!value) {
+    if (value === false) {
       if (Platform.OS === "web") {
         if (window.confirm(`${t("settings.laExtended.confirmDisableExtendedMode")}\n\n${t("settings.laExtended.confirmDisableExtendedModeMessage")}`)) {
           isConfirmed = true;
         }
-        } else {
-        Alert.alert(t("settings.laExtended.confirmDisableExtendedMode"), t("settings.laExtended.confirmDisableExtendedModeMessage"), [
-          {
-            text: t("common.no"),
-            style: "cancel",
-          },
-          {
-            text: t("common.yes"),
-            style: "default",
-            onPress: () => {
-              isConfirmed = true;
-            }
-          },
-        ]);
+      } else {
+        isConfirmed = await new Promise<boolean>((resolve) => {
+          Alert.alert(t("settings.laExtended.confirmDisableExtendedMode"), t("settings.laExtended.confirmDisableExtendedModeMessage"), [
+            {
+              text: t("common.no"),
+              style: "cancel",
+              onPress: () => {
+                resolve(false);
+              }
+            },
+            {
+              text: t("common.yes"),
+              style: "default",
+              onPress: () => {
+                resolve(true);
+              }
+            },
+          ]);
+        })
       }
 
       if (isConfirmed) {
+        setIsExtendedViewEnabled(value);
         await SettingService.setByKey("laExtendedMode", value);
-        if (!value) {
-          await SecureStore.deleteItemAsync("laInfoscreenAccessToken");
-          await SecureStore.deleteItemAsync("laInfoscreenAccessCode");
-          setIsAuthorized(false);
-        }
+        await SecureStore.deleteItemAsync("laInfoscreenAccessToken");
+        await SecureStore.deleteItemAsync("laInfoscreenAccessCode");
+        setIsAuthorized(false);
       }
     } else {
+      auth();
+      setIsExtendedViewEnabled(value);
       await SettingService.setByKey("laExtendedMode", value);
     }
   }
