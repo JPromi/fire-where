@@ -1,11 +1,11 @@
 // services/ApiClient.ts
+import { getBuildVersion } from "@/utils/BuildVersion";
 import axios from "axios";
-import Constants from "expo-constants";
 import { Platform } from "react-native";
 
 export const apiClient = axios.create({
   headers: {
-    "X-Fw-Version": Constants.expoConfig?.version,
+    "X-Fw-Version": getBuildVersion(),
     "X-Fw-Platform": Platform.OS,
   },
 });
