@@ -1,7 +1,7 @@
 import { GrisuState } from "@/dtos/GrisuState.dto";
-import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 import { Platform } from "react-native";
+import { apiClient } from "./ApiClient";
 
 export class LaInfoscreenService {
   private static readonly BASE_URL = `https://infoscreen.florian10.info/ows/infoscreen`;
@@ -9,7 +9,7 @@ export class LaInfoscreenService {
   private static readonly IS_WEB = Platform.OS === "web";
 
   static async getActiveOperations() {
-    const res = await axios.get<GrisuState>(
+    const res = await apiClient.get<GrisuState>(
       `${this.BASE_URL}/einsatz.ashx`,
       {
         headers: {
@@ -24,7 +24,7 @@ export class LaInfoscreenService {
   }
 
   static async getHistoryOperations() {
-    const res = await axios.get<GrisuState>(
+    const res = await apiClient.get<GrisuState>(
       `${this.BASE_URL}/historic.ashx`,
       {
         headers: {
@@ -40,7 +40,7 @@ export class LaInfoscreenService {
   }
 
   static async getLoginState() {
-    const res = await axios.get<GrisuState>(
+    const res = await apiClient.get<GrisuState>(
       `${this.BASE_URL}/einsatz.ashx`,
       {
         headers: {
